@@ -18,12 +18,14 @@ import {
   AccordionToggle,
   Card,
   CardBody,
+  CardHeader,
+  CardTitle,
+  DescriptionList,
+  DescriptionListDescription,
+  DescriptionListGroup,
+  DescriptionListTerm,
   Divider,
-  Flex,
-  FlexItem,
-  Grid,
-  GridItem,
-  Panel,
+  Title,
 } from "@patternfly/react-core";
 import { IntotoViewer001 } from "./Intoto001";
 import { IntotoViewer002 } from "./Intoto002";
@@ -62,41 +64,6 @@ function tryJSONParse(content?: string): unknown {
   } catch (_e) {
     return content;
   }
-}
-
-export function EntryCard({
-  title,
-  content,
-  dividerProps = {},
-}: {
-  title: ReactNode;
-  content: ReactNode;
-  dividerProps?: { display?: string };
-}) {
-  return (
-    <Flex style={{ padding: "1em" }}>
-      <Divider
-        orientation={{
-          default: "vertical",
-        }}
-        style={{ margin: "inherit 1em", ...dividerProps }}
-      />
-      <FlexItem>
-        <h3>{title}</h3>
-        <p
-          style={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "start",
-          }}
-        >
-          {content}
-        </p>
-      </FlexItem>
-    </Flex>
-  );
 }
 
 export function Entry({ entry }: { entry: LogEntry }) {
@@ -148,100 +115,101 @@ export function Entry({ entry }: { entry: LogEntry }) {
   }
 
   return (
-    <Card style={{ margin: "1.5em auto 2em", overflowY: "hidden" }}>
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          Entry UUID: <Link to={{ pathname: Paths.rekorSearch, search: `?uuid=${uuid}` }}>{uuid}</Link>
+        </CardTitle>
+      </CardHeader>
       <CardBody>
-        <h2
-          style={{
-            margin: "1.25em auto",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+        <DescriptionList
+          columnModifier={{
+            default: "3Col",
           }}
         >
-          Entry UUID: <Link to={{ pathname: Paths.rekorSearch, search: `?uuid=${uuid}` }}>{uuid}</Link>
-        </h2>
-        <Divider />
-        <Grid hasGutter={true}>
-          <GridItem sm={3}>
-            <EntryCard title="Type" content={body.kind} dividerProps={{ display: "none" }} />
-          </GridItem>
-          <GridItem sm={3}>
-            <EntryCard
-              title="Log Index"
-              content={
-                <Link to={{ pathname: Paths.rekorSearch, search: `?logIndex=${obj.logIndex}` }}>{obj.logIndex}</Link>
-              }
-            />
-          </GridItem>
-          <GridItem sm={6}>
-            <EntryCard title="Integrated time" content={toRelativeDateString(new Date(obj.integratedTime * 1000))} />
-          </GridItem>
-        </Grid>
+          <DescriptionListGroup>
+            <DescriptionListTerm>Type</DescriptionListTerm>
+            <DescriptionListDescription>{body.kind}</DescriptionListDescription>
+          </DescriptionListGroup>
+          <DescriptionListGroup>
+            <DescriptionListTerm>Log Index</DescriptionListTerm>
+            <DescriptionListDescription>
+              <Link to={{ pathname: Paths.rekorSearch, search: `?logIndex=${obj.logIndex}` }}>{obj.logIndex}</Link>
+            </DescriptionListDescription>
+          </DescriptionListGroup>
+          <DescriptionListGroup>
+            <DescriptionListTerm>Integrated time</DescriptionListTerm>
+            <DescriptionListDescription>
+              {toRelativeDateString(new Date(obj.integratedTime * 1000))}
+            </DescriptionListDescription>
+          </DescriptionListGroup>
+        </DescriptionList>
         <Divider />
         {parsed}
-        <Panel
-          style={{
-            margin: "0.75em auto",
-          }}
-        >
-          <Fragment>
-            <Accordion>
-              <>
-                <AccordionItem isExpanded={expanded.includes("body-content")}>
+        <Fragment>
+          <Accordion>
+            <>
+              <AccordionItem isExpanded={expanded.includes("body-content")}>
+                <AccordionToggle
+                  id={"body-header"}
+                  aria-controls="body-content"
+                  onClick={() => {
+                    toggle("body-content");
+                  }}
+                >
+                  <Title headingLevel="h4" size="md">
+                    Raw Body
+                  </Title>
+                </AccordionToggle>
+                <AccordionContent>
+                  <SyntaxHighlighter language="yaml" style={atomDark}>
+                    {dump(body, DUMP_OPTIONS)}
+                  </SyntaxHighlighter>
+                </AccordionContent>
+              </AccordionItem>
+              {attestation && (
+                <AccordionItem isExpanded={expanded.includes("attestation-content")}>
                   <AccordionToggle
-                    id={"body-header"}
-                    aria-controls="body-content"
+                    aria-controls="attestation-content"
+                    id="attestation-header"
                     onClick={() => {
-                      toggle("body-content");
+                      toggle("attestation-content");
                     }}
                   >
-                    <b>Raw Body</b>
+                    <Title headingLevel="h4" size="md">
+                      Attestation
+                    </Title>
                   </AccordionToggle>
                   <AccordionContent>
                     <SyntaxHighlighter language="yaml" style={atomDark}>
-                      {dump(body, DUMP_OPTIONS)}
+                      {dump(attestation)}
                     </SyntaxHighlighter>
                   </AccordionContent>
                 </AccordionItem>
-                {attestation && (
-                  <AccordionItem isExpanded={expanded.includes("attestation-content")}>
-                    <AccordionToggle
-                      aria-controls="attestation-content"
-                      id="attestation-header"
-                      onClick={() => {
-                        toggle("attestation-content");
-                      }}
-                    >
-                      <b>Attestation</b>
-                    </AccordionToggle>
-                    <AccordionContent>
-                      <SyntaxHighlighter language="yaml" style={atomDark}>
-                        {dump(attestation)}
-                      </SyntaxHighlighter>
-                    </AccordionContent>
-                  </AccordionItem>
-                )}
-                {obj.verification && (
-                  <AccordionItem isExpanded={expanded.includes("verification-content")}>
-                    <AccordionToggle
-                      aria-controls="verification-content"
-                      id={"verification-header"}
-                      onClick={() => {
-                        toggle("verification-content");
-                      }}
-                    >
-                      <h3>Verification</h3>
-                    </AccordionToggle>
-                    <AccordionContent>
-                      <SyntaxHighlighter language="yaml" style={atomDark}>
-                        {dump(obj.verification)}
-                      </SyntaxHighlighter>
-                    </AccordionContent>
-                  </AccordionItem>
-                )}
-              </>
-            </Accordion>
-          </Fragment>
-        </Panel>
+              )}
+              {obj.verification && (
+                <AccordionItem isExpanded={expanded.includes("verification-content")}>
+                  <AccordionToggle
+                    aria-controls="verification-content"
+                    id={"verification-header"}
+                    onClick={() => {
+                      toggle("verification-content");
+                    }}
+                  >
+                    <Title headingLevel="h4" size="md">
+                      Verification
+                    </Title>
+                  </AccordionToggle>
+                  <AccordionContent>
+                    <SyntaxHighlighter language="yaml" style={atomDark}>
+                      {dump(obj.verification)}
+                    </SyntaxHighlighter>
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+            </>
+          </Accordion>
+        </Fragment>
       </CardBody>
     </Card>
   );

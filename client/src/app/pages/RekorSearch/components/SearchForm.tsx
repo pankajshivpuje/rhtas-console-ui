@@ -233,10 +233,10 @@ export function SearchForm({ defaultValues, onSubmit, isLoading }: FormProps) {
         </Flex>
         <Flex
           direction={{ default: "column" }}
-          alignSelf={{ default: "alignSelfFlexStart" }}
+          alignSelf={{ default: "alignSelfFlexEnd" }}
           flex={{ default: "flex_1" }}
         >
-          <FlexItem style={{ marginTop: "2em" }}>
+          <FlexItem>
             <Button
               variant="primary"
               id="search-form-button"

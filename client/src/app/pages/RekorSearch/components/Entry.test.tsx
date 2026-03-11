@@ -13,7 +13,7 @@ vi.mock("./HashedRekord", () => ({
 import atobMock from "../__mocks__/atobMock";
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Entry, EntryCard } from "./Entry";
+import { Entry } from "./Entry";
 
 describe("Entry", () => {
   beforeAll(() => {
@@ -54,13 +54,5 @@ describe("Entry", () => {
 
     // now the accordion content should be visible
     expect(screen.getByText("apiVersion")).toBeVisible();
-  });
-});
-
-describe("EntryCard", () => {
-  it("renders the title and content", () => {
-    render(<EntryCard title="Test Title" content="Test Content" />);
-    expect(screen.getByText("Test Title")).toBeInTheDocument();
-    expect(screen.getByText("Test Content")).toBeInTheDocument();
   });
 });

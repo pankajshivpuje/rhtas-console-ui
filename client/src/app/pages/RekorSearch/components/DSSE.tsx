@@ -1,11 +1,16 @@
 import { dump } from "js-yaml";
-import { Link } from "react-router-dom";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { type DSSEV001Schema } from "rekor";
-import { Panel } from "@patternfly/react-core";
+import {
+  CodeBlock,
+  CodeBlockCode,
+  DescriptionList,
+  DescriptionListDescription,
+  DescriptionListGroup,
+  DescriptionListTerm,
+  Stack,
+  StackItem,
+} from "@patternfly/react-core";
 import { decodex509 } from "../x509/decode";
-import { Paths } from "@app/Routes";
 
 export function DSSEViewer({ dsse }: { dsse: DSSEV001Schema }) {
   const sig = dsse.signatures?.[0];
@@ -24,30 +29,47 @@ export function DSSEViewer({ dsse }: { dsse: DSSEV001Schema }) {
   }
 
   return (
-    <Panel>
-      <h5 style={{ paddingTop: "1em" }}>
-        <Link
-          to={{
-            pathname: Paths.rekorSearch,
-            search: `?hash=${dsse.payloadHash?.algorithm}:${dsse.payloadHash?.value}`,
-          }}
-        >
-          Hash
-        </Link>
-      </h5>
+    <Stack hasGutter>
+      <StackItem>
+        <DescriptionList>
+          <DescriptionListGroup>
+            <DescriptionListTerm>Hash</DescriptionListTerm>
+            <DescriptionListDescription>
+              <CodeBlock>
+                <CodeBlockCode>
+                  {`${dsse.payloadHash?.algorithm}:${dsse.payloadHash?.value}`}
+                </CodeBlockCode>
+              </CodeBlock>
+            </DescriptionListDescription>
+          </DescriptionListGroup>
+        </DescriptionList>
+      </StackItem>
 
-      <SyntaxHighlighter language="text" style={atomDark}>
-        {`${dsse.payloadHash?.algorithm}:${dsse.payloadHash?.value}`}
-      </SyntaxHighlighter>
+      <StackItem>
+        <DescriptionList>
+          <DescriptionListGroup>
+            <DescriptionListTerm>Signature</DescriptionListTerm>
+            <DescriptionListDescription>
+              <CodeBlock>
+                <CodeBlockCode>{sig?.signature ?? ""}</CodeBlockCode>
+              </CodeBlock>
+            </DescriptionListDescription>
+          </DescriptionListGroup>
+        </DescriptionList>
+      </StackItem>
 
-      <h5 style={{ paddingTop: "1em" }}>Signature</h5>
-      <SyntaxHighlighter language="text" style={atomDark}>
-        {sig?.signature ?? ""}
-      </SyntaxHighlighter>
-      <h5 style={{ paddingTop: "1em" }}>{publicKey.title}</h5>
-      <SyntaxHighlighter language="yaml" style={atomDark}>
-        {publicKey.content}
-      </SyntaxHighlighter>
-    </Panel>
+      <StackItem>
+        <DescriptionList>
+          <DescriptionListGroup>
+            <DescriptionListTerm>{publicKey.title}</DescriptionListTerm>
+            <DescriptionListDescription>
+              <CodeBlock>
+                <CodeBlockCode>{publicKey.content}</CodeBlockCode>
+              </CodeBlock>
+            </DescriptionListDescription>
+          </DescriptionListGroup>
+        </DescriptionList>
+      </StackItem>
+    </Stack>
   );
 }

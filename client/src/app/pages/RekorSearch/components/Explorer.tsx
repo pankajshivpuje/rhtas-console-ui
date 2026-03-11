@@ -1,12 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ApiError, type RekorError } from "rekor";
 import { isAttribute, type RekorEntries, type SearchQuery, useRekorSearch } from "../api/rekor-api";
 import { type FormInputs, SearchForm } from "./SearchForm";
-import { Alert, Flex, Spinner, Pagination } from "@patternfly/react-core";
-import { Entry } from "./Entry";
-
-const PAGE_SIZE = 20;
+import { Alert, Flex, Spinner, Stack, StackItem } from "@patternfly/react-core";
+import { ResultsTable } from "./ResultsTable";
 
 function isApiError(error: unknown): error is ApiError {
   return !!error && typeof error === "object" && Object.hasOwn(error, "body");
@@ -33,13 +31,13 @@ function Error({ error }: { error: unknown }) {
   }
 
   return (
-    <Alert style={{ margin: "1em auto" }} title={title} variant={"danger"}>
+    <Alert title={title} variant={"danger"}>
       {detail}
     </Alert>
   );
 }
 
-function RekorList({
+function ResultsSection({
   rekorEntries,
   page,
   onSetPage,
@@ -49,46 +47,19 @@ function RekorList({
   onSetPage: (_event: React.MouseEvent | React.KeyboardEvent | MouseEvent, _newPage: number) => void;
 }) {
   if (!rekorEntries) {
-    return <Fragment></Fragment>;
+    return null;
   }
 
   if (rekorEntries.entries.length === 0) {
     return <Alert title={"No matching entries found"} variant={"info"} />;
   }
 
-  const pageCount = Math.ceil(rekorEntries.totalCount / PAGE_SIZE);
-
-  const firstItem = (page - 1) * PAGE_SIZE + 1;
-  const lastItem = firstItem + rekorEntries.entries.length - 1;
-
-  return (
-    <div style={{ margin: "2em auto" }}>
-      <p>
-        Showing {firstItem} - {lastItem} of {rekorEntries.totalCount}
-      </p>
-
-      {rekorEntries.entries.map((entry) => (
-        <Entry key={Object.values(entry)[0].logIndex} entry={entry} />
-      ))}
-
-      {pageCount > 1 && (
-        <Pagination
-          itemCount={rekorEntries.totalCount}
-          perPage={PAGE_SIZE}
-          page={page}
-          onSetPage={onSetPage}
-          perPageOptions={[]}
-          variant="bottom"
-          style={{ marginTop: "1em" }}
-        />
-      )}
-    </div>
-  );
+  return <ResultsTable rekorEntries={rekorEntries} page={page} onSetPage={onSetPage} />;
 }
 
 function LoadingIndicator() {
   return (
-    <Flex alignItems={{ default: "alignItemsCenter" }} direction={{ default: "column" }} style={{ margin: "1em auto" }}>
+    <Flex alignItems={{ default: "alignItemsCenter" }} direction={{ default: "column" }}>
       <Spinner />
     </Flex>
   );
@@ -177,16 +148,19 @@ export function Explorer() {
   };
 
   return (
-    <Fragment>
-      <SearchForm defaultValues={formInputs} isLoading={loading} onSubmit={setQueryParams} />
-
-      {error ? (
-        <Error error={error} />
-      ) : loading ? (
-        <LoadingIndicator />
-      ) : (
-        <RekorList rekorEntries={data} page={page} onSetPage={onSetPage} />
-      )}
-    </Fragment>
+    <Stack hasGutter>
+      <StackItem>
+        <SearchForm defaultValues={formInputs} isLoading={loading} onSubmit={setQueryParams} />
+      </StackItem>
+      <StackItem>
+        {error ? (
+          <Error error={error} />
+        ) : loading ? (
+          <LoadingIndicator />
+        ) : (
+          <ResultsSection rekorEntries={data} page={page} onSetPage={onSetPage} />
+        )}
+      </StackItem>
+    </Stack>
   );
 }

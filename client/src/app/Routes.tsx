@@ -7,21 +7,30 @@ import { ErrorFallback } from "./components/ErrorFallback";
 import NotFound from "./pages/NotFound";
 
 const Artifacts = lazy(() => import("./pages/Artifacts"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const TotalArtifacts = lazy(() => import("./pages/Dashboard/TotalArtifacts"));
 const TrustRoot = lazy(() => import("./pages/TrustRoot"));
 const RekorSearch = lazy(() => import("./pages/RekorSearch"));
+const RekorEntryDetail = lazy(() => import("./pages/RekorSearch/EntryDetail"));
 
 export const Paths = {
+  dashboard: "/dashboard",
+  totalArtifacts: "/dashboard/total-artifacts",
   artifacts: "/artifacts",
   rekorSearch: "/rekor-search",
+  rekorEntry: "/rekor-search/:uuid",
   trustRoot: "/trust-root",
 } as const;
 
 export const AppRoutes = () => {
   const allRoutes = useRoutes([
-    { path: "/", element: <Navigate to={Paths.trustRoot} /> },
+    { path: "/", element: <Navigate to={Paths.dashboard} /> },
+    { path: Paths.dashboard, element: <Dashboard /> },
+    { path: Paths.totalArtifacts, element: <TotalArtifacts /> },
     { path: Paths.trustRoot, element: <TrustRoot /> },
     { path: Paths.artifacts, element: <Artifacts /> },
     { path: Paths.rekorSearch, element: <RekorSearch /> },
+    { path: Paths.rekorEntry, element: <RekorEntryDetail /> },
     { path: "*", element: <NotFound /> },
   ]);
 

@@ -9,6 +9,8 @@ servers:
 tags:
   - name: Artifact
     description: Operations for signing and verifying artifacts
+  - name: Dashboard
+    description: Fleet-level signing posture and coverage metrics
   - name: Rekor
     description: Operations for interacting with Rekor transparency log
   - name: Trust
@@ -28,6 +30,105 @@ paths:
                   status:
                     type: string
                     enum: [ok]
+  /api/v1/dashboard/posture-summary:
+    get:
+      summary: Get aggregate signing posture metrics
+      tags:
+        - Dashboard
+      operationId: GetPostureSummary
+      parameters:
+        - name: environment
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Filter by environment (e.g., production, staging, dev)
+      responses:
+        '200':
+          description: Aggregate signing metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostureSummary'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/dashboard/unsigned-artifacts:
+    get:
+      summary: List unsigned artifacts
+      tags:
+        - Dashboard
+      operationId: GetUnsignedArtifacts
+      parameters:
+        - name: environment
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Filter by environment (e.g., production, staging, dev)
+      responses:
+        '200':
+          description: List of unsigned artifacts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnsignedArtifact'
+                required:
+                  - data
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/dashboard/posture-trend:
+    get:
+      summary: Get signing posture trend over time
+      tags:
+        - Dashboard
+      operationId: GetPostureTrend
+      parameters:
+        - name: environment
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Filter by environment (e.g., production, staging, dev)
+        - name: days
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 30
+            description: Number of days of trend data to return
+      responses:
+        '200':
+          description: Time-series signing and attestation coverage
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PostureTrendPoint'
+                required:
+                  - data
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/artifacts/verify:
     post:
       summary: Verify an artifact
@@ -720,6 +821,80 @@ components:
             $ref: '#/components/schemas/CertificateInfo'
       required:
         - data
+    PostureSummary:
+      type: object
+      properties:
+        totalArtifacts:
+          type: integer
+          description: Total number of tracked artifacts
+        signedCount:
+          type: integer
+          description: Number of fully signed artifacts
+        unsignedCount:
+          type: integer
+          description: Number of unsigned artifacts
+        partiallySignedCount:
+          type: integer
+          description: Number of partially signed artifacts
+        signedPercentage:
+          type: number
+          format: float
+          description: Percentage of artifacts that are signed
+        attestationCoverage:
+          type: number
+          format: float
+          description: Percentage of artifacts with attestations
+      required:
+        - totalArtifacts
+        - signedCount
+        - unsignedCount
+        - partiallySignedCount
+        - signedPercentage
+        - attestationCoverage
+    UnsignedArtifact:
+      type: object
+      properties:
+        uri:
+          type: string
+          description: Artifact URI
+        environment:
+          type: string
+          description: Deployment environment (e.g., production, staging, dev)
+        lastSeen:
+          type: string
+          format: date-time
+          description: Last time the artifact was observed
+        registry:
+          type: string
+          description: Container registry
+      required:
+        - uri
+        - environment
+        - lastSeen
+        - registry
+    PostureTrendPoint:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          description: Date of the data point
+        signedPercentage:
+          type: number
+          format: float
+          description: Signing coverage percentage
+        attestationPercentage:
+          type: number
+          format: float
+          description: Attestation coverage percentage
+        totalArtifacts:
+          type: integer
+          description: Total artifacts at this point in time
+      required:
+        - date
+        - signedPercentage
+        - attestationPercentage
+        - totalArtifacts
     Error:
       type: object
       properties:
