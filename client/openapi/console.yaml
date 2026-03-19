@@ -129,6 +129,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/v1/dashboard/attestation-coverage:
+    get:
+      summary: Get attestation type coverage breakdown
+      tags:
+        - Dashboard
+      operationId: GetAttestationCoverage
+      parameters:
+        - name: environment
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Filter by environment (e.g., production, staging, dev)
+      responses:
+        '200':
+          description: Attestation type coverage breakdown
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AttestationTypeCoverage'
+                required:
+                  - data
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/artifacts/verify:
     post:
       summary: Verify an artifact
@@ -821,6 +854,31 @@ components:
             $ref: '#/components/schemas/CertificateInfo'
       required:
         - data
+    AttestationTypeCoverage:
+      type: object
+      properties:
+        attestationType:
+          type: string
+          description: The attestation predicate type (e.g., SLSA Provenance, SBOM)
+        displayName:
+          type: string
+          description: Human-readable name for the attestation type
+        artifactCount:
+          type: integer
+          description: Number of artifacts that have this attestation type
+        totalArtifacts:
+          type: integer
+          description: Total number of artifacts evaluated
+        percentage:
+          type: number
+          format: float
+          description: Percentage of artifacts with this attestation type
+      required:
+        - attestationType
+        - displayName
+        - artifactCount
+        - totalArtifacts
+        - percentage
     PostureSummary:
       type: object
       properties:

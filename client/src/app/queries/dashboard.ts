@@ -2,9 +2,11 @@ import type { AxiosError } from "axios";
 
 import { client } from "@app/axios-config/apiInit";
 import {
+  getAttestationCoverage,
   getPostureSummary,
   getPostureTrend,
   getUnsignedArtifacts,
+  type AttestationTypeCoverage,
   type Error as ApiError,
   type PostureSummary,
   type PostureTrendPoint,
@@ -13,6 +15,7 @@ import {
 
 import { useMockableQuery } from "./helpers";
 import {
+  getAttestationCoverageMock,
   getPostureSummaryMock,
   getPostureTrendMock,
   getUnsignedArtifactsMock,
@@ -22,6 +25,7 @@ export const DashboardKeys = {
   postureSummary: (env?: string) => ["Dashboard", "posture-summary", env ?? "all"],
   unsignedArtifacts: (env?: string) => ["Dashboard", "unsigned-artifacts", env ?? "all"],
   postureTrend: (days: number, env?: string) => ["Dashboard", "posture-trend", days, env ?? "all"],
+  attestationCoverage: (env?: string) => ["Dashboard", "attestation-coverage", env ?? "all"],
 };
 
 export const useFetchPostureSummary = ({ environment }: { environment?: string } = {}) => {
@@ -82,6 +86,28 @@ export const useFetchPostureTrend = ({ days = 30, environment }: { days?: number
 
   return {
     trend: data?.data ?? [],
+    isFetching: isLoading,
+    fetchError: error,
+  };
+};
+
+export const useFetchAttestationCoverage = ({ environment }: { environment?: string } = {}) => {
+  const { data, isLoading, error } = useMockableQuery<{ data: AttestationTypeCoverage[] } | null, AxiosError<ApiError>>(
+    {
+      queryKey: DashboardKeys.attestationCoverage(environment),
+      queryFn: async () => {
+        const response = await getAttestationCoverage({
+          client,
+          query: { environment },
+        });
+        return response.data ?? null;
+      },
+    },
+    getAttestationCoverageMock(environment)
+  );
+
+  return {
+    attestationCoverage: data?.data ?? [],
     isFetching: isLoading,
     fetchError: error,
   };

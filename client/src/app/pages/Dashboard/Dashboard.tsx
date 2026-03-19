@@ -1,11 +1,17 @@
 import React, { Fragment, useState } from "react";
 
-import { Content, Divider, FormSelect, FormSelectOption, PageSection } from "@patternfly/react-core";
+import { Content, Divider, Flex, FlexItem, FormSelect, FormSelectOption, PageSection } from "@patternfly/react-core";
 
 import { DocumentMetadata } from "@app/components/DocumentMetadata";
 import { LoadingWrapper } from "@app/components/LoadingWrapper";
-import { useFetchPostureSummary, useFetchPostureTrend, useFetchUnsignedArtifacts } from "@app/queries/dashboard";
+import {
+  useFetchAttestationCoverage,
+  useFetchPostureSummary,
+  useFetchPostureTrend,
+  useFetchUnsignedArtifacts,
+} from "@app/queries/dashboard";
 
+import { AttestationCoverageChart } from "./components/AttestationCoverageChart";
 import { PostureSummaryCards } from "./components/PostureSummaryCards";
 import { SigningDonut } from "./components/SigningDonut";
 import { UnsignedArtifactsTable } from "./components/UnsignedArtifactsTable";
@@ -30,9 +36,14 @@ export const Dashboard: React.FC = () => {
     fetchError: fetchErrorUnsigned,
   } = useFetchUnsignedArtifacts({ environment: selectedNamespace });
   const { trend, isFetching: isFetchingTrend, fetchError: fetchErrorTrend } = useFetchPostureTrend({ environment: selectedNamespace });
+  const {
+    attestationCoverage,
+    isFetching: isFetchingAttestation,
+    fetchError: fetchErrorAttestation,
+  } = useFetchAttestationCoverage({ environment: selectedNamespace });
 
-  const isFetching = isFetchingSummary || isFetchingUnsigned || isFetchingTrend;
-  const fetchError = fetchErrorSummary ?? fetchErrorUnsigned ?? fetchErrorTrend;
+  const isFetching = isFetchingSummary || isFetchingUnsigned || isFetchingTrend || isFetchingAttestation;
+  const fetchError = fetchErrorSummary ?? fetchErrorUnsigned ?? fetchErrorTrend ?? fetchErrorAttestation;
 
   return (
     <Fragment>
@@ -66,8 +77,15 @@ export const Dashboard: React.FC = () => {
           {summary && (
             <>
               <PostureSummaryCards summary={summary} environment={selectedNamespace} />
-              <SigningDonut summary={summary} />
-              <PostureTrendChart trend={trend} />
+              <Flex alignItems={{ default: "alignItemsStretch" }}>
+                <FlexItem flex={{ default: "flex_1" }}>
+                  <SigningDonut summary={summary} />
+                </FlexItem>
+                <FlexItem flex={{ default: "flex_2" }}>
+                  <PostureTrendChart trend={trend} />
+                </FlexItem>
+              </Flex>
+              <AttestationCoverageChart attestationCoverage={attestationCoverage} />
               <UnsignedArtifactsTable unsignedArtifacts={unsignedArtifacts} />
             </>
           )}

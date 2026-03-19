@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import type { PostureSummary, PostureTrendPoint, UnsignedArtifact } from "@app/client";
+import type { AttestationTypeCoverage, PostureSummary, PostureTrendPoint, UnsignedArtifact } from "@app/client";
 
 const postureSummaryByEnv: Record<string, PostureSummary> = {
   all: {
@@ -46,9 +46,9 @@ const postureSummaryByEnv: Record<string, PostureSummary> = {
 };
 
 export const getPostureSummaryMock = (env?: string): PostureSummary =>
-  postureSummaryByEnv[env ?? "all"] ?? postureSummaryByEnv["all"];
+  postureSummaryByEnv[env ?? "all"] ?? postureSummaryByEnv.all;
 
-export const postureSummaryMock: PostureSummary = postureSummaryByEnv["all"];
+export const postureSummaryMock: PostureSummary = postureSummaryByEnv.all;
 
 const allUnsignedArtifacts: UnsignedArtifact[] = [
   {
@@ -123,9 +123,61 @@ const trendByEnv: Record<string, PostureTrendPoint[]> = {
 };
 
 export const getPostureTrendMock = (env?: string): { data: PostureTrendPoint[] } => ({
-  data: trendByEnv[env ?? "all"] ?? trendByEnv["all"],
+  data: trendByEnv[env ?? "all"] ?? trendByEnv.all,
 });
 
 export const postureTrendMock: { data: PostureTrendPoint[] } = {
-  data: trendByEnv["all"],
+  data: trendByEnv.all,
 };
+
+function buildAttestationCoverage(total: number, coverages: [string, string, number][]): AttestationTypeCoverage[] {
+  return coverages.map(([attestationType, displayName, artifactCount]) => ({
+    attestationType,
+    displayName,
+    artifactCount,
+    totalArtifacts: total,
+    percentage: Math.round((artifactCount / total) * 1000) / 10,
+  }));
+}
+
+const attestationCoverageByEnv: Record<string, AttestationTypeCoverage[]> = {
+  all: buildAttestationCoverage(142, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 131],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 118],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 98],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 72],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 45],
+  ]),
+  "rhtas-production": buildAttestationCoverage(58, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 56],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 54],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 52],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 48],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 35],
+  ]),
+  "rhtas-staging": buildAttestationCoverage(41, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 38],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 32],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 25],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 15],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 8],
+  ]),
+  "rhtas-dev": buildAttestationCoverage(29, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 24],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 20],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 12],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 6],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 2],
+  ]),
+  "trusted-artifact-signer": buildAttestationCoverage(14, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 13],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 12],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 11],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 9],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 5],
+  ]),
+};
+
+export const getAttestationCoverageMock = (env?: string): { data: AttestationTypeCoverage[] } => ({
+  data: attestationCoverageByEnv[env ?? "all"] ?? attestationCoverageByEnv.all,
+});

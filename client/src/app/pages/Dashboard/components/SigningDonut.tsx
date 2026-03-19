@@ -22,7 +22,7 @@ export const SigningDonut: React.FC<ISigningDonutProps> = ({ summary }) => {
     <Card style={{ marginTop: "var(--pf-t--global--spacer--md)" }}>
       <CardTitle>Signing Status Distribution</CardTitle>
       <CardBody>
-        <div style={{ height: "230px", width: "400px" }}>
+        <div style={{ height: "300px", width: "400px" }}>
           <ChartDonut
             constrainToVisibleArea
             data={chartData}
