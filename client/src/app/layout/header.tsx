@@ -1,5 +1,6 @@
 import type React from "react";
 import { useReducer, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   Brand,
@@ -15,6 +16,7 @@ import {
   MastheadToggle,
   MenuToggle,
   type MenuToggleElement,
+  NotificationBadge,
   PageToggleButton,
   Split,
   SplitItem,
@@ -33,6 +35,8 @@ import ExternalLinkAltIcon from "@patternfly/react-icons/dist/js/icons/external-
 import useBranding from "@app/hooks/useBranding";
 import { DarkModeToggle } from "@app/components/DarkModeToggle";
 import { ThemeAwareLogo } from "@app/components/ThemeAwareLogo";
+import { useFetchAlertSummary } from "@app/queries/alerts";
+import { Paths } from "@app/Routes";
 
 import { AboutApp } from "./about";
 
@@ -40,6 +44,9 @@ export const HeaderApp: React.FC = () => {
   const {
     masthead: { leftBrand, leftTitle, rightBrand, supportUrl },
   } = useBranding();
+
+  const navigate = useNavigate();
+  const { alertSummary } = useFetchAlertSummary();
 
   const [isAboutModalOpen, toggleIsAboutModalOpen] = useReducer((state) => !state, false);
   const [isHelpDropdownOpen, setIsHelpDropdownOpen] = useState(false);
@@ -112,6 +119,14 @@ export const HeaderApp: React.FC = () => {
                 }}
               >
                 <ToolbarItem>
+                  <NotificationBadge
+                    variant={alertSummary?.unacknowledged ? "unread" : "read"}
+                    count={alertSummary?.unacknowledged ?? 0}
+                    onClick={() => navigate(Paths.alerts)}
+                    aria-label="Notifications"
+                  />
+                </ToolbarItem>
+                <ToolbarItem>
                   <DarkModeToggle />
                 </ToolbarItem>
                 <ToolbarItem>
@@ -162,6 +177,14 @@ export const HeaderApp: React.FC = () => {
                 gap={{ default: "gapNone", md: "gapMd" }}
                 visibility={{ lg: "hidden" }}
               >
+                <ToolbarItem>
+                  <NotificationBadge
+                    variant={alertSummary?.unacknowledged ? "unread" : "read"}
+                    count={alertSummary?.unacknowledged ?? 0}
+                    onClick={() => navigate(Paths.alerts)}
+                    aria-label="Notifications"
+                  />
+                </ToolbarItem>
                 <ToolbarItem>
                   <DarkModeToggle />
                 </ToolbarItem>

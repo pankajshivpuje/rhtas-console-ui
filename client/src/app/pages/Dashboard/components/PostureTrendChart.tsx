@@ -49,7 +49,7 @@ export const PostureTrendChart: React.FC<IPostureTrendChartProps> = ({ trend }) 
   }
 
   return (
-    <Card style={{ marginTop: "var(--pf-t--global--spacer--md)" }}>
+    <Card isFullHeight>
       <CardTitle>Coverage Trend (Last 30 Days)</CardTitle>
       <CardBody>
         <div style={{ height: "300px", width: "100%" }}>

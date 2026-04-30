@@ -31,13 +31,19 @@ export interface ConsoleEnvType {
 
   /** Location of branding files (relative paths computed from the project source root) */
   BRANDING?: string;
+
+  /** Alertmanager base URL for alert routing configuration */
+  CONSOLE_ALERTMANAGER_URL?: string;
+
+  /** Prometheus base URL for alert rule evaluation */
+  CONSOLE_PROMETHEUS_URL?: string;
 }
 
 /**
  * Keys in `ConsoleEnv` that are only used on the server and therefore do not
  * need to be sent to the client.
  */
-export const SERVER_ENV_KEYS = ["PORT", "CONSOLE_API_URL", "BRANDING"];
+export const SERVER_ENV_KEYS = ["PORT", "CONSOLE_API_URL", "BRANDING", "CONSOLE_ALERTMANAGER_URL", "CONSOLE_PROMETHEUS_URL"];
 
 /**
  * Create a `ConsoleEnv` from a partial `ConsoleEnv` with a set of default values.
@@ -52,6 +58,8 @@ export const buildConsoleEnv = ({
   CONSOLE_API_URL,
   NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
   BRANDING,
+  CONSOLE_ALERTMANAGER_URL,
+  CONSOLE_PROMETHEUS_URL,
 }: Partial<ConsoleEnvType> = {}): ConsoleEnvType => ({
   NODE_ENV,
   PORT,
@@ -62,6 +70,8 @@ export const buildConsoleEnv = ({
   CONSOLE_API_URL,
   NEXT_PUBLIC_REKOR_DEFAULT_DOMAIN,
   BRANDING,
+  CONSOLE_ALERTMANAGER_URL,
+  CONSOLE_PROMETHEUS_URL,
 });
 
 /**

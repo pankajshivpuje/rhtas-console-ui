@@ -1,0 +1,29 @@
+groups:
+  - name: rhtas.alerts
+    rules:
+      - alert: RHTASCertificateExpiringSoon
+        expr: rhtas_certificate_expiry_seconds < 30 * 24 * 3600
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Certificate {{ $labels.certificate_name }} expires in {{ $value | humanizeDuration }}"
+          description: "TAS certificate {{ $labels.certificate_name }} on {{ $labels.component }} will expire soon."
+
+      - alert: RHTASComponentDown
+        expr: up{job=~"rhtas-.*"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "TAS component {{ $labels.job }} is down"
+          description: "{{ $labels.job }} has been unreachable for more than 2 minutes."
+
+      - alert: RHTASVerificationFailureSpike
+        expr: rate(rhtas_verification_failures_total[5m]) > 0.1
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Verification failure rate elevated: {{ $value | printf \"%.2f\" }}/s"
+          description: "Artifact verification failures exceed threshold over 5-minute window."

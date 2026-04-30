@@ -1,0 +1,21 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: rhtas-console
+  group_by: [alertname, severity]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+  routes:
+    - match:
+        severity: critical
+      receiver: rhtas-console
+      group_wait: 10s
+      repeat_interval: 1h
+
+receivers:
+  - name: rhtas-console
+    webhook_configs:
+      - url: http://rhtas-console-backend:8080/webhooks/alertmanager
+        send_resolved: true

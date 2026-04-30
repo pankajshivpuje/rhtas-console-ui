@@ -19,10 +19,10 @@ export const SigningDonut: React.FC<ISigningDonutProps> = ({ summary }) => {
   const legendData = chartData.map((d) => ({ name: `${d.x}: ${d.y}` }));
 
   return (
-    <Card style={{ marginTop: "var(--pf-t--global--spacer--md)" }}>
+    <Card isFullHeight>
       <CardTitle>Signing Status Distribution</CardTitle>
       <CardBody>
-        <div style={{ height: "300px", width: "400px" }}>
+        <div style={{ height: "300px", width: "100%" }}>
           <ChartDonut
             constrainToVisibleArea
             data={chartData}

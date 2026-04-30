@@ -1,11 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-import { Button, Card, CardBody, CardTitle, Flex, FlexItem, Label, Title } from "@patternfly/react-core";
+import { Card, CardBody, CardTitle, Flex, FlexItem, Label, Title } from "@patternfly/react-core";
 import type { LabelProps } from "@patternfly/react-core";
 
 import type { PostureSummary } from "@app/client";
-import { Paths } from "@app/Routes";
 
 function percentageColor(value: number): LabelProps["color"] {
   if (value >= 90) return "green";
@@ -13,26 +11,18 @@ function percentageColor(value: number): LabelProps["color"] {
   return "red";
 }
 
-interface IPostureSummaryCardsProps {
+interface ISigningActivitySummaryProps {
   summary: PostureSummary;
 }
 
-export const PostureSummaryCards: React.FC<IPostureSummaryCardsProps> = ({ summary }) => {
-  const navigate = useNavigate();
-
-  const handleTotalArtifactsClick = () => {
-    navigate(Paths.totalArtifacts);
-  };
-
+export const SigningActivitySummary: React.FC<ISigningActivitySummaryProps> = ({ summary }) => {
   return (
     <Flex direction={{ default: "column", md: "row" }} spaceItems={{ default: "spaceItemsMd" }}>
       <FlexItem flex={{ default: "flex_1" }}>
         <Card isFullHeight>
           <CardTitle>Total Artifacts</CardTitle>
           <CardBody>
-            <Button variant="link" isInline onClick={handleTotalArtifactsClick}>
-              <Title headingLevel="h3" size="3xl">{summary.totalArtifacts}</Title>
-            </Button>
+            <Title headingLevel="h3" size="3xl">{summary.totalArtifacts}</Title>
           </CardBody>
         </Card>
       </FlexItem>
@@ -49,26 +39,11 @@ export const PostureSummaryCards: React.FC<IPostureSummaryCardsProps> = ({ summa
       </FlexItem>
       <FlexItem flex={{ default: "flex_1" }}>
         <Card isFullHeight>
-          <CardTitle>Unsigned in Production</CardTitle>
+          <CardTitle>Unsigned</CardTitle>
           <CardBody>
             <Title headingLevel="h3" size="3xl" style={{ display: "inline" }}>{summary.unsignedCount}</Title>{" "}
             <Label color={summary.unsignedCount > 0 ? "red" : "green"}>
               {summary.unsignedCount > 0 ? "Action needed" : "All clear"}
-            </Label>
-          </CardBody>
-        </Card>
-      </FlexItem>
-      <FlexItem flex={{ default: "flex_1" }}>
-        <Card isFullHeight>
-          <CardTitle>Attestation Coverage</CardTitle>
-          <CardBody>
-            <Title headingLevel="h3" size="3xl" style={{ display: "inline" }}>{summary.attestationCoverage}%</Title>{" "}
-            <Label color={percentageColor(summary.attestationCoverage)}>
-              {summary.attestationCoverage >= 95
-                ? "Excellent"
-                : summary.attestationCoverage >= 80
-                  ? "Good"
-                  : "Needs improvement"}
             </Label>
           </CardBody>
         </Card>

@@ -16,6 +16,16 @@ export const SidebarApp: React.FC = () => {
         <NavList>
           <li className={nav.navItem}>
             <NavLink
+              to={Paths.operationalHealth}
+              className={({ isActive }) => {
+                return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
+              }}
+            >
+              System Health
+            </NavLink>
+          </li>
+          <li className={nav.navItem}>
+            <NavLink
               to={Paths.dashboard}
               className={({ isActive }) => {
                 return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
@@ -34,7 +44,7 @@ export const SidebarApp: React.FC = () => {
               Trust Root
             </NavLink>
           </li>
-          <li>
+          <li className={nav.navItem}>
             <NavLink
               to={Paths.artifacts}
               className={({ isActive }) => {
@@ -52,6 +62,16 @@ export const SidebarApp: React.FC = () => {
               }}
             >
               Rekor Search
+            </NavLink>
+          </li>
+          <li className={nav.navItem}>
+            <NavLink
+              to={Paths.alerts}
+              className={({ isActive }) => {
+                return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
+              }}
+            >
+              Alerts
             </NavLink>
           </li>
         </NavList>

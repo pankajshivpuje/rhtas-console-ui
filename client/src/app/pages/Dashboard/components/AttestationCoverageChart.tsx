@@ -28,7 +28,7 @@ export const AttestationCoverageChart: React.FC<IAttestationCoverageChartProps> 
   const chartHeight = Math.max(250, sortedData.length * 50 + 50);
 
   return (
-    <Card style={{ marginTop: "var(--pf-t--global--spacer--md)" }}>
+    <Card>
       <CardTitle>Attestation Presence by Type</CardTitle>
       <CardBody>
         <div style={{ height: `${chartHeight}px`, width: "100%" }}>

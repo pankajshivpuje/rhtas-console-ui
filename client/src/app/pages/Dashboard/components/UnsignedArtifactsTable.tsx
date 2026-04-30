@@ -33,7 +33,7 @@ export const UnsignedArtifactsTable: React.FC<IUnsignedArtifactsTableProps> = ({
     selectedEnv === "all" ? unsignedArtifacts : unsignedArtifacts.filter((a) => a.environment === selectedEnv);
 
   return (
-    <Card style={{ marginTop: "var(--pf-t--global--spacer--md)" }}>
+    <Card>
       <CardTitle>Unsigned Artifacts</CardTitle>
       <CardBody>
         <Toolbar>

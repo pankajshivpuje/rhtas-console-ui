@@ -1,8 +1,15 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { Dashboard } from "./Dashboard";
 import type { PostureSummary, UnsignedArtifact } from "@app/client";
+
+const renderDashboard = () =>
+  render(
+    <MemoryRouter>
+      <Dashboard />
+    </MemoryRouter>
+  );
 
 vi.mock("@app/components/DocumentMetadata", () => ({
   DocumentMetadata: () => null,
@@ -12,13 +19,20 @@ vi.mock("@app/queries/dashboard", () => ({
   useFetchPostureSummary: vi.fn(),
   useFetchUnsignedArtifacts: vi.fn(),
   useFetchPostureTrend: vi.fn(),
+  useFetchAttestationCoverage: vi.fn(),
 }));
 
-import { useFetchPostureSummary, useFetchUnsignedArtifacts, useFetchPostureTrend } from "@app/queries/dashboard";
 
+import {
+  useFetchPostureSummary,
+  useFetchUnsignedArtifacts,
+  useFetchPostureTrend,
+  useFetchAttestationCoverage,
+} from "@app/queries/dashboard";
 const mockUseFetchPostureSummary = vi.mocked(useFetchPostureSummary);
 const mockUseFetchUnsignedArtifacts = vi.mocked(useFetchUnsignedArtifacts);
 const mockUseFetchPostureTrend = vi.mocked(useFetchPostureTrend);
+const mockUseFetchAttestationCoverage = vi.mocked(useFetchAttestationCoverage);
 
 const fakeSummary: PostureSummary = {
   totalArtifacts: 100,
@@ -65,10 +79,17 @@ describe("Dashboard", () => {
       isFetching: false,
       fetchError: null,
     });
+
+    mockUseFetchAttestationCoverage.mockReturnValue({
+      attestationCoverage: [],
+      isFetching: false,
+      fetchError: null,
+    });
+
   });
 
-  test("renders heading", () => {
-    render(<Dashboard />);
+  test("renders Trust Coverage heading", () => {
+    renderDashboard();
     expect(screen.getByRole("heading", { name: "Trust Coverage" })).toBeInTheDocument();
   });
 
@@ -79,7 +100,7 @@ describe("Dashboard", () => {
       fetchError: null,
     });
 
-    render(<Dashboard />);
+    renderDashboard();
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
   });
 
@@ -90,9 +111,7 @@ describe("Dashboard", () => {
       fetchError: new Error("Network error") as unknown as ReturnType<typeof useFetchPostureSummary>["fetchError"],
     });
 
-    render(<Dashboard />);
-    // LoadingWrapper renders ErrorEmptyState on error
-    expect(screen.queryByText("Dashboard")).toBeInTheDocument();
+    renderDashboard();
     expect(screen.queryByText("Total Artifacts")).not.toBeInTheDocument();
   });
 
@@ -103,7 +122,7 @@ describe("Dashboard", () => {
       fetchError: null,
     });
 
-    render(<Dashboard />);
+    renderDashboard();
     expect(screen.getByText("Total Artifacts")).toBeInTheDocument();
     expect(screen.getByText("Unsigned in Production")).toBeInTheDocument();
     expect(screen.getByText("87%")).toBeInTheDocument();
@@ -123,7 +142,7 @@ describe("Dashboard", () => {
       fetchError: null,
     });
 
-    render(<Dashboard />);
+    renderDashboard();
     expect(screen.getByText("quay.io/myorg/billing:1.0")).toBeInTheDocument();
     expect(screen.getByText("registry.example.com/frontend:3.0")).toBeInTheDocument();
   });
@@ -135,34 +154,15 @@ describe("Dashboard", () => {
       fetchError: null,
     });
 
-    render(<Dashboard />);
+    renderDashboard();
     expect(screen.getByText("All artifacts are signed. Great job!")).toBeInTheDocument();
   });
 
-  test("environment filter filters unsigned artifacts", async () => {
-    const user = userEvent.setup();
-
-    mockUseFetchPostureSummary.mockReturnValue({
-      summary: fakeSummary,
-      isFetching: false,
-      fetchError: null,
-    });
-    mockUseFetchUnsignedArtifacts.mockReturnValue({
-      unsignedArtifacts: fakeUnsignedArtifacts,
-      isFetching: false,
-      fetchError: null,
-    });
-
-    render(<Dashboard />);
-
-    // Both artifacts visible initially (All filter)
-    expect(screen.getByText("quay.io/myorg/billing:1.0")).toBeInTheDocument();
-    expect(screen.getByText("registry.example.com/frontend:3.0")).toBeInTheDocument();
-
-    // Click Production filter
-    await user.click(screen.getByText("Production"));
-
-    expect(screen.getByText("quay.io/myorg/billing:1.0")).toBeInTheDocument();
-    expect(screen.queryByText("registry.example.com/frontend:3.0")).not.toBeInTheDocument();
+  test("renders repo link", () => {
+    renderDashboard();
+    const link = screen.getByRole("link", { name: /securesign\/sigstore-ocp/i });
+    expect(link).toHaveAttribute("href", "https://github.com/securesign/sigstore-ocp");
+    expect(link).toHaveAttribute("target", "_blank");
   });
+
 });

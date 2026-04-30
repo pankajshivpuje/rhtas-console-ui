@@ -2,6 +2,7 @@ import type React from "react";
 
 import { Page, SkipToContent } from "@patternfly/react-core";
 
+import { AlertBanner } from "@app/components/AlertBanner";
 import { PageContentWithDrawerProvider } from "@app/components/PageDrawerContext";
 
 import { HeaderApp } from "./header";
@@ -24,6 +25,7 @@ export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
       skipToContent={PageSkipToContent}
       mainContainerId={pageId}
     >
+      <AlertBanner />
       <PageContentWithDrawerProvider>{children}</PageContentWithDrawerProvider>
     </Page>
   );

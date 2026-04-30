@@ -15,6 +15,8 @@ tags:
     description: Operations for interacting with Rekor transparency log
   - name: Trust
     description: Operations for trust configuration and TUF targets
+  - name: Alerts
+    description: Alert notification and management endpoints
 paths:
   /healthz:
     get:
@@ -487,6 +489,117 @@ paths:
                 $ref: '#/components/schemas/CertificateInfoList'
         '400':
           description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/alerts:
+    get:
+      summary: List alerts
+      tags:
+        - Alerts
+      operationId: GetAlerts
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [firing, resolved]
+            description: Filter by alert status
+        - name: severity
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [critical, warning, info]
+            description: Filter by alert severity
+        - name: acknowledged
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: Filter by acknowledgement state
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 50
+            description: Maximum number of alerts to return
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 0
+            description: Offset for pagination
+      responses:
+        '200':
+          description: List of alerts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertListResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/alerts/summary:
+    get:
+      summary: Get alert summary counts
+      tags:
+        - Alerts
+      operationId: GetAlertSummary
+      responses:
+        '200':
+          description: Alert counts by severity and acknowledgement state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertSummary'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/alerts/{alertId}/acknowledge:
+    patch:
+      summary: Acknowledge or unacknowledge an alert
+      tags:
+        - Alerts
+      operationId: AcknowledgeAlert
+      parameters:
+        - name: alertId
+          in: path
+          required: true
+          schema:
+            type: string
+            description: Unique identifier of the alert
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcknowledgeAlertRequest'
+      responses:
+        '200':
+          description: Updated alert
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+        '404':
+          description: Alert not found
           content:
             application/json:
               schema:
@@ -1273,3 +1386,135 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/TransparencyLogEntry'
+    Alert:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the alert
+        alertName:
+          type: string
+          description: Name of the alerting rule (e.g., RHTASComponentDown)
+        severity:
+          type: string
+          enum: [critical, warning, info]
+          description: Alert severity level
+        status:
+          type: string
+          enum: [firing, resolved]
+          description: Current alert status
+        summary:
+          type: string
+          description: Short human-readable alert summary
+        description:
+          type: string
+          description: Detailed alert description
+        source:
+          type: string
+          description: Source of the alert (e.g., prometheus)
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: Alert labels from Prometheus
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          description: Alert annotations from Prometheus
+        generatorUrl:
+          type: string
+          nullable: true
+          description: URL to the Prometheus expression that generated this alert
+        startsAt:
+          type: string
+          format: date-time
+          description: Time the alert started firing
+        endsAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Time the alert was resolved (null while firing)
+        fingerprint:
+          type: string
+          description: Unique fingerprint for alert deduplication
+        acknowledged:
+          type: boolean
+          description: Whether the alert has been acknowledged by an operator
+        acknowledgedBy:
+          type: string
+          nullable: true
+          description: Identity of the user who acknowledged the alert
+        acknowledgedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: Time the alert was acknowledged
+      required:
+        - id
+        - alertName
+        - severity
+        - status
+        - summary
+        - source
+        - labels
+        - startsAt
+        - fingerprint
+        - acknowledged
+    AlertListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        total:
+          type: integer
+          description: Total number of alerts matching the query
+        limit:
+          type: integer
+          description: Maximum number of alerts returned
+        offset:
+          type: integer
+          description: Offset used for pagination
+      required:
+        - data
+        - total
+        - limit
+        - offset
+    AlertSummary:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: Total number of alerts
+        critical:
+          type: integer
+          description: Number of critical alerts
+        warning:
+          type: integer
+          description: Number of warning alerts
+        info:
+          type: integer
+          description: Number of info alerts
+        acknowledged:
+          type: integer
+          description: Number of acknowledged alerts
+        unacknowledged:
+          type: integer
+          description: Number of unacknowledged alerts
+      required:
+        - total
+        - critical
+        - warning
+        - info
+        - acknowledged
+        - unacknowledged
+    AcknowledgeAlertRequest:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+          description: Set to true to acknowledge, false to unacknowledge
+      required:
+        - acknowledged
