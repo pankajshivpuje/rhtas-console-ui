@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 
 import {
   Button,
@@ -37,7 +37,7 @@ const SeverityLabel = ({ severity }: { severity: string }) => {
     case "critical":
       return <Label color="red" icon={<ExclamationCircleIcon />}>Critical</Label>;
     case "warning":
-      return <Label color="gold" icon={<ExclamationCircleIcon />}>Warning</Label>;
+      return <Label color="orange" icon={<ExclamationCircleIcon />}>Warning</Label>;
     case "info":
       return <Label color="blue" icon={<InfoCircleIcon />}>Info</Label>;
     default:
@@ -136,7 +136,7 @@ export const Alerts = () => {
   });
 
   const {
-    tableState: { currentPageItems, totalItemCount },
+    tableState: { currentPageItems },
     propHelpers: { paginationProps, paginationToolbarItemProps, getFilterControlProps, toolbarProps },
   } = tableState;
 

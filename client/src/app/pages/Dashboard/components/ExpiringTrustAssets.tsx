@@ -11,23 +11,10 @@ import {
   Stack,
   StackItem,
 } from "@patternfly/react-core";
-import type { LabelProps } from "@patternfly/react-core";
-
 import type { ExpiringTrustAsset } from "@app/queries/health";
 
 interface IExpiringTrustAssetsProps {
   assets: ExpiringTrustAsset[];
-}
-
-function statusColor(status: ExpiringTrustAsset["status"]): LabelProps["color"] {
-  switch (status) {
-    case "expired":
-      return "red";
-    case "expiring":
-      return "red";
-    case "ok":
-      return "grey";
-  }
 }
 
 export const ExpiringTrustAssets: React.FC<IExpiringTrustAssetsProps> = ({ assets }) => {

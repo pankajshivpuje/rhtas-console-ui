@@ -52,6 +52,7 @@ export default defineConfig({
           ViteEjsPlugin({
             _env: encodeEnv(CONSOLE_ENV, SERVER_ENV_KEYS),
             branding: brandingStrings,
+            baseUrl: process.env.BASE_URL || "/",
           }),
         ]
       : []),

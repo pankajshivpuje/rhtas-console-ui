@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feat/dashboard-and-rekor-updates
   workflow_dispatch:
   workflow_call:
 
@@ -34,7 +35,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: NODE_ENV=development BASE_URL=/rhtas-console-ui/ MOCK=on npm run build
+        run: NODE_ENV=development BASE_URL=/rhtas-console-ui/ MOCK=on npm run build -w common && NODE_ENV=development BASE_URL=/rhtas-console-ui/ MOCK=on npm run build -w client
+      - name: Copy 404 for SPA routing
+        run: cp ./client/dist/index.html ./client/dist/404.html
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Upload artifact

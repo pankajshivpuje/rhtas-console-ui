@@ -91,8 +91,7 @@ export const OperationalHealthTab: React.FC = () => {
                 <FlexItem>
                   <Switch
                     id="demo-state-toggle"
-                    label="All healthy"
-                    labelOff="Degraded"
+                    label={showHealthy ? "All healthy" : "Degraded"}
                     isChecked={showHealthy}
                     onChange={(_event, checked) => setShowHealthy(checked)}
                   />
