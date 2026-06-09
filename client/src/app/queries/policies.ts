@@ -3,6 +3,7 @@ import type { AxiosError } from "axios";
 
 import ENV from "@app/env";
 import { client } from "@app/axios-config/apiInit";
+import { generatePolicy, validatePolicy } from "@app/client";
 import type {
   GenerateRequest,
   GenerateResponse,
@@ -20,11 +21,11 @@ export const usePolicyGenerate = () => {
       if (ENV.MOCK !== "off") {
         return mockDelay(mockGenerateResponse);
       }
-      const response = await client.post<GenerateResponse>(
-        "/api/v1/policies/generate",
-        request,
-      );
-      return response.data;
+      const response = await generatePolicy({
+        client,
+        body: request,
+      });
+      return response.data as GenerateResponse;
     },
   });
 
@@ -42,11 +43,11 @@ export const usePolicyValidate = () => {
       if (ENV.MOCK !== "off") {
         return mockDelay(mockValidateResponse, 800);
       }
-      const response = await client.post<ValidateResponse>(
-        "/api/v1/policies/validate",
-        request,
-      );
-      return response.data;
+      const response = await validatePolicy({
+        client,
+        body: request,
+      });
+      return response.data as ValidateResponse;
     },
   });
 
