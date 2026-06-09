@@ -34,3 +34,31 @@ if (typeof window !== "undefined" && !window.matchMedia) {
 if (typeof window !== "undefined" && !window.matchMedia) {
   throw new Error("matchMedia polyfill failed to initialize");
 }
+
+// Initialize localStorage for tests
+if (typeof window !== "undefined") {
+  let store: Record<string, string> = {};
+
+  const mockLocalStorage = {
+    getItem: (key: string) => store[key] ?? null,
+    setItem: (key: string, value: string) => {
+      store[key] = value;
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
+    key: (index: number) => Object.keys(store)[index] ?? null,
+    get length() {
+      return Object.keys(store).length;
+    },
+  };
+
+  Object.defineProperty(window, "localStorage", {
+    value: mockLocalStorage,
+    writable: true,
+    configurable: true,
+  });
+}
