@@ -1,5 +1,5 @@
 import type React from "react";
-import { Button, Icon, Label, Split, SplitItem } from "@patternfly/react-core";
+import { Button, Label, Split, SplitItem } from "@patternfly/react-core";
 import {
   CheckCircleIcon,
   TimesCircleIcon,
@@ -24,7 +24,8 @@ export const TestResultsBadge: React.FC<TestResultsBadgeProps> = ({
   return (
     <div
       style={{
-        padding: "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
+        padding:
+          "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
         borderTop: "1px solid var(--pf-t--global--border--color--default)",
         borderBottom: "1px solid var(--pf-t--global--border--color--default)",
       }}
@@ -32,30 +33,22 @@ export const TestResultsBadge: React.FC<TestResultsBadgeProps> = ({
       <Split hasGutter>
         <SplitItem isFilled>
           {validationError ? (
-            <Label
-              color="orange"
-              icon={
-                <Icon>
-                  <ExclamationTriangleIcon />
-                </Icon>
-              }
-            >
+            <Label color="orange" icon={<ExclamationTriangleIcon />}>
               Validation unavailable
             </Label>
           ) : testResults ? (
             <Label
               color={testResults.failed === 0 ? "green" : "red"}
               icon={
-                <Icon>
-                  {testResults.failed === 0 ? (
-                    <CheckCircleIcon />
-                  ) : (
-                    <TimesCircleIcon />
-                  )}
-                </Icon>
+                testResults.failed === 0 ? (
+                  <CheckCircleIcon />
+                ) : (
+                  <TimesCircleIcon />
+                )
               }
             >
-              {testResults.passed}/{testResults.passed + testResults.failed} tests passing
+              {testResults.passed}/{testResults.passed + testResults.failed}{" "}
+              tests passing
             </Label>
           ) : (
             <Label color="grey">No test results</Label>

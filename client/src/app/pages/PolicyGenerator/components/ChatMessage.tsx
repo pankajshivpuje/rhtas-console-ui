@@ -1,5 +1,5 @@
 import type React from "react";
-import { Card, CardBody, Icon, Label } from "@patternfly/react-core";
+import { Card, CardBody, Label } from "@patternfly/react-core";
 import { CheckCircleIcon, TimesCircleIcon } from "@patternfly/react-icons";
 import type { ChatMessage as ChatMessageType } from "../types";
 
@@ -21,10 +21,14 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
       <div
         style={{
           maxWidth: "80%",
-          padding: "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
-          borderRadius: "var(--pf-t--global--border--radius--medium)",
+          padding:
+            "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
+          borderRadius: isUser
+            ? "var(--pf-t--global--border--radius--large) var(--pf-t--global--border--radius--large) var(--pf-t--global--border--radius--small) var(--pf-t--global--border--radius--large)"
+            : "var(--pf-t--global--border--radius--large) var(--pf-t--global--border--radius--large) var(--pf-t--global--border--radius--large) var(--pf-t--global--border--radius--small)",
+          boxShadow: "var(--pf-t--global--box-shadow--sm)",
           backgroundColor: isUser
-            ? "var(--pf-t--global--background--color--primary--default)"
+            ? "var(--pf-t--global--color--brand--200)"
             : "var(--pf-t--global--background--color--secondary--default)",
           color: isUser
             ? "var(--pf-t--global--text--color--on-brand--default)"
@@ -35,7 +39,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
         data-testid={`chat-message-${message.id}`}
       >
         {message.content}
-        {message.artifacts && <ArtifactSummaryCard artifacts={message.artifacts} />}
+        {message.artifacts && (
+          <ArtifactSummaryCard artifacts={message.artifacts} />
+        )}
       </div>
     </div>
   );
@@ -53,17 +59,19 @@ const ArtifactSummaryCard: React.FC<{
         {testResults && (
           <Label
             color={allPassing ? "green" : "red"}
-            icon={
-              <Icon>
-                {allPassing ? <CheckCircleIcon /> : <TimesCircleIcon />}
-              </Icon>
-            }
+            icon={allPassing ? <CheckCircleIcon /> : <TimesCircleIcon />}
           >
             {testResults.passed} tests passing
             {testResults.failed > 0 && `, ${testResults.failed} failing`}
           </Label>
         )}
-        <div style={{ fontSize: "var(--pf-t--global--font--size--xs)", marginTop: "var(--pf-t--global--spacer--xs)", color: "var(--pf-t--global--text--color--subtle)" }}>
+        <div
+          style={{
+            fontSize: "var(--pf-t--global--font--size--xs)",
+            marginTop: "var(--pf-t--global--spacer--xs)",
+            color: "var(--pf-t--global--text--color--subtle)",
+          }}
+        >
           v{artifacts.version} — View artifacts in panel
         </div>
       </CardBody>

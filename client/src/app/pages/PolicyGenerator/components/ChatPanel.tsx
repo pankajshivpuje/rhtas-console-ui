@@ -1,12 +1,18 @@
 import type React from "react";
 import { useEffect, useRef } from "react";
 import {
+  Alert,
+  AlertActionLink,
   Bullseye,
   EmptyState,
   EmptyStateBody,
   Spinner,
 } from "@patternfly/react-core";
-import type { ChatMessage as ChatMessageType, PolicyType, VerificationContext } from "../types";
+import type {
+  ChatMessage as ChatMessageType,
+  PolicyType,
+  VerificationContext,
+} from "../types";
 import { ChatMessage } from "./ChatMessage";
 import { ChatInput } from "./ChatInput";
 
@@ -55,15 +61,17 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           flex: 1,
           overflowY: "auto",
           padding: "var(--pf-t--global--spacer--md)",
+          backgroundColor:
+            "var(--pf-t--global--background--color--secondary--default)",
         }}
       >
         {messages.length === 0 && !isGenerating && (
           <Bullseye>
             <EmptyState>
               <EmptyStateBody>
-                Describe your supply chain security requirements and I'll generate
-                a Conforma policy. Supports SBOM composition and SLSA build
-                provenance.
+                Describe your supply chain security requirements and I'll
+                generate a Conforma policy. Supports SBOM composition and SLSA
+                build provenance.
               </EmptyStateBody>
             </EmptyState>
           </Bullseye>
@@ -83,51 +91,35 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
           >
             <div
               style={{
-                padding: "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
+                padding:
+                  "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
                 borderRadius: "var(--pf-t--global--border--radius--medium)",
-                backgroundColor: "var(--pf-t--global--background--color--secondary--default)",
+                backgroundColor:
+                  "var(--pf-t--global--background--color--primary--default)",
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--pf-t--global--spacer--sm)",
               }}
             >
-              <Spinner size="md" aria-label="Generating policy" />{" "}
-              Generating...
+              <Spinner size="md" aria-label="Generating policy" />
+              <span>Generating...</span>
             </div>
           </div>
         )}
 
         {error && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              marginBottom: "var(--pf-t--global--spacer--sm)",
-            }}
-          >
-            <div
-              style={{
-                padding: "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
-                borderRadius: "var(--pf-t--global--border--radius--medium)",
-                backgroundColor: "var(--pf-t--global--color--red--100)",
-                color: "var(--pf-t--global--color--red--300)",
-              }}
-            >
-              {error}
-              {onRetry && (
-                <button
-                  onClick={onRetry}
-                  style={{
-                    marginLeft: "var(--pf-t--global--spacer--sm)",
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                    background: "none",
-                    border: "none",
-                    color: "inherit",
-                  }}
-                >
-                  Retry
-                </button>
-              )}
-            </div>
-          </div>
+          <Alert
+            variant="danger"
+            isInline
+            isPlain
+            title={error}
+            actionLinks={
+              onRetry ? (
+                <AlertActionLink onClick={onRetry}>Retry</AlertActionLink>
+              ) : undefined
+            }
+            style={{ marginBottom: "var(--pf-t--global--spacer--sm)" }}
+          />
         )}
 
         <div ref={messagesEndRef} />

@@ -186,7 +186,7 @@ export const PolicyGenerator: React.FC = () => {
       </PageSection>
 
       <PageSection isFilled padding={{ default: "noPadding" }}>
-        <div style={{ display: "flex", height: "calc(100vh - 220px)" }}>
+        <div style={{ display: "flex", height: "100%", minHeight: 0 }}>
           <div style={{ flex: 1, minWidth: 0 }}>
             <ChatPanel
               messages={session.messages}
@@ -198,7 +198,7 @@ export const PolicyGenerator: React.FC = () => {
               onRetry={() => setChatError(null)}
             />
           </div>
-          <div style={{ width: "420px", flexShrink: 0 }}>
+          <div style={{ width: "clamp(320px, 35%, 500px)", flexShrink: 0 }}>
             <ArtifactPanel
               artifacts={session.currentArtifacts}
               artifactHistory={session.artifactHistory}

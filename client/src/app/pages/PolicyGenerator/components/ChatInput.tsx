@@ -3,8 +3,8 @@ import { useState } from "react";
 import {
   Button,
   TextArea,
-  Chip,
-  ChipGroup,
+  ToggleGroup,
+  ToggleGroupItem,
   ExpandableSection,
   FormGroup,
   TextInput,
@@ -70,25 +70,21 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       style={{
         padding: "var(--pf-t--global--spacer--md)",
         borderTop: "1px solid var(--pf-t--global--border--color--default)",
-        backgroundColor: "var(--pf-t--global--background--color--primary--default)",
+        backgroundColor:
+          "var(--pf-t--global--background--color--primary--default)",
       }}
     >
-      <ChipGroup categoryName="Policy type">
+      <ToggleGroup isCompact aria-label="Policy type filter">
         {POLICY_TYPE_OPTIONS.map((opt) => (
-          <Chip
+          <ToggleGroupItem
             key={opt.value}
-            onClick={() => onPolicyTypeChange(opt.value)}
-            isReadOnly={policyTypeFilter === opt.value}
-            badge={policyTypeFilter === opt.value ? undefined : undefined}
-            style={{
-              cursor: "pointer",
-              fontWeight: policyTypeFilter === opt.value ? "bold" : "normal",
-            }}
-          >
-            {opt.label}
-          </Chip>
+            text={opt.label}
+            buttonId={`policy-type-${opt.value}`}
+            isSelected={policyTypeFilter === opt.value}
+            onChange={() => onPolicyTypeChange(opt.value)}
+          />
         ))}
-      </ChipGroup>
+      </ToggleGroup>
 
       <ExpandableSection
         toggleText={showAdvanced ? "Hide options" : "Image & credentials"}
@@ -124,13 +120,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           display: "flex",
           gap: "var(--pf-t--global--spacer--sm)",
           marginTop: "var(--pf-t--global--spacer--sm)",
+          alignItems: "flex-end",
         }}
       >
         <TextArea
           value={message}
           onChange={(_event, val) => setMessage(val)}
           onKeyDown={handleKeyDown}
-          placeholder="Describe your policy requirements..."
+          placeholder="Describe your policy requirements... (Enter to send)"
           aria-label="Policy message input"
           isDisabled={isDisabled}
           rows={2}
@@ -142,6 +139,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           onClick={handleSend}
           isDisabled={isDisabled || !message.trim()}
           icon={<PaperPlaneIcon />}
+          iconPosition="end"
           aria-label="Send message"
         >
           Send
