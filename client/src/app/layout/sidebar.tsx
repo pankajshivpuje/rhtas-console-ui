@@ -66,6 +66,16 @@ export const SidebarApp: React.FC = () => {
           </li>
           <li className={nav.navItem}>
             <NavLink
+              to={Paths.policyGenerator}
+              className={({ isActive }) => {
+                return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
+              }}
+            >
+              Policy Generator
+            </NavLink>
+          </li>
+          <li className={nav.navItem}>
+            <NavLink
               to={Paths.alerts}
               className={({ isActive }) => {
                 return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");

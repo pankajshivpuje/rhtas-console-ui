@@ -14,6 +14,7 @@ const RekorSearch = lazy(() => import("./pages/RekorSearch"));
 const RekorEntryDetail = lazy(() => import("./pages/RekorSearch/EntryDetail"));
 const OperationalHealth = lazy(() => import("./pages/OperationalHealth"));
 const Alerts = lazy(() => import("./pages/Alerts"));
+const PolicyGenerator = lazy(() => import("./pages/PolicyGenerator"));
 
 export const Paths = {
   dashboard: "/dashboard",
@@ -24,6 +25,7 @@ export const Paths = {
   rekorEntry: "/rekor-search/:uuid",
   trustRoot: "/trust-root",
   alerts: "/alerts",
+  policyGenerator: "/policy-generator",
 } as const;
 
 export const AppRoutes = () => {
@@ -37,6 +39,7 @@ export const AppRoutes = () => {
     { path: Paths.rekorSearch, element: <RekorSearch /> },
     { path: Paths.rekorEntry, element: <RekorEntryDetail /> },
     { path: Paths.alerts, element: <Alerts /> },
+    { path: Paths.policyGenerator, element: <PolicyGenerator /> },
     { path: "*", element: <NotFound /> },
   ]);
 
