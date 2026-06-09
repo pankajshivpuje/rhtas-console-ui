@@ -17,6 +17,8 @@ tags:
     description: Operations for trust configuration and TUF targets
   - name: Alerts
     description: Alert notification and management endpoints
+  - name: Policies
+    description: AI-assisted Conforma policy generation and validation
 paths:
   /healthz:
     get:
@@ -606,6 +608,62 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/policies/generate:
+    post:
+      summary: Generate a Conforma policy from natural language requirements
+      tags:
+        - Policies
+      operationId: GeneratePolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeneratePolicyRequest'
+      responses:
+        '200':
+          description: Generated policy response with optional artifacts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeneratePolicyResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: AI service error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/policies/validate:
+    post:
+      summary: Run OPA tests on generated policy artifacts
+      tags:
+        - Policies
+      operationId: ValidatePolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatePolicyRequest'
+      responses:
+        '200':
+          description: Validation results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidatePolicyResponse'
+        '500':
+          description: Validation error
           content:
             application/json:
               schema:
@@ -1518,3 +1576,122 @@ components:
           description: Set to true to acknowledge, false to unacknowledge
       required:
         - acknowledged
+    GeneratePolicyRequest:
+      type: object
+      required:
+        - sessionId
+        - message
+        - history
+      properties:
+        sessionId:
+          type: string
+          description: Browser-generated UUID for the conversation session
+        message:
+          type: string
+          description: The user's natural language policy requirement
+        history:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+                enum: [user, assistant]
+              content:
+                type: string
+          description: Prior conversation turns for context
+        context:
+          type: object
+          properties:
+            imageRef:
+              type: string
+              description: Container image reference
+              example: quay.io/myorg/myapp:latest
+            policyTypes:
+              type: array
+              items:
+                type: string
+                enum: [sbom, slsa, both]
+            sbomFormat:
+              type: string
+              enum: [spdx, cyclonedx, both]
+            verification:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [public-key, keyless]
+                publicKey:
+                  type: string
+                  description: Cosign public key in PEM format
+                oidcIssuer:
+                  type: string
+                identity:
+                  type: string
+    GeneratePolicyResponse:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        reply:
+          type: string
+          description: AI assistant response text
+        artifacts:
+          type: object
+          nullable: true
+          properties:
+            rule:
+              $ref: '#/components/schemas/ArtifactFile'
+            tests:
+              $ref: '#/components/schemas/ArtifactFile'
+            config:
+              $ref: '#/components/schemas/ArtifactFile'
+            data:
+              $ref: '#/components/schemas/ArtifactFile'
+            command:
+              type: string
+        policyMeta:
+          type: object
+          properties:
+            types:
+              type: array
+              items:
+                type: string
+            version:
+              type: integer
+    ValidatePolicyRequest:
+      type: object
+      required:
+        - rule
+        - tests
+      properties:
+        rule:
+          type: string
+          description: Rego v1 policy source
+        tests:
+          type: string
+          description: Rego v1 test source
+    ValidatePolicyResponse:
+      type: object
+      properties:
+        passed:
+          type: integer
+        failed:
+          type: integer
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              status:
+                type: string
+                enum: [pass, fail]
+    ArtifactFile:
+      type: object
+      properties:
+        filename:
+          type: string
+        content:
+          type: string
