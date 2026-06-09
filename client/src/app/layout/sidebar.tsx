@@ -1,7 +1,7 @@
 import type React from "react";
 import { NavLink } from "react-router-dom";
 
-import { Nav, NavList, PageSidebar, PageSidebarBody } from "@patternfly/react-core";
+import { Label, Nav, NavList, PageSidebar, PageSidebarBody } from "@patternfly/react-core";
 import { css } from "@patternfly/react-styles";
 import nav from "@patternfly/react-styles/css/components/Nav/nav";
 import { Paths } from "@app/Routes";
@@ -66,22 +66,23 @@ export const SidebarApp: React.FC = () => {
           </li>
           <li className={nav.navItem}>
             <NavLink
-              to={Paths.policyGenerator}
-              className={({ isActive }) => {
-                return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
-              }}
-            >
-              Policy Generator
-            </NavLink>
-          </li>
-          <li className={nav.navItem}>
-            <NavLink
               to={Paths.alerts}
               className={({ isActive }) => {
                 return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
               }}
             >
               Alerts
+            </NavLink>
+          </li>
+          <li className={nav.navItem}>
+            <NavLink
+              to={Paths.policyGenerator}
+              className={({ isActive }) => {
+                return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
+              }}
+            >
+              Conforma Policy Generator{" "}
+              <Label color="blue" isCompact>New</Label>
             </NavLink>
           </li>
         </NavList>

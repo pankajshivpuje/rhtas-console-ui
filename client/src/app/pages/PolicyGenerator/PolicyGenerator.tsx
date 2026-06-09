@@ -11,7 +11,7 @@ import {
   Split,
   SplitItem,
 } from "@patternfly/react-core";
-import { PlusCircleIcon, HistoryIcon } from "@patternfly/react-icons";
+import { PlusCircleIcon, HistoryIcon, AngleRightIcon, AngleLeftIcon } from "@patternfly/react-icons";
 import { DocumentMetadata } from "@app/components/DocumentMetadata";
 import { usePolicyGenerate, usePolicyValidate } from "@app/queries/policies";
 import { usePolicySession } from "./usePolicySession";
@@ -34,6 +34,7 @@ export const PolicyGenerator: React.FC = () => {
   const { validate, isValidating, error: validateError } = usePolicyValidate();
 
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [artifactsCollapsed, setArtifactsCollapsed] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
 
   const handleSendMessage = useCallback(
@@ -125,12 +126,12 @@ export const PolicyGenerator: React.FC = () => {
 
   return (
     <>
-      <DocumentMetadata title="Policy Generator" />
+      <DocumentMetadata title="Conforma Policy Generator" />
       <PageSection variant="default">
         <Split>
           <SplitItem isFilled>
             <Content>
-              <h1>Policy Generator</h1>
+              <h1>Conforma Policy Generator</h1>
               <p>
                 AI-assisted Conforma policy generation for SBOM and SLSA
                 provenance
@@ -198,15 +199,30 @@ export const PolicyGenerator: React.FC = () => {
               onRetry={() => setChatError(null)}
             />
           </div>
-          <div style={{ width: "clamp(320px, 35%, 500px)", flexShrink: 0 }}>
-            <ArtifactPanel
-              artifacts={session.currentArtifacts}
-              artifactHistory={session.artifactHistory}
-              isValidating={isValidating}
-              onRunTests={handleRunTests}
-              validationError={validateError ? "Validation unavailable" : null}
-            />
-          </div>
+          <Button
+            variant="plain"
+            onClick={() => setArtifactsCollapsed(!artifactsCollapsed)}
+            aria-label={artifactsCollapsed ? "Show artifacts" : "Hide artifacts"}
+            style={{
+              borderLeft: "1px solid var(--pf-t--global--border--color--default)",
+              borderRadius: 0,
+              padding: "0 var(--pf-t--global--spacer--xs)",
+              flexShrink: 0,
+            }}
+          >
+            {artifactsCollapsed ? <AngleLeftIcon /> : <AngleRightIcon />}
+          </Button>
+          {!artifactsCollapsed && (
+            <div style={{ flex: "0 0 40%", minWidth: 320, maxWidth: 600, minHeight: 0 }}>
+              <ArtifactPanel
+                artifacts={session.currentArtifacts}
+                artifactHistory={session.artifactHistory}
+                isValidating={isValidating}
+                onRunTests={handleRunTests}
+                validationError={validateError ? "Validation unavailable" : null}
+              />
+            </div>
+          )}
         </div>
       </PageSection>
     </>
