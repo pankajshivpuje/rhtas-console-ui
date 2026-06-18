@@ -18,7 +18,7 @@ tags:
   - name: Alerts
     description: Alert notification and management endpoints
   - name: Policies
-    description: AI-assisted Conforma policy generation and validation
+    description: Conforma policy evaluation against container images
 paths:
   /healthz:
     get:
@@ -612,58 +612,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/v1/policies/generate:
+  /api/v1/policies/evaluate:
     post:
-      summary: Generate a Conforma policy from natural language requirements
+      summary: Evaluate a Conforma policy against a container image
       tags:
         - Policies
-      operationId: GeneratePolicy
+      operationId: EvaluatePolicy
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GeneratePolicyRequest'
+              $ref: '#/components/schemas/EvaluatePolicyRequest'
       responses:
         '200':
-          description: Generated policy response with optional artifacts
+          description: Policy evaluation results
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GeneratePolicyResponse'
-        '429':
-          description: Rate limit exceeded
+                $ref: '#/components/schemas/EvaluatePolicyResponse'
+        '400':
+          description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '500':
-          description: AI service error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/v1/policies/validate:
-    post:
-      summary: Run OPA tests on generated policy artifacts
-      tags:
-        - Policies
-      operationId: ValidatePolicy
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ValidatePolicyRequest'
-      responses:
-        '200':
-          description: Validation results
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ValidatePolicyResponse'
-        '500':
-          description: Validation error
+          description: Evaluation error
           content:
             application/json:
               schema:
@@ -1576,118 +1551,99 @@ components:
           description: Set to true to acknowledge, false to unacknowledge
       required:
         - acknowledged
-    GeneratePolicyRequest:
+    EvaluatePolicyRequest:
       type: object
       required:
-        - sessionId
-        - message
-        - history
+        - image
+        - policy
       properties:
-        sessionId:
+        image:
           type: string
-          description: Browser-generated UUID for the conversation session
-        message:
+          description: Container image reference to evaluate
+          example: quay.io/my-org/my-app:v1.2.3
+        policy:
           type: string
-          description: The user's natural language policy requirement
-        history:
-          type: array
-          items:
-            type: object
-            properties:
-              role:
-                type: string
-                enum: [user, assistant]
-              content:
-                type: string
-          description: Prior conversation turns for context
-        context:
-          type: object
-          properties:
-            imageRef:
-              type: string
-              description: Container image reference
-              example: quay.io/myorg/myapp:latest
-            policyTypes:
-              type: array
-              items:
-                type: string
-                enum: [sbom, slsa, both]
-            sbomFormat:
-              type: string
-              enum: [spdx, cyclonedx, both]
-            verification:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum: [public-key, keyless]
-                publicKey:
-                  type: string
-                  description: Cosign public key in PEM format
-                oidcIssuer:
-                  type: string
-                identity:
-                  type: string
-    GeneratePolicyResponse:
-      type: object
-      properties:
-        sessionId:
+          description: Policy source — OCI bundle ref or policy.yaml URL
+          example: oci::quay.io/enterprise-contract/config//default
+        publicKey:
           type: string
-        reply:
-          type: string
-          description: AI assistant response text
-        artifacts:
-          type: object
+          description: Cosign public key in PEM format (optional)
           nullable: true
-          properties:
-            rule:
-              $ref: '#/components/schemas/ArtifactFile'
-            tests:
-              $ref: '#/components/schemas/ArtifactFile'
-            config:
-              $ref: '#/components/schemas/ArtifactFile'
-            data:
-              $ref: '#/components/schemas/ArtifactFile'
-            command:
-              type: string
-        policyMeta:
-          type: object
-          properties:
-            types:
-              type: array
-              items:
-                type: string
-            version:
-              type: integer
-    ValidatePolicyRequest:
+        rekorUrl:
+          type: string
+          description: Rekor transparency log URL (optional)
+          nullable: true
+        ignoreRekor:
+          type: boolean
+          description: Skip Rekor verification (optional)
+          default: false
+    EvaluatePolicyResponse:
       type: object
       required:
-        - rule
-        - tests
+        - success
+        - components
       properties:
-        rule:
-          type: string
-          description: Rego v1 policy source
-        tests:
-          type: string
-          description: Rego v1 test source
-    ValidatePolicyResponse:
-      type: object
-      properties:
-        passed:
-          type: integer
-        failed:
-          type: integer
-        results:
+        success:
+          type: boolean
+          description: Overall pass/fail status
+        components:
           type: array
           items:
-            type: object
-            properties:
-              name:
-                type: string
-              status:
-                type: string
-                enum: [pass, fail]
+            $ref: '#/components/schemas/ConformaComponent'
+    ConformaComponent:
+      type: object
+      required:
+        - name
+        - containerImage
+        - success
+      properties:
+        name:
+          type: string
+          description: Component name
+        containerImage:
+          type: string
+          description: Resolved container image reference with digest
+        success:
+          type: boolean
+        violations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConformaRule'
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConformaRule'
+        successes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConformaRule'
+    ConformaRule:
+      type: object
+      required:
+        - msg
+      properties:
+        metadata:
+          $ref: '#/components/schemas/ConformaRuleMetadata'
+        msg:
+          type: string
+          description: Rule result message
+    ConformaRuleMetadata:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        collections:
+          type: array
+          items:
+            type: string
+        code:
+          type: string
+        effective_on:
+          type: string
+        solution:
+          type: string
     ArtifactFile:
       type: object
       properties:

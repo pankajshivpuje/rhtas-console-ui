@@ -14,7 +14,7 @@ const RekorSearch = lazy(() => import("./pages/RekorSearch"));
 const RekorEntryDetail = lazy(() => import("./pages/RekorSearch/EntryDetail"));
 const OperationalHealth = lazy(() => import("./pages/OperationalHealth"));
 const Alerts = lazy(() => import("./pages/Alerts"));
-const PolicyGenerator = lazy(() => import("./pages/PolicyGenerator"));
+const Conforma = lazy(() => import("./pages/Conforma"));
 
 export const Paths = {
   dashboard: "/dashboard",
@@ -39,7 +39,7 @@ export const AppRoutes = () => {
     { path: Paths.rekorSearch, element: <RekorSearch /> },
     { path: Paths.rekorEntry, element: <RekorEntryDetail /> },
     { path: Paths.alerts, element: <Alerts /> },
-    { path: Paths.policyGenerator, element: <PolicyGenerator /> },
+    { path: Paths.policyGenerator, element: <Conforma /> },
     { path: "*", element: <NotFound /> },
   ]);
 
