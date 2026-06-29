@@ -149,7 +149,7 @@ export const EvaluationForm: React.FC<EvaluationFormProps> = ({
           isLoading={isEvaluating}
           isDisabled={isEvaluating}
         >
-          Evaluate
+          Run evaluation
         </Button>
       </ActionGroup>
     </Form>
