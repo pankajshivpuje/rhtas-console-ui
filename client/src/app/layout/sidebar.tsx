@@ -81,7 +81,7 @@ export const SidebarApp: React.FC = () => {
                 return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
               }}
             >
-              Conforma Evaluation
+              Artifact policy evaluation
             </NavLink>
           </li>
         </NavList>

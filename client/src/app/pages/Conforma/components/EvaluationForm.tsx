@@ -58,9 +58,9 @@ export const EvaluationForm: React.FC<EvaluationFormProps> = ({
       <Controller
         name="image"
         control={control}
-        rules={{ required: "Artifact URL is required" }}
+        rules={{ required: "Artifact URI is required" }}
         render={({ field, fieldState }) => (
-          <FormGroup label="Artifact URL" isRequired fieldId="image">
+          <FormGroup label="Artifact URI" isRequired fieldId="image">
             <TextInput
               {...field}
               id="image"
@@ -88,7 +88,7 @@ export const EvaluationForm: React.FC<EvaluationFormProps> = ({
         control={control}
         rules={{ required: "Policy source is required" }}
         render={({ field, fieldState }) => (
-          <FormGroup label="Policy source repo URL" isRequired fieldId="policy">
+          <FormGroup label="Policy repository URL" isRequired fieldId="policy">
             <TextInput
               {...field}
               id="policy"

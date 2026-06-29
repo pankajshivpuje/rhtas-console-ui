@@ -56,12 +56,12 @@ export const ConformaEvaluator: React.FC = () => {
 
   return (
     <>
-      <DocumentMetadata title="Conforma" />
+      <DocumentMetadata title="Artifact policy evaluation" />
       <PageSection variant="default">
         <Content>
-          <h1>Conforma</h1>
+          <h1>Artifact policy evaluation</h1>
           <p>
-            Evaluate artifacts against Conforma policies to verify supply
+            Evaluate your artifact against Conforma policy to verify supply
             chain compliance.
           </p>
         </Content>
