@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, test, vi, beforeEach } from "vitest";
 import { Dashboard } from "./Dashboard";
-import type { PostureSummary, UnsignedArtifact } from "@app/client";
+import type { PostureSummary, SignedArtifact } from "@app/client";
 
 const renderDashboard = () =>
   render(
@@ -17,44 +17,44 @@ vi.mock("@app/components/DocumentMetadata", () => ({
 
 vi.mock("@app/queries/dashboard", () => ({
   useFetchPostureSummary: vi.fn(),
-  useFetchUnsignedArtifacts: vi.fn(),
+  useFetchSignedArtifacts: vi.fn(),
   useFetchPostureTrend: vi.fn(),
   useFetchAttestationCoverage: vi.fn(),
 }));
 
-
 import {
   useFetchPostureSummary,
-  useFetchUnsignedArtifacts,
+  useFetchSignedArtifacts,
   useFetchPostureTrend,
   useFetchAttestationCoverage,
 } from "@app/queries/dashboard";
 const mockUseFetchPostureSummary = vi.mocked(useFetchPostureSummary);
-const mockUseFetchUnsignedArtifacts = vi.mocked(useFetchUnsignedArtifacts);
+const mockUseFetchSignedArtifacts = vi.mocked(useFetchSignedArtifacts);
 const mockUseFetchPostureTrend = vi.mocked(useFetchPostureTrend);
 const mockUseFetchAttestationCoverage = vi.mocked(useFetchAttestationCoverage);
 
 const fakeSummary: PostureSummary = {
-  totalArtifacts: 100,
   signedCount: 87,
-  unsignedCount: 3,
-  partiallySignedCount: 10,
-  signedPercentage: 87,
+  signedWithAttestationCount: 72,
   attestationCoverage: 92,
 };
 
-const fakeUnsignedArtifacts: UnsignedArtifact[] = [
+const fakeSignedArtifacts: SignedArtifact[] = [
   {
     uri: "quay.io/myorg/billing:1.0",
     environment: "production",
     lastSeen: "2026-03-09T14:00:00Z",
     registry: "quay.io",
+    hasAttestation: true,
+    attestationTypes: ["SLSA Provenance"],
   },
   {
     uri: "registry.example.com/frontend:3.0",
     environment: "staging",
     lastSeen: "2026-03-08T10:00:00Z",
     registry: "registry.example.com",
+    hasAttestation: false,
+    attestationTypes: [],
   },
 ];
 
@@ -68,8 +68,8 @@ describe("Dashboard", () => {
       fetchError: null,
     });
 
-    mockUseFetchUnsignedArtifacts.mockReturnValue({
-      unsignedArtifacts: [],
+    mockUseFetchSignedArtifacts.mockReturnValue({
+      signedArtifacts: [],
       isFetching: false,
       fetchError: null,
     });
@@ -85,7 +85,6 @@ describe("Dashboard", () => {
       isFetching: false,
       fetchError: null,
     });
-
   });
 
   test("renders Trust Coverage heading", () => {
@@ -112,7 +111,7 @@ describe("Dashboard", () => {
     });
 
     renderDashboard();
-    expect(screen.queryByText("Total Artifacts")).not.toBeInTheDocument();
+    expect(screen.queryByText("Signed Artifacts")).not.toBeInTheDocument();
   });
 
   test("renders summary cards with data", () => {
@@ -123,21 +122,19 @@ describe("Dashboard", () => {
     });
 
     renderDashboard();
-    expect(screen.getByText("Total Artifacts")).toBeInTheDocument();
-    expect(screen.getByText("Unsigned in Production")).toBeInTheDocument();
-    expect(screen.getByText("87%")).toBeInTheDocument();
+    expect(screen.getAllByText("Signed Artifacts").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("With Attestations").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("92%")).toBeInTheDocument();
-    expect(screen.getByText("Action needed")).toBeInTheDocument();
   });
 
-  test("renders unsigned artifacts table", () => {
+  test("renders signed artifacts table", () => {
     mockUseFetchPostureSummary.mockReturnValue({
       summary: fakeSummary,
       isFetching: false,
       fetchError: null,
     });
-    mockUseFetchUnsignedArtifacts.mockReturnValue({
-      unsignedArtifacts: fakeUnsignedArtifacts,
+    mockUseFetchSignedArtifacts.mockReturnValue({
+      signedArtifacts: fakeSignedArtifacts,
       isFetching: false,
       fetchError: null,
     });
@@ -147,7 +144,7 @@ describe("Dashboard", () => {
     expect(screen.getByText("registry.example.com/frontend:3.0")).toBeInTheDocument();
   });
 
-  test("empty state when no unsigned artifacts", () => {
+  test("empty state when no signed artifacts", () => {
     mockUseFetchPostureSummary.mockReturnValue({
       summary: fakeSummary,
       isFetching: false,
@@ -155,7 +152,7 @@ describe("Dashboard", () => {
     });
 
     renderDashboard();
-    expect(screen.getByText("All artifacts are signed. Great job!")).toBeInTheDocument();
+    expect(screen.getByText("No signed artifacts found.")).toBeInTheDocument();
   });
 
   test("renders repo link", () => {
@@ -164,5 +161,4 @@ describe("Dashboard", () => {
     expect(link).toHaveAttribute("href", "https://github.com/securesign/sigstore-ocp");
     expect(link).toHaveAttribute("target", "_blank");
   });
-
 });

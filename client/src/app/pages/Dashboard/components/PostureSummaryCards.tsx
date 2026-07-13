@@ -1,11 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
-import { Button, Card, CardBody, CardTitle, Flex, FlexItem, Label, Title } from "@patternfly/react-core";
+import { Card, CardBody, CardTitle, Flex, FlexItem, Label, Title } from "@patternfly/react-core";
 import type { LabelProps } from "@patternfly/react-core";
 
 import type { PostureSummary } from "@app/client";
-import { Paths } from "@app/Routes";
 
 function percentageColor(value: number): LabelProps["color"] {
   if (value >= 90) return "green";
@@ -18,43 +16,29 @@ interface IPostureSummaryCardsProps {
 }
 
 export const PostureSummaryCards: React.FC<IPostureSummaryCardsProps> = ({ summary }) => {
-  const navigate = useNavigate();
-
-  const handleTotalArtifactsClick = () => {
-    navigate(Paths.totalArtifacts);
-  };
+  const withAttestationPct =
+    summary.signedCount > 0 ? Math.round((summary.signedWithAttestationCount / summary.signedCount) * 1000) / 10 : 0;
 
   return (
     <Flex direction={{ default: "column", md: "row" }} spaceItems={{ default: "spaceItemsMd" }}>
       <FlexItem flex={{ default: "flex_1" }}>
         <Card isFullHeight>
-          <CardTitle>Total Artifacts</CardTitle>
+          <CardTitle>Signed Artifacts</CardTitle>
           <CardBody>
-            <Button variant="link" isInline onClick={handleTotalArtifactsClick}>
-              <Title headingLevel="h3" size="3xl">{summary.totalArtifacts}</Title>
-            </Button>
+            <Title headingLevel="h3" size="3xl">
+              {summary.signedCount}
+            </Title>
           </CardBody>
         </Card>
       </FlexItem>
       <FlexItem flex={{ default: "flex_1" }}>
         <Card isFullHeight>
-          <CardTitle>Signed</CardTitle>
+          <CardTitle>With Attestations</CardTitle>
           <CardBody>
-            <Title headingLevel="h3" size="3xl" style={{ display: "inline" }}>{summary.signedPercentage}%</Title>{" "}
-            <Label color={percentageColor(summary.signedPercentage)}>
-              {summary.signedCount} / {summary.totalArtifacts}
-            </Label>
-          </CardBody>
-        </Card>
-      </FlexItem>
-      <FlexItem flex={{ default: "flex_1" }}>
-        <Card isFullHeight>
-          <CardTitle>Unsigned in Production</CardTitle>
-          <CardBody>
-            <Title headingLevel="h3" size="3xl" style={{ display: "inline" }}>{summary.unsignedCount}</Title>{" "}
-            <Label color={summary.unsignedCount > 0 ? "red" : "green"}>
-              {summary.unsignedCount > 0 ? "Action needed" : "All clear"}
-            </Label>
+            <Title headingLevel="h3" size="3xl" style={{ display: "inline" }}>
+              {summary.signedWithAttestationCount}
+            </Title>{" "}
+            <Label color={percentageColor(withAttestationPct)}>{withAttestationPct}% of signed</Label>
           </CardBody>
         </Card>
       </FlexItem>
@@ -62,7 +46,9 @@ export const PostureSummaryCards: React.FC<IPostureSummaryCardsProps> = ({ summa
         <Card isFullHeight>
           <CardTitle>Attestation Coverage</CardTitle>
           <CardBody>
-            <Title headingLevel="h3" size="3xl" style={{ display: "inline" }}>{summary.attestationCoverage}%</Title>{" "}
+            <Title headingLevel="h3" size="3xl" style={{ display: "inline" }}>
+              {summary.attestationCoverage}%
+            </Title>{" "}
             <Label color={percentageColor(summary.attestationCoverage)}>
               {summary.attestationCoverage >= 95
                 ? "Excellent"

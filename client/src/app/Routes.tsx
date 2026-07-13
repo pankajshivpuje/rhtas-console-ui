@@ -8,7 +8,6 @@ import NotFound from "./pages/NotFound";
 
 const Artifacts = lazy(() => import("./pages/Artifacts"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
-const TotalArtifacts = lazy(() => import("./pages/Dashboard/TotalArtifacts"));
 const TrustRoot = lazy(() => import("./pages/TrustRoot"));
 const RekorSearch = lazy(() => import("./pages/RekorSearch"));
 const RekorEntryDetail = lazy(() => import("./pages/RekorSearch/EntryDetail"));
@@ -18,7 +17,6 @@ const Conforma = lazy(() => import("./pages/Conforma"));
 
 export const Paths = {
   dashboard: "/dashboard",
-  totalArtifacts: "/dashboard/total-artifacts",
   operationalHealth: "/operational-health",
   artifacts: "/artifacts",
   rekorSearch: "/rekor-search",
@@ -32,7 +30,6 @@ export const AppRoutes = () => {
   const allRoutes = useRoutes([
     { path: "/", element: <Navigate to={Paths.dashboard} /> },
     { path: Paths.dashboard, element: <Dashboard /> },
-    { path: Paths.totalArtifacts, element: <TotalArtifacts /> },
     { path: Paths.operationalHealth, element: <OperationalHealth /> },
     { path: Paths.trustRoot, element: <TrustRoot /> },
     { path: Paths.artifacts, element: <Artifacts /> },

@@ -1,47 +1,32 @@
 import dayjs from "dayjs";
 
-import type { AttestationTypeCoverage, PostureSummary, PostureTrendPoint, UnsignedArtifact } from "@app/client";
+import type { AttestationTypeCoverage, PostureSummary, PostureTrendPoint, SignedArtifact } from "@app/client";
 
 const postureSummaryByEnv: Record<string, PostureSummary> = {
   all: {
-    totalArtifacts: 142,
     signedCount: 124,
-    unsignedCount: 5,
-    partiallySignedCount: 13,
-    signedPercentage: 87.3,
-    attestationCoverage: 92.1,
+    signedWithAttestationCount: 115,
+    attestationCoverage: 92.7,
   },
   "rhtas-production": {
-    totalArtifacts: 58,
     signedCount: 55,
-    unsignedCount: 2,
-    partiallySignedCount: 1,
-    signedPercentage: 94.8,
-    attestationCoverage: 96.5,
+    signedWithAttestationCount: 53,
+    attestationCoverage: 96.4,
   },
   "rhtas-staging": {
-    totalArtifacts: 41,
     signedCount: 35,
-    unsignedCount: 1,
-    partiallySignedCount: 5,
-    signedPercentage: 85.4,
-    attestationCoverage: 90.2,
+    signedWithAttestationCount: 31,
+    attestationCoverage: 88.6,
   },
   "rhtas-dev": {
-    totalArtifacts: 29,
     signedCount: 22,
-    unsignedCount: 2,
-    partiallySignedCount: 5,
-    signedPercentage: 75.9,
-    attestationCoverage: 82.8,
+    signedWithAttestationCount: 19,
+    attestationCoverage: 86.4,
   },
   "trusted-artifact-signer": {
-    totalArtifacts: 14,
     signedCount: 12,
-    unsignedCount: 0,
-    partiallySignedCount: 2,
-    signedPercentage: 85.7,
-    attestationCoverage: 92.9,
+    signedWithAttestationCount: 12,
+    attestationCoverage: 100,
   },
 };
 
@@ -50,64 +35,112 @@ export const getPostureSummaryMock = (env?: string): PostureSummary =>
 
 export const postureSummaryMock: PostureSummary = postureSummaryByEnv.all;
 
-const allUnsignedArtifacts: UnsignedArtifact[] = [
+const allSignedArtifacts: SignedArtifact[] = [
   {
-    uri: "quay.io/myorg/billing-service:1.4.2",
+    uri: "quay.io/myorg/api-server:2.3.1",
     environment: "rhtas-production",
     lastSeen: "2026-03-09T14:22:00Z",
     registry: "quay.io",
+    hasAttestation: true,
+    attestationTypes: ["https://slsa.dev/provenance/v1", "https://spdx.dev/Document/v2.3"],
+  },
+  {
+    uri: "quay.io/myorg/billing-service:1.4.2",
+    environment: "rhtas-production",
+    lastSeen: "2026-03-09T12:10:00Z",
+    registry: "quay.io",
+    hasAttestation: true,
+    attestationTypes: ["https://slsa.dev/provenance/v1"],
   },
   {
     uri: "quay.io/myorg/auth-proxy:2.0.1",
     environment: "rhtas-production",
     lastSeen: "2026-03-08T09:15:00Z",
     registry: "quay.io",
+    hasAttestation: false,
   },
   {
-    uri: "registry.example.com/frontend:3.1.0-rc1",
+    uri: "quay.io/myorg/gateway:4.1.0",
+    environment: "rhtas-production",
+    lastSeen: "2026-03-09T16:30:00Z",
+    registry: "quay.io",
+    hasAttestation: true,
+    attestationTypes: ["https://slsa.dev/provenance/v1", "https://spdx.dev/Document/v2.3", "https://in-toto.io/attestation/vulns/v0.1"],
+  },
+  {
+    uri: "registry.example.com/frontend:3.1.0",
     environment: "rhtas-staging",
     lastSeen: "2026-03-09T18:45:00Z",
     registry: "registry.example.com",
+    hasAttestation: true,
+    attestationTypes: ["https://slsa.dev/provenance/v1"],
+  },
+  {
+    uri: "registry.example.com/worker:1.2.0-rc1",
+    environment: "rhtas-staging",
+    lastSeen: "2026-03-08T22:00:00Z",
+    registry: "registry.example.com",
+    hasAttestation: false,
   },
   {
     uri: "registry.example.com/data-pipeline:0.9.0",
     environment: "rhtas-dev",
     lastSeen: "2026-03-07T11:30:00Z",
     registry: "registry.example.com",
+    hasAttestation: true,
+    attestationTypes: ["https://slsa.dev/provenance/v1", "https://spdx.dev/Document/v2.3"],
   },
   {
-    uri: "ghcr.io/myorg/monitoring-agent:latest",
+    uri: "ghcr.io/myorg/monitoring-agent:1.1.0",
     environment: "rhtas-dev",
     lastSeen: "2026-03-06T16:00:00Z",
     registry: "ghcr.io",
+    hasAttestation: false,
+  },
+  {
+    uri: "quay.io/myorg/notification-svc:3.0.2",
+    environment: "rhtas-production",
+    lastSeen: "2026-03-09T08:00:00Z",
+    registry: "quay.io",
+    hasAttestation: true,
+    attestationTypes: ["https://slsa.dev/provenance/v1", "https://spdx.dev/Document/v2.3"],
+  },
+  {
+    uri: "quay.io/myorg/cache-proxy:1.0.5",
+    environment: "rhtas-staging",
+    lastSeen: "2026-03-09T10:00:00Z",
+    registry: "quay.io",
+    hasAttestation: true,
+    attestationTypes: ["https://slsa.dev/provenance/v1"],
   },
 ];
 
-export const getUnsignedArtifactsMock = (env?: string): { data: UnsignedArtifact[] } => ({
-  data: env ? allUnsignedArtifacts.filter((a) => a.environment === env) : allUnsignedArtifacts,
-});
+export const getSignedArtifactsMock = (env?: string, filter?: string): { data: SignedArtifact[] } => {
+  let filtered = env ? allSignedArtifacts.filter((a) => a.environment === env) : allSignedArtifacts;
 
-export const unsignedArtifactsMock: { data: UnsignedArtifact[] } = { data: allUnsignedArtifacts };
+  if (filter === "signed-only") {
+    filtered = filtered.filter((a) => !a.hasAttestation);
+  } else if (filter === "signed-with-attestation") {
+    filtered = filtered.filter((a) => a.hasAttestation);
+  }
 
-function generateTrendData(baseSignedPct = 82, baseAttestPct = 87, baseTotal = 130): PostureTrendPoint[] {
+  return { data: filtered };
+};
+
+function generateTrendData(baseSigned = 110, baseWithAttestation = 95): PostureTrendPoint[] {
   const points: PostureTrendPoint[] = [];
   const now = dayjs();
 
   for (let i = 29; i >= 0; i--) {
     const date = now.subtract(i, "day");
-    const base = baseSignedPct + (29 - i) * 0.2;
-    const dip = i >= 4 && i <= 6 ? -2.5 : 0;
-    const signedPct = Math.min(100, Math.round((base + dip) * 10) / 10);
-
-    const attestBase = baseAttestPct + (29 - i) * 0.18;
-    const attestDip = i >= 4 && i <= 6 ? -1.8 : 0;
-    const attestPct = Math.min(100, Math.round((attestBase + attestDip) * 10) / 10);
+    const signedCount = baseSigned + Math.floor((29 - i) * 0.5);
+    const dip = i >= 4 && i <= 6 ? -3 : 0;
+    const withAttestation = Math.min(signedCount, baseWithAttestation + Math.floor((29 - i) * 0.45) + dip);
 
     points.push({
       date: date.format("YYYY-MM-DD"),
-      signedPercentage: signedPct,
-      attestationPercentage: attestPct,
-      totalArtifacts: baseTotal + Math.floor((29 - i) * 0.4),
+      signedCount,
+      signedWithAttestationCount: withAttestation,
     });
   }
 
@@ -115,11 +148,11 @@ function generateTrendData(baseSignedPct = 82, baseAttestPct = 87, baseTotal = 1
 }
 
 const trendByEnv: Record<string, PostureTrendPoint[]> = {
-  all: generateTrendData(82, 87, 130),
-  "rhtas-production": generateTrendData(90, 93, 52),
-  "rhtas-staging": generateTrendData(80, 85, 36),
-  "rhtas-dev": generateTrendData(70, 78, 24),
-  "trusted-artifact-signer": generateTrendData(82, 89, 12),
+  all: generateTrendData(110, 95),
+  "rhtas-production": generateTrendData(48, 45),
+  "rhtas-staging": generateTrendData(30, 25),
+  "rhtas-dev": generateTrendData(18, 14),
+  "trusted-artifact-signer": generateTrendData(10, 10),
 };
 
 export const getPostureTrendMock = (env?: string): { data: PostureTrendPoint[] } => ({
@@ -130,50 +163,50 @@ export const postureTrendMock: { data: PostureTrendPoint[] } = {
   data: trendByEnv.all,
 };
 
-function buildAttestationCoverage(total: number, coverages: [string, string, number][]): AttestationTypeCoverage[] {
+function buildAttestationCoverage(signedTotal: number, coverages: [string, string, number][]): AttestationTypeCoverage[] {
   return coverages.map(([attestationType, displayName, artifactCount]) => ({
     attestationType,
     displayName,
     artifactCount,
-    totalArtifacts: total,
-    percentage: Math.round((artifactCount / total) * 1000) / 10,
+    signedArtifacts: signedTotal,
+    percentage: Math.round((artifactCount / signedTotal) * 1000) / 10,
   }));
 }
 
 const attestationCoverageByEnv: Record<string, AttestationTypeCoverage[]> = {
-  all: buildAttestationCoverage(142, [
-    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 131],
-    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 118],
-    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 98],
-    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 72],
-    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 45],
+  all: buildAttestationCoverage(124, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 115],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 98],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 82],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 60],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 38],
   ]),
-  "rhtas-production": buildAttestationCoverage(58, [
-    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 56],
-    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 54],
-    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 52],
-    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 48],
-    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 35],
+  "rhtas-production": buildAttestationCoverage(55, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 53],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 50],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 48],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 42],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 30],
   ]),
-  "rhtas-staging": buildAttestationCoverage(41, [
-    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 38],
-    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 32],
-    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 25],
-    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 15],
-    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 8],
+  "rhtas-staging": buildAttestationCoverage(35, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 31],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 26],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 20],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 12],
+    ["https://in-toto.io/attestation/test/v0.1", "Test Results", 6],
   ]),
-  "rhtas-dev": buildAttestationCoverage(29, [
-    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 24],
-    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 20],
-    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 12],
-    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 6],
+  "rhtas-dev": buildAttestationCoverage(22, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 19],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 15],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 10],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 5],
     ["https://in-toto.io/attestation/test/v0.1", "Test Results", 2],
   ]),
-  "trusted-artifact-signer": buildAttestationCoverage(14, [
-    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 13],
-    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 12],
-    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 11],
-    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 9],
+  "trusted-artifact-signer": buildAttestationCoverage(12, [
+    ["https://slsa.dev/provenance/v1", "SLSA Provenance", 12],
+    ["https://spdx.dev/Document/v2.3", "SBOM (SPDX)", 11],
+    ["https://in-toto.io/attestation/vulns/v0.1", "Vulnerability Scan", 10],
+    ["https://slsa.dev/verification_summary/v1", "SLSA VSA", 8],
     ["https://in-toto.io/attestation/test/v0.1", "Test Results", 5],
   ]),
 };

@@ -22,7 +22,7 @@ export const AttestationCoverageChart: React.FC<IAttestationCoverageChartProps> 
   const chartData = sortedData.map((item) => ({
     x: item.displayName,
     y: item.percentage,
-    label: `${item.displayName}: ${item.percentage}% (${item.artifactCount}/${item.totalArtifacts})`,
+    label: `${item.displayName}: ${item.percentage}% (${item.artifactCount}/${item.signedArtifacts})`,
   }));
 
   const chartHeight = Math.max(250, sortedData.length * 50 + 50);

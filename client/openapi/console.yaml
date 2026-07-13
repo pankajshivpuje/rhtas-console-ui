@@ -60,12 +60,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/v1/dashboard/unsigned-artifacts:
+  /api/v1/dashboard/signed-artifacts:
     get:
-      summary: List unsigned artifacts
+      summary: List signed artifacts
       tags:
         - Dashboard
-      operationId: GetUnsignedArtifacts
+      operationId: GetSignedArtifacts
       parameters:
         - name: environment
           in: query
@@ -73,9 +73,17 @@ paths:
           schema:
             type: string
             description: Filter by environment (e.g., production, staging, dev)
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [all, signed-only, signed-with-attestation]
+            default: all
+            description: Filter by attestation status
       responses:
         '200':
-          description: List of unsigned artifacts
+          description: List of signed artifacts
           content:
             application/json:
               schema:
@@ -84,7 +92,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/UnsignedArtifact'
+                      $ref: '#/components/schemas/SignedArtifact'
                 required:
                   - data
         '500':
@@ -1011,51 +1019,38 @@ components:
           description: Human-readable name for the attestation type
         artifactCount:
           type: integer
-          description: Number of artifacts that have this attestation type
-        totalArtifacts:
+          description: Number of signed artifacts that have this attestation type
+        signedArtifacts:
           type: integer
-          description: Total number of artifacts evaluated
+          description: Total number of signed artifacts evaluated
         percentage:
           type: number
           format: float
-          description: Percentage of artifacts with this attestation type
+          description: Percentage of signed artifacts with this attestation type
       required:
         - attestationType
         - displayName
         - artifactCount
-        - totalArtifacts
+        - signedArtifacts
         - percentage
     PostureSummary:
       type: object
       properties:
-        totalArtifacts:
-          type: integer
-          description: Total number of tracked artifacts
         signedCount:
           type: integer
-          description: Number of fully signed artifacts
-        unsignedCount:
+          description: Number of signed artifacts
+        signedWithAttestationCount:
           type: integer
-          description: Number of unsigned artifacts
-        partiallySignedCount:
-          type: integer
-          description: Number of partially signed artifacts
-        signedPercentage:
-          type: number
-          format: float
-          description: Percentage of artifacts that are signed
+          description: Number of signed artifacts that also have at least one attestation
         attestationCoverage:
           type: number
           format: float
-          description: Percentage of artifacts with attestations
+          description: Percentage of signed artifacts with attestations
       required:
-        - totalArtifacts
         - signedCount
-        - unsignedCount
-        - partiallySignedCount
-        - signedPercentage
+        - signedWithAttestationCount
         - attestationCoverage
-    UnsignedArtifact:
+    SignedArtifact:
       type: object
       properties:
         uri:
@@ -1071,11 +1066,20 @@ components:
         registry:
           type: string
           description: Container registry
+        hasAttestation:
+          type: boolean
+          description: Whether the artifact has at least one attestation
+        attestationTypes:
+          type: array
+          items:
+            type: string
+          description: List of attestation predicate types present on the artifact
       required:
         - uri
         - environment
         - lastSeen
         - registry
+        - hasAttestation
     PostureTrendPoint:
       type: object
       properties:
@@ -1083,22 +1087,16 @@ components:
           type: string
           format: date
           description: Date of the data point
-        signedPercentage:
-          type: number
-          format: float
-          description: Signing coverage percentage
-        attestationPercentage:
-          type: number
-          format: float
-          description: Attestation coverage percentage
-        totalArtifacts:
+        signedCount:
           type: integer
-          description: Total artifacts at this point in time
+          description: Number of signed artifacts on this date
+        signedWithAttestationCount:
+          type: integer
+          description: Number of signed artifacts with attestations on this date
       required:
         - date
-        - signedPercentage
-        - attestationPercentage
-        - totalArtifacts
+        - signedCount
+        - signedWithAttestationCount
     Error:
       type: object
       properties:

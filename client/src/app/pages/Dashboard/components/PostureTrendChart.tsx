@@ -23,49 +23,49 @@ function formatTickLabel(date: string): string {
 }
 
 export const PostureTrendChart: React.FC<IPostureTrendChartProps> = ({ trend }) => {
-  // Use numeric indices for x-axis to avoid string spacing issues
   const signingData = trend.map((point, i) => ({
     x: i,
-    y: point.signedPercentage,
-    name: "Signing Coverage",
+    y: point.signedCount,
+    name: "Signed Artifacts",
   }));
 
   const attestationData = trend.map((point, i) => ({
     x: i,
-    y: point.attestationPercentage,
-    name: "Attestation Coverage",
+    y: point.signedWithAttestationCount,
+    name: "With Attestations",
   }));
 
-  // Show ~6 evenly spaced ticks
+  const maxY = Math.max(...trend.map((p) => p.signedCount), 1);
+  const yDomainMax = Math.ceil(maxY * 1.1);
+
   const tickCount = Math.min(6, trend.length);
   const step = Math.max(1, Math.floor((trend.length - 1) / (tickCount - 1)));
   const tickIndices: number[] = [];
   for (let i = 0; i < trend.length; i += step) {
     tickIndices.push(i);
   }
-  // Always include the last point
   if (tickIndices[tickIndices.length - 1] !== trend.length - 1) {
     tickIndices.push(trend.length - 1);
   }
 
   return (
     <Card isFullHeight>
-      <CardTitle>Coverage Trend (Last 30 Days)</CardTitle>
+      <CardTitle>Artifact Trend (Last 30 Days)</CardTitle>
       <CardBody>
         <div style={{ height: "300px", width: "100%" }}>
           <Chart
             containerComponent={
               <ChartVoronoiContainer
                 labels={({ datum }: { datum: { x?: number; name?: string; y?: number } }) =>
-                  `${datum.name}: ${datum.y}%\n${datum.x != null && trend[datum.x] ? formatTickLabel(trend[datum.x].date) : ""}`
+                  `${datum.name}: ${datum.y}\n${datum.x != null && trend[datum.x] ? formatTickLabel(trend[datum.x].date) : ""}`
                 }
                 constrainToVisibleArea
               />
             }
-            domain={{ y: [0, 100] }}
+            domain={{ y: [0, yDomainMax] }}
             height={300}
             width={800}
-            legendComponent={<ChartLegend data={[{ name: "Signing Coverage" }, { name: "Attestation Coverage" }]} />}
+            legendComponent={<ChartLegend data={[{ name: "Signed Artifacts" }, { name: "With Attestations" }]} />}
             legendPosition="bottom"
             padding={{
               bottom: 75,
@@ -82,7 +82,7 @@ export const PostureTrendChart: React.FC<IPostureTrendChartProps> = ({ trend }) 
                 tickLabels: { angle: -30, textAnchor: "end", fontSize: 11 },
               }}
             />
-            <ChartAxis dependentAxis showGrid tickFormat={(t: number) => `${t}%`} />
+            <ChartAxis dependentAxis showGrid />
             <ChartGroup>
               <ChartLine data={signingData} />
               <ChartLine data={attestationData} />

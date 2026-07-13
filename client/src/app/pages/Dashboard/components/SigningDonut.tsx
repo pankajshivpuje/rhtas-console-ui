@@ -10,17 +10,18 @@ interface ISigningDonutProps {
 }
 
 export const SigningDonut: React.FC<ISigningDonutProps> = ({ summary }) => {
+  const withoutAttestation = summary.signedCount - summary.signedWithAttestationCount;
+
   const chartData = [
-    { x: "Signed", y: summary.signedCount },
-    { x: "Unsigned", y: summary.unsignedCount },
-    { x: "Partially Signed", y: summary.partiallySignedCount },
+    { x: "With Attestation", y: summary.signedWithAttestationCount },
+    { x: "Without Attestation", y: withoutAttestation },
   ];
 
   const legendData = chartData.map((d) => ({ name: `${d.x}: ${d.y}` }));
 
   return (
     <Card isFullHeight>
-      <CardTitle>Signing Status Distribution</CardTitle>
+      <CardTitle>Attestation Status</CardTitle>
       <CardBody>
         <div style={{ height: "300px", width: "100%" }}>
           <ChartDonut
@@ -31,16 +32,16 @@ export const SigningDonut: React.FC<ISigningDonutProps> = ({ summary }) => {
             legendData={legendData}
             legendOrientation="vertical"
             legendPosition="right"
-            name="SigningStatus"
-            ariaTitle="Signing status donut chart"
+            name="AttestationStatus"
+            ariaTitle="Attestation status donut chart"
             padding={{
               bottom: 20,
               left: 20,
               right: 140,
               top: 20,
             }}
-            subTitle="Artifacts"
-            title={summary.totalArtifacts.toString()}
+            subTitle="Signed Artifacts"
+            title={summary.signedCount.toString()}
             themeColor={ChartThemeColor.multiOrdered}
             width={400}
           />

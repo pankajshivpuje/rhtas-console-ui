@@ -1,13 +1,6 @@
 import React, { Fragment } from "react";
 
-import {
-  Content,
-  Flex,
-  FlexItem,
-  PageSection,
-  Stack,
-  StackItem,
-} from "@patternfly/react-core";
+import { Content, Flex, FlexItem, PageSection, Stack, StackItem } from "@patternfly/react-core";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons";
 
 import { DocumentMetadata } from "@app/components/DocumentMetadata";
@@ -16,39 +9,27 @@ import {
   useFetchAttestationCoverage,
   useFetchPostureSummary,
   useFetchPostureTrend,
-  useFetchUnsignedArtifacts,
+  useFetchSignedArtifacts,
 } from "@app/queries/dashboard";
 
 import { AttestationCoverageChart } from "./components/AttestationCoverageChart";
 import { PostureSummaryCards } from "./components/PostureSummaryCards";
 import { SigningDonut } from "./components/SigningDonut";
-import { UnsignedArtifactsTable } from "./components/UnsignedArtifactsTable";
+import { SignedArtifactsTable } from "./components/SignedArtifactsTable";
 import { PostureTrendChart } from "./components/PostureTrendChart";
 
 export const Dashboard: React.FC = () => {
-  const {
-    summary,
-    isFetching: isFetchingSummary,
-    fetchError: fetchErrorSummary,
-  } = useFetchPostureSummary();
-  const {
-    unsignedArtifacts,
-    isFetching: isFetchingUnsigned,
-    fetchError: fetchErrorUnsigned,
-  } = useFetchUnsignedArtifacts();
-  const {
-    trend,
-    isFetching: isFetchingTrend,
-    fetchError: fetchErrorTrend,
-  } = useFetchPostureTrend();
+  const { summary, isFetching: isFetchingSummary, fetchError: fetchErrorSummary } = useFetchPostureSummary();
+  const { signedArtifacts, isFetching: isFetchingSigned, fetchError: fetchErrorSigned } = useFetchSignedArtifacts();
+  const { trend, isFetching: isFetchingTrend, fetchError: fetchErrorTrend } = useFetchPostureTrend();
   const {
     attestationCoverage,
     isFetching: isFetchingAttestation,
     fetchError: fetchErrorAttestation,
   } = useFetchAttestationCoverage();
 
-  const isFetching = isFetchingSummary || isFetchingUnsigned || isFetchingTrend || isFetchingAttestation;
-  const fetchError = fetchErrorSummary ?? fetchErrorUnsigned ?? fetchErrorTrend ?? fetchErrorAttestation;
+  const isFetching = isFetchingSummary || isFetchingSigned || isFetchingTrend || isFetchingAttestation;
+  const fetchError = fetchErrorSummary ?? fetchErrorSigned ?? fetchErrorTrend ?? fetchErrorAttestation;
 
   return (
     <Fragment>
@@ -87,7 +68,7 @@ export const Dashboard: React.FC = () => {
                     <AttestationCoverageChart attestationCoverage={attestationCoverage} />
                   </StackItem>
                   <StackItem>
-                    <UnsignedArtifactsTable unsignedArtifacts={unsignedArtifacts} />
+                    <SignedArtifactsTable signedArtifacts={signedArtifacts} />
                   </StackItem>
                 </Stack>
               )}
