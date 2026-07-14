@@ -19,6 +19,8 @@ tags:
     description: Alert notification and management endpoints
   - name: Policies
     description: Conforma policy evaluation against container images
+  - name: Agent
+    description: AI agent insights and chat endpoints
 paths:
   /healthz:
     get:
@@ -647,6 +649,77 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: Evaluation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/agent/insights:
+    get:
+      summary: Get proactive agent findings
+      tags:
+        - Agent
+      operationId: GetAgentInsights
+      responses:
+        '200':
+          description: List of agent insights
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgentInsight'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/agent/insights/summary:
+    get:
+      summary: Get agent insight summary counts
+      tags:
+        - Agent
+      operationId: GetAgentInsightsSummary
+      responses:
+        '200':
+          description: Insight severity counts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentSummary'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/agent/chat:
+    post:
+      summary: Send a message and get agent response
+      tags:
+        - Agent
+      operationId: PostAgentChat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Agent response message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessage'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
           content:
             application/json:
               schema:
@@ -1648,4 +1721,92 @@ components:
         filename:
           type: string
         content:
+          type: string
+    AgentInsight:
+      type: object
+      required:
+        - id
+        - severity
+        - title
+        - description
+        - domain
+        - timestamp
+        - suggestedPrompt
+      properties:
+        id:
+          type: string
+        severity:
+          type: string
+          enum: [critical, warning, info]
+        title:
+          type: string
+        description:
+          type: string
+        domain:
+          type: string
+          enum: [signing, attestations, trust-root, alerts, policy, health]
+        timestamp:
+          type: string
+          format: date-time
+        suggestedPrompt:
+          type: string
+        relatedLink:
+          $ref: '#/components/schemas/AgentRelatedLink'
+    AgentRelatedLink:
+      type: object
+      required:
+        - label
+        - path
+      properties:
+        label:
+          type: string
+        path:
+          type: string
+    AgentSummary:
+      type: object
+      required:
+        - criticalCount
+        - warningCount
+        - infoCount
+        - totalCount
+      properties:
+        criticalCount:
+          type: integer
+        warningCount:
+          type: integer
+        infoCount:
+          type: integer
+        totalCount:
+          type: integer
+    ChatMessage:
+      type: object
+      required:
+        - id
+        - role
+        - content
+        - timestamp
+      properties:
+        id:
+          type: string
+        role:
+          type: string
+          enum: [user, agent]
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        insightId:
+          type: string
+        status:
+          type: string
+          enum: [sending, streaming, complete, error]
+    ChatRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+        conversationId:
           type: string
