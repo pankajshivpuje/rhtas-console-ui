@@ -14,9 +14,11 @@ const RekorEntryDetail = lazy(() => import("./pages/RekorSearch/EntryDetail"));
 const OperationalHealth = lazy(() => import("./pages/OperationalHealth"));
 const Alerts = lazy(() => import("./pages/Alerts"));
 const Conforma = lazy(() => import("./pages/Conforma"));
+const Agent = lazy(() => import("./pages/Agent"));
 
 export const Paths = {
   dashboard: "/dashboard",
+  agent: "/agent",
   operationalHealth: "/operational-health",
   artifacts: "/artifacts",
   rekorSearch: "/rekor-search",
@@ -30,6 +32,7 @@ export const AppRoutes = () => {
   const allRoutes = useRoutes([
     { path: "/", element: <Navigate to={Paths.dashboard} /> },
     { path: Paths.dashboard, element: <Dashboard /> },
+    { path: Paths.agent, element: <Agent /> },
     { path: Paths.operationalHealth, element: <OperationalHealth /> },
     { path: Paths.trustRoot, element: <TrustRoot /> },
     { path: Paths.artifacts, element: <Artifacts /> },

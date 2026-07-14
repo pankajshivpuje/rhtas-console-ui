@@ -26,6 +26,28 @@ export const SidebarApp: React.FC = () => {
           </li>
           <li className={nav.navItem}>
             <NavLink
+              to={Paths.agent}
+              className={({ isActive }) => {
+                return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
+              }}
+            >
+              Agent{" "}
+              <span
+                style={{
+                  backgroundColor: "var(--pf-t--global--color--brand--default)",
+                  color: "var(--pf-t--global--text--color--on-brand--default)",
+                  borderRadius: "var(--pf-t--global--border--radius--pill)",
+                  padding: "0 var(--pf-t--global--spacer--xs)",
+                  fontSize: "var(--pf-t--global--font--size--xs)",
+                  marginLeft: "var(--pf-t--global--spacer--xs)",
+                }}
+              >
+                New
+              </span>
+            </NavLink>
+          </li>
+          <li className={nav.navItem}>
+            <NavLink
               to={Paths.dashboard}
               className={({ isActive }) => {
                 return css(LINK_CLASS, isActive ? ACTIVE_LINK_CLASS : "");
