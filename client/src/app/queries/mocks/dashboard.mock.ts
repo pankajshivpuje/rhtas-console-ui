@@ -35,7 +35,7 @@ export const getPostureSummaryMock = (env?: string): PostureSummary =>
 
 export const postureSummaryMock: PostureSummary = postureSummaryByEnv.all;
 
-const allSignedArtifacts: SignedArtifact[] = [
+export const allSignedArtifacts: SignedArtifact[] = [
   {
     uri: "quay.io/myorg/api-server:2.3.1",
     environment: "rhtas-production",
