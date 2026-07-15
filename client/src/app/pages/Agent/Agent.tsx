@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import {
-  Content,
-  EmptyState,
-  EmptyStateBody,
-  PageSection,
-  Stack,
-  StackItem,
-} from "@patternfly/react-core";
-import ExclamationCircleIcon from "@patternfly/react-icons/dist/esm/icons/exclamation-circle-icon";
+import { Content, PageSection, Stack, StackItem } from "@patternfly/react-core";
 
 import { DocumentMetadata } from "@app/components/DocumentMetadata";
 import { LoadingWrapper } from "@app/components/LoadingWrapper";
@@ -37,18 +29,13 @@ export const Agent: React.FC = () => {
           <StackItem>
             <Content>
               <h2>Agent</h2>
-              <p>
-                AI-powered monitoring of your signing infrastructure. Review insights and ask questions.
-              </p>
+              <p>AI-powered monitoring of your signing infrastructure. Review insights and ask questions.</p>
             </Content>
           </StackItem>
 
           <StackItem>
             <LoadingWrapper isFetching={isFetching} fetchError={fetchError}>
-              <InsightsDashboard
-                insights={insights}
-                onInsightClick={handleInsightClick}
-              />
+              <InsightsDashboard insights={insights} onInsightClick={handleInsightClick} />
             </LoadingWrapper>
           </StackItem>
 

@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  Flex,
-  FlexItem,
-  Label,
-  Popover,
-  TextInput,
-} from "@patternfly/react-core";
+import { Button, Flex, FlexItem, Popover, TextInput } from "@patternfly/react-core";
 import { ExclamationCircleIcon, ExclamationTriangleIcon, InfoCircleIcon } from "@patternfly/react-icons";
 
 import type { AgentInsight } from "@app/client";
@@ -26,19 +19,14 @@ const severityIcons = {
   info: <InfoCircleIcon color="var(--pf-t--global--icon--color--severity--info--default)" />,
 };
 
-export const AgentPopover: React.FC<AgentPopoverProps> = ({
-  insights,
-  triggerRef,
-  isVisible,
-  onClose,
-}) => {
+export const AgentPopover: React.FC<AgentPopoverProps> = ({ insights, triggerRef, isVisible, onClose }) => {
   const navigate = useNavigate();
   const [quickPrompt, setQuickPrompt] = useState("");
   const topInsights = insights.slice(0, 3);
 
   const handleQuickPromptSend = () => {
     if (!quickPrompt.trim()) return;
-    navigate(`${Paths.agent}?prompt=${encodeURIComponent(quickPrompt.trim())}`);
+    void navigate(`${Paths.agent}?prompt=${encodeURIComponent(quickPrompt.trim())}`);
     onClose();
   };
 
@@ -58,7 +46,7 @@ export const AgentPopover: React.FC<AgentPopoverProps> = ({
                 alignItems={{ default: "alignItemsCenter" }}
                 style={{ padding: "var(--pf-t--global--spacer--xs) 0", cursor: "pointer" }}
                 onClick={() => {
-                  navigate(`${Paths.agent}?prompt=${encodeURIComponent(insight.suggestedPrompt)}`);
+                  void navigate(`${Paths.agent}?prompt=${encodeURIComponent(insight.suggestedPrompt)}`);
                   onClose();
                 }}
               >
@@ -73,7 +61,14 @@ export const AgentPopover: React.FC<AgentPopoverProps> = ({
       }
       footerContent={
         <div style={{ width: "100%" }}>
-          <Button variant="link" onClick={() => { navigate(Paths.agent); onClose(); }} style={{ marginBottom: "var(--pf-t--global--spacer--sm)" }}>
+          <Button
+            variant="link"
+            onClick={() => {
+              void navigate(Paths.agent);
+              onClose();
+            }}
+            style={{ marginBottom: "var(--pf-t--global--spacer--sm)" }}
+          >
             View all insights
           </Button>
           <Flex>

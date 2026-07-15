@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Button, Card, CardBody, CardHeader, CardTitle, Flex, FlexItem, Alert } from "@patternfly/react-core";
+import { Button, Card, CardBody, CardHeader, CardTitle, Alert } from "@patternfly/react-core";
 import PlusCircleIcon from "@patternfly/react-icons/dist/esm/icons/plus-circle-icon";
 
 import type { ChatMessage as ChatMessageType } from "@app/client";
@@ -26,17 +26,14 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ initialPrompt }) => {
   const [messages, setMessages] = useState<ChatMessageType[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      return stored ? JSON.parse(stored) : [];
+      return stored ? (JSON.parse(stored) as ChatMessageType[]) : [];
     } catch {
       return [];
     }
   });
 
   const { sendMessage, data: agentResponse, isPending, error: sendError } = useSendChatMessage();
-  const { displayedContent, isStreaming } = useStreamingMessage(
-    agentResponse?.content,
-    !!agentResponse
-  );
+  const { displayedContent, isStreaming } = useStreamingMessage(agentResponse?.content, !!agentResponse);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const initialPromptSent = useRef(false);
@@ -104,22 +101,31 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ initialPrompt }) => {
         <CardTitle>Chat</CardTitle>
       </CardHeader>
       <CardBody>
-        <div style={{ minHeight: "300px", maxHeight: "500px", overflowY: "auto", marginBottom: "var(--pf-t--global--spacer--md)" }}>
+        <div
+          style={{
+            minHeight: "300px",
+            maxHeight: "500px",
+            overflowY: "auto",
+            marginBottom: "var(--pf-t--global--spacer--md)",
+          }}
+        >
           {messages.map((msg) => (
             <ChatMessage key={msg.id} message={msg} />
           ))}
           {isPending && agentResponse && isStreaming && (
-            <ChatMessage
-              message={agentResponse}
-              displayContent={displayedContent}
-              isStreaming
-            />
+            <ChatMessage message={agentResponse} displayContent={displayedContent} isStreaming />
           )}
           <div ref={messagesEndRef} />
         </div>
 
         {sendError && (
-          <Alert variant="danger" isInline isPlain title="Failed to send message. Please try again." style={{ marginBottom: "var(--pf-t--global--spacer--sm)" }} />
+          <Alert
+            variant="danger"
+            isInline
+            isPlain
+            title="Failed to send message. Please try again."
+            style={{ marginBottom: "var(--pf-t--global--spacer--sm)" }}
+          />
         )}
 
         <ChatInput
