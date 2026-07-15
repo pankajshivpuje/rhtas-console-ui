@@ -6,7 +6,7 @@ export function useStreamingMessage(
 ): { displayedContent: string; isStreaming: boolean } {
   const [displayedContent, setDisplayedContent] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
-  const intervalRef = useRef<number>();
+  const intervalRef = useRef<number>(undefined);
 
   useEffect(() => {
     if (!content || !isActive) {
