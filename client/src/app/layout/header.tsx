@@ -37,6 +37,7 @@ import { DarkModeToggle } from "@app/components/DarkModeToggle";
 import { ThemeAwareLogo } from "@app/components/ThemeAwareLogo";
 import { useFetchAlertSummary } from "@app/queries/alerts";
 import { Paths } from "@app/Routes";
+import { AgentTrigger } from "@app/components/AgentTrigger/AgentTrigger";
 
 import { AboutApp } from "./about";
 
@@ -127,6 +128,9 @@ export const HeaderApp: React.FC = () => {
                   />
                 </ToolbarItem>
                 <ToolbarItem>
+                  <AgentTrigger />
+                </ToolbarItem>
+                <ToolbarItem>
                   <DarkModeToggle />
                 </ToolbarItem>
                 <ToolbarItem>
@@ -184,6 +188,9 @@ export const HeaderApp: React.FC = () => {
                     onClick={() => navigate(Paths.alerts)}
                     aria-label="Notifications"
                   />
+                </ToolbarItem>
+                <ToolbarItem>
+                  <AgentTrigger />
                 </ToolbarItem>
                 <ToolbarItem>
                   <DarkModeToggle />
