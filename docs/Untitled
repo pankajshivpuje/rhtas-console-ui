@@ -1,0 +1,1 @@
+Add an visual indication (red dot, exclamation mark, etc.) to the issue dashboard row in the left menu in the Konflux UI. The indicator should indicate that there are active issues connected to the namespace.

@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 vi.mock("react-router-dom", () => ({
-  Link: ({ children, to }: any) => (
-    <a href={typeof to === "string" ? to : `${to.pathname}${to.search}`}>{children}</a>
-  ),
+  Link: ({ children, to }: any) => <a href={typeof to === "string" ? to : `${to.pathname}${to.search}`}>{children}</a>,
 }));
 
 import atobMock from "../__mocks__/atobMock";
@@ -36,7 +34,7 @@ describe("ResultsTable", () => {
                   publicKey: { content: Buffer.from("certContent").toString("base64") },
                 },
               },
-            }),
+            })
           ).toString("base64"),
           logID: "log1",
           logIndex: 100,
@@ -54,7 +52,7 @@ describe("ResultsTable", () => {
                 payloadHash: { algorithm: "sha256", value: "def456" },
                 signatures: [{ signature: "dsseSig", verifier: "dmVyaWZpZXI=" }],
               },
-            }),
+            })
           ).toString("base64"),
           logID: "log2",
           logIndex: 101,

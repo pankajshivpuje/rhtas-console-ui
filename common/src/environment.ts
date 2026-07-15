@@ -43,7 +43,13 @@ export interface ConsoleEnvType {
  * Keys in `ConsoleEnv` that are only used on the server and therefore do not
  * need to be sent to the client.
  */
-export const SERVER_ENV_KEYS = ["PORT", "CONSOLE_API_URL", "BRANDING", "CONSOLE_ALERTMANAGER_URL", "CONSOLE_PROMETHEUS_URL"];
+export const SERVER_ENV_KEYS = [
+  "PORT",
+  "CONSOLE_API_URL",
+  "BRANDING",
+  "CONSOLE_ALERTMANAGER_URL",
+  "CONSOLE_PROMETHEUS_URL",
+];
 
 /**
  * Create a `ConsoleEnv` from a partial `ConsoleEnv` with a set of default values.

@@ -35,8 +35,7 @@ export const mockConformaResult: ConformaResult = {
         {
           metadata: {
             title: "SBOM contains deprecated package format",
-            description:
-              "The SBOM attestation references packages using a deprecated identifier format.",
+            description: "The SBOM attestation references packages using a deprecated identifier format.",
             collections: ["sbom"],
             code: "builtin.attestation.sbom.deprecated_format",
             effective_on: "2026-09-01T00:00:00Z",
@@ -48,8 +47,7 @@ export const mockConformaResult: ConformaResult = {
         {
           metadata: {
             title: "Hermetic build enforcement",
-            description:
-              "Verifies that the build was executed in a hermetic environment with no network access.",
+            description: "Verifies that the build was executed in a hermetic environment with no network access.",
             collections: ["slsa3"],
             code: "builtin.attestation.task.slsa_build_l3.hermetic",
           },
@@ -58,8 +56,7 @@ export const mockConformaResult: ConformaResult = {
         {
           metadata: {
             title: "SLSA provenance predicate type",
-            description:
-              "Validates that the attestation predicate type matches https://slsa.dev/provenance/v1.",
+            description: "Validates that the attestation predicate type matches https://slsa.dev/provenance/v1.",
             collections: ["slsa3"],
             code: "builtin.attestation.task.slsa_build_l3.predicate_type",
           },
@@ -68,8 +65,7 @@ export const mockConformaResult: ConformaResult = {
         {
           metadata: {
             title: "SBOM package sources validated",
-            description:
-              "All packages in the SBOM originate from approved source repositories.",
+            description: "All packages in the SBOM originate from approved source repositories.",
             collections: ["sbom"],
             code: "builtin.attestation.sbom.allowed_sources",
           },

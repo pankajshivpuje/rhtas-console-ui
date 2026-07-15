@@ -59,12 +59,20 @@ describe("Agent page", () => {
   });
 
   test("renders Agent heading", () => {
-    render(<MemoryRouter><Agent /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <Agent />
+      </MemoryRouter>
+    );
     expect(screen.getByRole("heading", { name: "Agent" })).toBeInTheDocument();
   });
 
   test("shows empty state when no insights", () => {
-    render(<MemoryRouter><Agent /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <Agent />
+      </MemoryRouter>
+    );
     expect(screen.getByText("Your signing infrastructure looks healthy.")).toBeInTheDocument();
   });
 
@@ -75,13 +83,21 @@ describe("Agent page", () => {
       fetchError: null,
     });
 
-    render(<MemoryRouter><Agent /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <Agent />
+      </MemoryRouter>
+    );
     expect(screen.getByText("TUF root expires soon")).toBeInTheDocument();
     expect(screen.getByText("1 Critical")).toBeInTheDocument();
   });
 
   test("renders chat panel with suggested prompts", () => {
-    render(<MemoryRouter><Agent /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <Agent />
+      </MemoryRouter>
+    );
     expect(screen.getByPlaceholderText("Ask the agent a question...")).toBeInTheDocument();
   });
 
@@ -92,7 +108,11 @@ describe("Agent page", () => {
       fetchError: null,
     });
 
-    render(<MemoryRouter><Agent /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <Agent />
+      </MemoryRouter>
+    );
     expect(screen.getByRole("progressbar")).toBeInTheDocument();
   });
 });

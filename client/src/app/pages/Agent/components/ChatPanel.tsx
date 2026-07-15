@@ -36,7 +36,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ initialPrompt }) => {
   const { displayedContent, isStreaming } = useStreamingMessage(agentResponse?.content, !!agentResponse);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const initialPromptSent = useRef(false);
+  const lastSentPrompt = useRef<string | null>(null);
 
   useEffect(() => {
     try {
@@ -75,8 +75,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ initialPrompt }) => {
   );
 
   useEffect(() => {
-    if (initialPrompt && !initialPromptSent.current) {
-      initialPromptSent.current = true;
+    if (initialPrompt && initialPrompt !== lastSentPrompt.current) {
+      lastSentPrompt.current = initialPrompt;
       handleSend(initialPrompt);
     }
   }, [initialPrompt, handleSend]);
@@ -112,7 +112,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ initialPrompt }) => {
           {messages.map((msg) => (
             <ChatMessage key={msg.id} message={msg} />
           ))}
-          {isPending && agentResponse && isStreaming && (
+          {agentResponse && isStreaming && !messages.some((m) => m.id === agentResponse.id) && (
             <ChatMessage message={agentResponse} displayContent={displayedContent} isStreaming />
           )}
           <div ref={messagesEndRef} />

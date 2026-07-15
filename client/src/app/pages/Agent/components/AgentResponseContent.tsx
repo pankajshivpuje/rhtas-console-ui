@@ -7,9 +7,5 @@ interface AgentResponseContentProps {
 }
 
 export const AgentResponseContent: React.FC<AgentResponseContentProps> = ({ content }) => {
-  return (
-    <Markdown remarkPlugins={[remarkGfm]}>
-      {content}
-    </Markdown>
-  );
+  return <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>;
 };

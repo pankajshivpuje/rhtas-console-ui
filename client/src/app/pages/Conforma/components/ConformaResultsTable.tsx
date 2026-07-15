@@ -16,21 +16,8 @@ import {
   ToolbarItem,
 } from "@patternfly/react-core";
 import { FilterIcon } from "@patternfly/react-icons";
-import {
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  ExpandableRowContent,
-  type ThProps,
-} from "@patternfly/react-table";
-import {
-  type UIConformaData,
-  type ConformaResultStatus,
-  ConformaResultStatus as Status,
-} from "../types";
+import { Table, Thead, Tr, Th, Tbody, Td, ExpandableRowContent, type ThProps } from "@patternfly/react-table";
+import { type UIConformaData, type ConformaResultStatus, ConformaResultStatus as Status } from "../types";
 import { ConformaResultRow } from "./ConformaResultRow";
 import { ConformaExpandedRow } from "./ConformaExpandedRow";
 
@@ -38,40 +25,23 @@ interface ConformaResultsTableProps {
   results: UIConformaData[];
 }
 
-const STATUS_SORT_ORDER: ConformaResultStatus[] = [
-  Status.Failed,
-  Status.Warning,
-  Status.Success,
-];
+const STATUS_SORT_ORDER: ConformaResultStatus[] = [Status.Failed, Status.Warning, Status.Success];
 
-const STATUS_OPTIONS: ConformaResultStatus[] = [
-  Status.Failed,
-  Status.Warning,
-  Status.Success,
-];
+const STATUS_OPTIONS: ConformaResultStatus[] = [Status.Failed, Status.Warning, Status.Success];
 
-export const ConformaResultsTable: React.FC<ConformaResultsTableProps> = ({
-  results,
-}) => {
+export const ConformaResultsTable: React.FC<ConformaResultsTableProps> = ({ results }) => {
   const [activeSortIndex, setActiveSortIndex] = useState<number>(1);
-  const [activeSortDirection, setActiveSortDirection] = useState<
-    "asc" | "desc"
-  >("asc");
+  const [activeSortDirection, setActiveSortDirection] = useState<"asc" | "desc">("asc");
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
   const [ruleFilter, setRuleFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<ConformaResultStatus[]>([]);
   const [statusSelectOpen, setStatusSelectOpen] = useState(false);
 
-  const onStatusSelect = useCallback(
-    (_event: React.MouseEvent | undefined, value: string | number | undefined) => {
-      const v = String(value) as ConformaResultStatus;
-      setStatusFilter((prev) =>
-        prev.includes(v) ? prev.filter((s) => s !== v) : [...prev, v],
-      );
-    },
-    [],
-  );
+  const onStatusSelect = useCallback((_event: React.MouseEvent | undefined, value: string | number | undefined) => {
+    const v = String(value) as ConformaResultStatus;
+    setStatusFilter((prev) => (prev.includes(v) ? prev.filter((s) => s !== v) : [...prev, v]));
+  }, []);
 
   const clearAllFilters = useCallback(() => {
     setRuleFilter("");
@@ -102,9 +72,7 @@ export const ConformaResultsTable: React.FC<ConformaResultsTableProps> = ({
       }
       const av = (a[key] ?? "") as string;
       const bv = (b[key] ?? "") as string;
-      return activeSortDirection === "asc"
-        ? av.localeCompare(bv)
-        : bv.localeCompare(av);
+      return activeSortDirection === "asc" ? av.localeCompare(bv) : bv.localeCompare(av);
     });
   }, [filteredResults, activeSortIndex, activeSortDirection]);
 
@@ -147,11 +115,7 @@ export const ConformaResultsTable: React.FC<ConformaResultsTableProps> = ({
           <ToolbarItem>
             <ToolbarFilter
               labels={statusFilter}
-              deleteLabel={(_category, label) =>
-                setStatusFilter((prev) =>
-                  prev.filter((s) => s !== (label as string)),
-                )
-              }
+              deleteLabel={(_category, label) => setStatusFilter((prev) => prev.filter((s) => s !== (label as string)))}
               deleteLabelGroup={() => setStatusFilter([])}
               categoryName="Status"
             >
@@ -181,12 +145,7 @@ export const ConformaResultsTable: React.FC<ConformaResultsTableProps> = ({
                 <SelectGroup label="Status">
                   <SelectList>
                     {STATUS_OPTIONS.map((status) => (
-                      <SelectOption
-                        hasCheckbox
-                        key={status}
-                        value={status}
-                        isSelected={statusFilter.includes(status)}
-                      >
+                      <SelectOption hasCheckbox key={status} value={status} isSelected={statusFilter.includes(status)}>
                         {status}
                       </SelectOption>
                     ))}
@@ -200,9 +159,7 @@ export const ConformaResultsTable: React.FC<ConformaResultsTableProps> = ({
 
       {hasActiveFilters && sortedResults.length === 0 ? (
         <Bullseye>
-          <Content component="p">
-            No results match the current filters.
-          </Content>
+          <Content component="p">No results match the current filters.</Content>
         </Bullseye>
       ) : (
         <Table aria-label="Conforma evaluation results" variant="compact">

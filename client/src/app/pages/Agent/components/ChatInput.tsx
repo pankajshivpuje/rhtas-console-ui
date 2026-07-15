@@ -38,9 +38,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         <ChipGroup categoryName="Suggested" style={{ marginBottom: "var(--pf-t--global--spacer--sm)" }}>
           {suggestedPrompts.map((prompt) => (
             <div key={prompt} onClick={() => onSend(prompt)} style={{ display: "inline-block", cursor: "pointer" }}>
-              <Chip component="button">
-                {prompt}
-              </Chip>
+              <Chip component="button">{prompt}</Chip>
             </div>
           ))}
         </ChipGroup>

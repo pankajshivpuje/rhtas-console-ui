@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  EmptyState,
-  EmptyStateBody,
-  Flex,
-  FlexItem,
-  Gallery,
-  GalleryItem,
-  Label,
-} from "@patternfly/react-core";
+import { EmptyState, EmptyStateBody, Flex, FlexItem, Gallery, GalleryItem, Label } from "@patternfly/react-core";
 import { CheckCircleIcon } from "@patternfly/react-icons";
 
 import type { AgentInsight } from "@app/client";
@@ -19,10 +11,7 @@ interface InsightsDashboardProps {
   onInsightClick: (insight: AgentInsight) => void;
 }
 
-export const InsightsDashboard: React.FC<InsightsDashboardProps> = ({
-  insights,
-  onInsightClick,
-}) => {
+export const InsightsDashboard: React.FC<InsightsDashboardProps> = ({ insights, onInsightClick }) => {
   const criticalCount = insights.filter((i) => i.severity === "critical").length;
   const warningCount = insights.filter((i) => i.severity === "warning").length;
   const infoCount = insights.filter((i) => i.severity === "info").length;
@@ -30,9 +19,7 @@ export const InsightsDashboard: React.FC<InsightsDashboardProps> = ({
   if (insights.length === 0) {
     return (
       <EmptyState headingLevel="h3" titleText="No Issues Detected" icon={CheckCircleIcon}>
-        <EmptyStateBody>
-          Your signing infrastructure looks healthy.
-        </EmptyStateBody>
+        <EmptyStateBody>Your signing infrastructure looks healthy.</EmptyStateBody>
       </EmptyState>
     );
   }
@@ -47,7 +34,9 @@ export const InsightsDashboard: React.FC<InsightsDashboardProps> = ({
         )}
         {warningCount > 0 && (
           <FlexItem>
-            <Label color="orange">{warningCount} Warning{warningCount !== 1 ? "s" : ""}</Label>
+            <Label color="orange">
+              {warningCount} Warning{warningCount !== 1 ? "s" : ""}
+            </Label>
           </FlexItem>
         )}
         {infoCount > 0 && (

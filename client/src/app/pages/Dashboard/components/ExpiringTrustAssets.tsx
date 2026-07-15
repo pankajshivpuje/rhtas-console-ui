@@ -1,16 +1,6 @@
 import React from "react";
 
-import {
-  Card,
-  CardBody,
-  CardTitle,
-  Content,
-  Flex,
-  FlexItem,
-  Label,
-  Stack,
-  StackItem,
-} from "@patternfly/react-core";
+import { Card, CardBody, CardTitle, Content, Flex, FlexItem, Label, Stack, StackItem } from "@patternfly/react-core";
 import type { ExpiringTrustAsset } from "@app/queries/health";
 
 interface IExpiringTrustAssetsProps {
@@ -42,9 +32,7 @@ export const ExpiringTrustAssets: React.FC<IExpiringTrustAssetsProps> = ({ asset
                 style={{
                   padding: "var(--pf-t--global--spacer--sm) 0",
                   borderBottom:
-                    idx < assets.length - 1
-                      ? "1px solid var(--pf-t--global--border--color--default)"
-                      : undefined,
+                    idx < assets.length - 1 ? "1px solid var(--pf-t--global--border--color--default)" : undefined,
                 }}
               >
                 <Flex

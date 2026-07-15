@@ -10,7 +10,8 @@ export const agentInsightsMock: AgentInsight[] = [
     id: "insight-1",
     severity: "critical",
     title: "TUF root metadata expires in 12 days",
-    description: "The TUF root metadata is approaching expiration. If it expires, clients will be unable to verify trust anchors and signature verification will fail.",
+    description:
+      "The TUF root metadata is approaching expiration. If it expires, clients will be unable to verify trust anchors and signature verification will fail.",
     domain: "trust-root",
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     suggestedPrompt: "Tell me more about the expiring TUF root and what I need to do",
@@ -30,7 +31,8 @@ export const agentInsightsMock: AgentInsight[] = [
     id: "insight-3",
     severity: "warning",
     title: "27% of production artifacts lack attestations",
-    description: "Several production artifacts have been signed but do not have associated attestations such as SLSA provenance or SBOM.",
+    description:
+      "Several production artifacts have been signed but do not have associated attestations such as SLSA provenance or SBOM.",
     domain: "attestations",
     timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
     suggestedPrompt: "Which production artifacts are missing attestations?",
@@ -103,62 +105,71 @@ const keywordRoutes: KeywordRoute[] = [
     generate: () => {
       const withAttestation = allSignedArtifacts.filter((a) => a.hasAttestation);
       const without = allSignedArtifacts.filter((a) => !a.hasAttestation);
-      const coverage = allSignedArtifacts.length > 0
-        ? ((withAttestation.length / allSignedArtifacts.length) * 100).toFixed(1)
-        : "0";
+      const coverage =
+        allSignedArtifacts.length > 0 ? ((withAttestation.length / allSignedArtifacts.length) * 100).toFixed(1) : "0";
 
-      return `## Attestation Status\n\n` +
+      return (
+        `## Attestation Status\n\n` +
         `**${withAttestation.length}** of **${allSignedArtifacts.length}** signed artifacts have attestations (${coverage}% coverage).\n\n` +
         `### Artifacts without attestations\n\n` +
         `| Artifact | Environment | Last Seen |\n|----------|-------------|----------|\n` +
         without.map((a) => `| ${a.uri} | ${a.environment} | ${a.lastSeen} |`).join("\n") +
-        `\n\nTo add attestations, use \`cosign attest\` with the appropriate predicate type (e.g., SLSA Provenance, SPDX SBOM).`;
+        `\n\nTo add attestations, use \`cosign attest\` with the appropriate predicate type (e.g., SLSA Provenance, SPDX SBOM).`
+      );
     },
   },
   {
     keywords: ["certificate", "expir", "tuf", "root"],
     generate: () => {
       const metadata = trustRootMetadataInfoMock.data ?? [];
-      return `## TUF Root Status\n\n` +
+      return (
+        `## TUF Root Status\n\n` +
         `**Repository:** ${trustRootMetadataInfoMock["repo-url"]}\n\n` +
         `| Version | Status | Expires |\n|---------|--------|---------|\n` +
         metadata.map((m) => `| v${m.version} | ${m.status} | ${m.expires} |`).join("\n") +
         `\n\nIf the root metadata expires, clients cannot verify trust anchors and signature verification will fail. ` +
-        `Rotate the TUF root before expiration using the \`tuf\` CLI tool.`;
+        `Rotate the TUF root before expiration using the \`tuf\` CLI tool.`
+      );
     },
   },
   {
     keywords: ["policy", "violation", "compliance", "conforma"],
     generate: () => {
-      return `## Policy Compliance\n\n` +
+      return (
+        `## Policy Compliance\n\n` +
         `**3 artifacts** are currently failing the enterprise signing policy.\n\n` +
         `Common violations include:\n` +
         `- Missing SLSA provenance attestation\n` +
         `- Signature not from an authorized identity\n` +
         `- SBOM not attached to the image\n\n` +
-        `Run artifact policy evaluation from the [Conforma page](/policy-generator) to see the full results.`;
+        `Run artifact policy evaluation from the [Conforma page](/policy-generator) to see the full results.`
+      );
     },
   },
   {
     keywords: ["health", "status", "service", "rekor", "fulcio"],
     generate: () => {
       const services = serviceHealthMock.services;
-      return `## Service Health\n\n` +
+      return (
+        `## Service Health\n\n` +
         `**Overall:** ${serviceHealthMock.overallMessage}\n\n` +
         `| Service | Status | Detail |\n|---------|--------|--------|\n` +
         services.map((s) => `| ${s.name} | ${s.statusText} | ${s.detail} |`).join("\n") +
-        (serviceHealthMock.overallDescription ? `\n\n${serviceHealthMock.overallDescription}` : "");
+        (serviceHealthMock.overallDescription ? `\n\n${serviceHealthMock.overallDescription}` : "")
+      );
     },
   },
   {
     keywords: ["sign", "artifact", "coverage"],
     generate: () => {
       const summary = postureSummaryMock;
-      return `## Signing Posture Summary\n\n` +
+      return (
+        `## Signing Posture Summary\n\n` +
         `- **Signed artifacts:** ${summary.signedCount}\n` +
         `- **With attestations:** ${summary.signedWithAttestationCount}\n` +
         `- **Attestation coverage:** ${summary.attestationCoverage}%\n\n` +
-        `Recent activity: 15 new artifacts signed in the last 24 hours.`;
+        `Recent activity: 15 new artifacts signed in the last 24 hours.`
+      );
     },
   },
   {
@@ -166,7 +177,8 @@ const keywordRoutes: KeywordRoute[] = [
     generate: () => {
       const summary = alertSummaryMock;
       const unacked = alertsMock.filter((a) => !a.acknowledged);
-      return `## Alert Summary\n\n` +
+      return (
+        `## Alert Summary\n\n` +
         `- **Total alerts:** ${summary.total}\n` +
         `- **Critical:** ${summary.critical}\n` +
         `- **Warning:** ${summary.warning}\n` +
@@ -175,7 +187,8 @@ const keywordRoutes: KeywordRoute[] = [
           ? `### Unacknowledged Alerts\n\n` +
             `| Alert | Severity | Status | Summary |\n|-------|----------|--------|----------|\n` +
             unacked.map((a) => `| ${a.alertName} | ${a.severity} | ${a.status} | ${a.summary} |`).join("\n")
-          : "All alerts have been acknowledged.");
+          : "All alerts have been acknowledged.")
+      );
     },
   },
 ];
@@ -183,18 +196,18 @@ const keywordRoutes: KeywordRoute[] = [
 function generateFallbackResponse(): string {
   const summary = postureSummaryMock;
   const alerts = alertSummaryMock;
-  return `I don't have specific information about that topic. Here's a summary of your current signing infrastructure health:\n\n` +
+  return (
+    `I don't have specific information about that topic. Here's a summary of your current signing infrastructure health:\n\n` +
     `- **Signed artifacts:** ${summary.signedCount} total, ${summary.signedWithAttestationCount} with attestations (${summary.attestationCoverage}% coverage)\n` +
     `- **Active alerts:** ${alerts.critical} critical, ${alerts.warning} warning\n` +
     `- **Service health:** ${serviceHealthMock.overallMessage}\n\n` +
-    `Try asking about specific topics like attestations, certificates, alerts, or signing activity.`;
+    `Try asking about specific topics like attestations, certificates, alerts, or signing activity.`
+  );
 }
 
 export function generateAgentResponse(userMessage: string): ChatMessage {
   const lower = userMessage.toLowerCase();
-  const matched = keywordRoutes.find((route) =>
-    route.keywords.some((kw) => lower.includes(kw))
-  );
+  const matched = keywordRoutes.find((route) => route.keywords.some((kw) => lower.includes(kw)));
 
   const content = matched ? matched.generate() : generateFallbackResponse();
 

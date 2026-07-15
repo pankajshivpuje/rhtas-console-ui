@@ -36,9 +36,7 @@ export function DSSEViewer({ dsse }: { dsse: DSSEV001Schema }) {
             <DescriptionListTerm>Hash</DescriptionListTerm>
             <DescriptionListDescription>
               <CodeBlock>
-                <CodeBlockCode>
-                  {`${dsse.payloadHash?.algorithm}:${dsse.payloadHash?.value}`}
-                </CodeBlockCode>
+                <CodeBlockCode>{`${dsse.payloadHash?.algorithm}:${dsse.payloadHash?.value}`}</CodeBlockCode>
               </CodeBlock>
             </DescriptionListDescription>
           </DescriptionListGroup>

@@ -65,7 +65,11 @@ export const allSignedArtifacts: SignedArtifact[] = [
     lastSeen: "2026-03-09T16:30:00Z",
     registry: "quay.io",
     hasAttestation: true,
-    attestationTypes: ["https://slsa.dev/provenance/v1", "https://spdx.dev/Document/v2.3", "https://in-toto.io/attestation/vulns/v0.1"],
+    attestationTypes: [
+      "https://slsa.dev/provenance/v1",
+      "https://spdx.dev/Document/v2.3",
+      "https://in-toto.io/attestation/vulns/v0.1",
+    ],
   },
   {
     uri: "registry.example.com/frontend:3.1.0",
@@ -163,7 +167,10 @@ export const postureTrendMock: { data: PostureTrendPoint[] } = {
   data: trendByEnv.all,
 };
 
-function buildAttestationCoverage(signedTotal: number, coverages: [string, string, number][]): AttestationTypeCoverage[] {
+function buildAttestationCoverage(
+  signedTotal: number,
+  coverages: [string, string, number][]
+): AttestationTypeCoverage[] {
   return coverages.map(([attestationType, displayName, artifactCount]) => ({
     attestationType,
     displayName,

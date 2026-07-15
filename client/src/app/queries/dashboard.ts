@@ -47,10 +47,7 @@ export const useFetchPostureSummary = ({ environment }: { environment?: string }
   };
 };
 
-export const useFetchSignedArtifacts = ({
-  environment,
-  filter,
-}: { environment?: string; filter?: string } = {}) => {
+export const useFetchSignedArtifacts = ({ environment, filter }: { environment?: string; filter?: string } = {}) => {
   const { data, isLoading, error } = useMockableQuery<{ data: SignedArtifact[] } | null, AxiosError<ApiError>>(
     {
       queryKey: DashboardKeys.signedArtifacts(filter, environment),

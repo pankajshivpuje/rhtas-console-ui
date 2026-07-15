@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "patternfly": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@patternfly/patternfly-mcp@latest"
+      ],
+      "env": {}
+    }
+  }
+}

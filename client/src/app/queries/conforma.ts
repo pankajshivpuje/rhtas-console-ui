@@ -4,14 +4,10 @@ import type { AxiosError } from "axios";
 import ENV from "@app/env";
 import { client } from "@app/axios-config/apiInit";
 import { evaluatePolicy } from "@app/client";
-import type {
-  EvaluateRequest,
-  ConformaResult,
-} from "@app/pages/Conforma/types";
+import type { EvaluateRequest, ConformaResult } from "@app/pages/Conforma/types";
 import { mockConformaResult } from "./mocks/conforma.mock";
 
-const mockDelay = <T>(data: T, ms = 2000): Promise<T> =>
-  new Promise((resolve) => setTimeout(resolve, ms, data));
+const mockDelay = <T>(data: T, ms = 2000): Promise<T> => new Promise((resolve) => setTimeout(resolve, ms, data));
 
 export const usePolicyEvaluate = () => {
   const mutation = useMutation<ConformaResult, AxiosError, EvaluateRequest>({

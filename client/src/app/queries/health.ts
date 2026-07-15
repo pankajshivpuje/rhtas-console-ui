@@ -53,8 +53,7 @@ export const useFetchServiceHealth = () => {
           getApiV1RekorPublicKey({ client }),
         ]);
 
-        const toStatus = (r: PromiseSettledResult<unknown>) =>
-          r.status === "fulfilled" ? "healthy" : "down";
+        const toStatus = (r: PromiseSettledResult<unknown>) => (r.status === "fulfilled" ? "healthy" : "down");
 
         return {
           overall: [backend, fulcio, tuf, rekor].every((r) => r.status === "fulfilled")
@@ -65,10 +64,62 @@ export const useFetchServiceHealth = () => {
           overallMessage: "Service status",
           overallDescription: "",
           services: [
-            { name: "Cosign", status: toStatus(backend), statusText: toStatus(backend) === "healthy" ? "Healthy" : "Down", detail: "", drillDown: { endpoint: "", impactMessage: "", lastSuccessfulProbe: "", consecutiveFailures: 0, probeHistory: [], failingChecks: [] } },
-            { name: "Fulcio", status: toStatus(fulcio), statusText: toStatus(fulcio) === "healthy" ? "Healthy" : "Down", detail: "", drillDown: { endpoint: "", impactMessage: "", lastSuccessfulProbe: "", consecutiveFailures: 0, probeHistory: [], failingChecks: [] } },
-            { name: "Rekor", status: toStatus(rekor), statusText: toStatus(rekor) === "healthy" ? "Healthy" : "Down", detail: "", drillDown: { endpoint: "", impactMessage: "", lastSuccessfulProbe: "", consecutiveFailures: 0, probeHistory: [], failingChecks: [] } },
-            { name: "TUF", status: toStatus(tuf), statusText: toStatus(tuf) === "healthy" ? "Healthy" : "Down", detail: "", drillDown: { endpoint: "", impactMessage: "", lastSuccessfulProbe: "", consecutiveFailures: 0, probeHistory: [], failingChecks: [] } },
+            {
+              name: "Cosign",
+              status: toStatus(backend),
+              statusText: toStatus(backend) === "healthy" ? "Healthy" : "Down",
+              detail: "",
+              drillDown: {
+                endpoint: "",
+                impactMessage: "",
+                lastSuccessfulProbe: "",
+                consecutiveFailures: 0,
+                probeHistory: [],
+                failingChecks: [],
+              },
+            },
+            {
+              name: "Fulcio",
+              status: toStatus(fulcio),
+              statusText: toStatus(fulcio) === "healthy" ? "Healthy" : "Down",
+              detail: "",
+              drillDown: {
+                endpoint: "",
+                impactMessage: "",
+                lastSuccessfulProbe: "",
+                consecutiveFailures: 0,
+                probeHistory: [],
+                failingChecks: [],
+              },
+            },
+            {
+              name: "Rekor",
+              status: toStatus(rekor),
+              statusText: toStatus(rekor) === "healthy" ? "Healthy" : "Down",
+              detail: "",
+              drillDown: {
+                endpoint: "",
+                impactMessage: "",
+                lastSuccessfulProbe: "",
+                consecutiveFailures: 0,
+                probeHistory: [],
+                failingChecks: [],
+              },
+            },
+            {
+              name: "TUF",
+              status: toStatus(tuf),
+              statusText: toStatus(tuf) === "healthy" ? "Healthy" : "Down",
+              detail: "",
+              drillDown: {
+                endpoint: "",
+                impactMessage: "",
+                lastSuccessfulProbe: "",
+                consecutiveFailures: 0,
+                probeHistory: [],
+                failingChecks: [],
+              },
+            },
           ],
         } satisfies ServiceHealthStatus;
       },

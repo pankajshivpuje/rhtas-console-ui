@@ -28,12 +28,20 @@ describe("AgentTrigger", () => {
   });
 
   test("renders agent button", () => {
-    render(<MemoryRouter><AgentTrigger /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <AgentTrigger />
+      </MemoryRouter>
+    );
     expect(screen.getByLabelText("Agent insights")).toBeInTheDocument();
   });
 
   test("shows badge with total count", () => {
-    render(<MemoryRouter><AgentTrigger /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <AgentTrigger />
+      </MemoryRouter>
+    );
     expect(screen.getByText("6")).toBeInTheDocument();
   });
 
@@ -44,7 +52,11 @@ describe("AgentTrigger", () => {
       fetchError: null,
     });
 
-    render(<MemoryRouter><AgentTrigger /></MemoryRouter>);
+    render(
+      <MemoryRouter>
+        <AgentTrigger />
+      </MemoryRouter>
+    );
     expect(screen.queryByText("0")).not.toBeInTheDocument();
   });
 });

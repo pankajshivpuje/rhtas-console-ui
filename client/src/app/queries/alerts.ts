@@ -42,7 +42,7 @@ export const useFetchAlerts = (filters?: AlertFilters) => {
       },
       refetchInterval: 30000,
     },
-    alertListResponseMock,
+    alertListResponseMock
   );
 
   return {
@@ -63,7 +63,7 @@ export const useFetchAlertSummary = () => {
       },
       refetchInterval: 30000,
     },
-    alertSummaryMock,
+    alertSummaryMock
   );
 
   return {
@@ -80,7 +80,13 @@ export const useAcknowledgeAlert = () => {
     mutationFn: async (alertId: string) => {
       if (ENV.MOCK !== "off") {
         const mockAlert = alertsMock.find((a) => a.id === alertId) ?? alertsMock[0];
-        return { ...mockAlert, id: alertId, acknowledged: true, acknowledgedBy: "user", acknowledgedAt: new Date().toISOString() } as Alert;
+        return {
+          ...mockAlert,
+          id: alertId,
+          acknowledged: true,
+          acknowledgedBy: "user",
+          acknowledgedAt: new Date().toISOString(),
+        } as Alert;
       }
       const response = await acknowledgeAlert({
         client,

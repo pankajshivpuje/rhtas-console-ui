@@ -11,15 +11,8 @@ interface ConformaExpandedRowProps {
   data: UIConformaData;
 }
 
-export const ConformaExpandedRow: React.FC<ConformaExpandedRowProps> = ({
-  data,
-}) => {
-  if (
-    !data.description &&
-    !data.collection?.length &&
-    !data.solution &&
-    !data.effectiveOn
-  ) {
+export const ConformaExpandedRow: React.FC<ConformaExpandedRowProps> = ({ data }) => {
+  if (!data.description && !data.collection?.length && !data.solution && !data.effectiveOn) {
     return null;
   }
 
@@ -28,33 +21,25 @@ export const ConformaExpandedRow: React.FC<ConformaExpandedRowProps> = ({
       {data.description && (
         <DescriptionListGroup>
           <DescriptionListTerm>Description</DescriptionListTerm>
-          <DescriptionListDescription>
-            {data.description}
-          </DescriptionListDescription>
+          <DescriptionListDescription>{data.description}</DescriptionListDescription>
         </DescriptionListGroup>
       )}
       {data.collection?.length ? (
         <DescriptionListGroup>
           <DescriptionListTerm>Collection</DescriptionListTerm>
-          <DescriptionListDescription>
-            {data.collection.join(", ")}
-          </DescriptionListDescription>
+          <DescriptionListDescription>{data.collection.join(", ")}</DescriptionListDescription>
         </DescriptionListGroup>
       ) : null}
       {data.solution && (
         <DescriptionListGroup>
           <DescriptionListTerm>Solution</DescriptionListTerm>
-          <DescriptionListDescription>
-            {data.solution}
-          </DescriptionListDescription>
+          <DescriptionListDescription>{data.solution}</DescriptionListDescription>
         </DescriptionListGroup>
       )}
       {data.effectiveOn && (
         <DescriptionListGroup>
           <DescriptionListTerm>Effective from</DescriptionListTerm>
-          <DescriptionListDescription>
-            {data.effectiveOn}
-          </DescriptionListDescription>
+          <DescriptionListDescription>{data.effectiveOn}</DescriptionListDescription>
         </DescriptionListGroup>
       )}
     </DescriptionList>

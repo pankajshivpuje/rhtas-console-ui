@@ -6,21 +6,11 @@ import { usePolicyEvaluate } from "@app/queries/conforma";
 import { EvaluationForm } from "./components/EvaluationForm";
 import { ResultsSummary } from "./components/ResultsSummary";
 import { ConformaResultsTable } from "./components/ConformaResultsTable";
-import {
-  type ConformaComponent,
-  type UIConformaData,
-  type EvaluateRequest,
-  ConformaResultStatus,
-} from "./types";
+import { type ConformaComponent, type UIConformaData, type EvaluateRequest, ConformaResultStatus } from "./types";
 
-const mapConformaResultData = (
-  components: ConformaComponent[],
-): UIConformaData[] => {
+const mapConformaResultData = (components: ConformaComponent[]): UIConformaData[] => {
   return components.flatMap((comp) => {
-    const mapRules = (
-      rules: ConformaComponent["violations"],
-      status: ConformaResultStatus,
-    ): UIConformaData[] =>
+    const mapRules = (rules: ConformaComponent["violations"], status: ConformaResultStatus): UIConformaData[] =>
       (rules ?? []).map((r) => ({
         title: r.metadata?.title ?? "",
         description: r.metadata?.description ?? "",
@@ -41,13 +31,9 @@ const mapConformaResultData = (
 };
 
 export const ConformaEvaluator: React.FC = () => {
-  const { evaluate, isEvaluating, result, error, reset } =
-    usePolicyEvaluate();
+  const { evaluate, isEvaluating, result, error, reset } = usePolicyEvaluate();
 
-  const uiData = useMemo(
-    () => (result ? mapConformaResultData(result.components) : []),
-    [result],
-  );
+  const uiData = useMemo(() => (result ? mapConformaResultData(result.components) : []), [result]);
 
   const handleSubmit = (request: EvaluateRequest) => {
     reset();
@@ -60,10 +46,7 @@ export const ConformaEvaluator: React.FC = () => {
       <PageSection variant="default">
         <Content>
           <h1>Artifact policy evaluation</h1>
-          <p>
-            Evaluate your artifact against Conforma policy to verify supply
-            chain compliance.
-          </p>
+          <p>Evaluate your artifact against Conforma policy to verify supply chain compliance.</p>
         </Content>
       </PageSection>
 

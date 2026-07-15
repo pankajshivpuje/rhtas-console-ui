@@ -1,0 +1,44 @@
+- generic [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - link "Skip to content" [ref=f6e5] [cursor=pointer]:
+      - /url: "#main-content-page-layout-horizontal-nav"
+    - banner [ref=f6e7]:
+      - generic [ref=f6e8]:
+        - button "Global navigation" [expanded] [ref=f6e10] [cursor=pointer]
+        - img "brand" [ref=f6e18]
+      - generic [ref=f6e24]:
+        - button "Notifications" [ref=f6e26] [cursor=pointer]
+        - button "Agent insights" [ref=f6e31] [cursor=pointer]
+        - 'button "Theme selection, current: System" [ref=f6e36] [cursor=pointer]'
+        - button "About" [ref=f6e47] [cursor=pointer]
+    - navigation "Nav" [ref=f6e53]:
+      - list [ref=f6e54]:
+        - listitem [ref=f6e55]:
+          - link "System Health" [ref=f6e56] [cursor=pointer]:
+            - /url: /operational-health
+        - listitem [ref=f6e57]:
+          - link "Agent New" [ref=f6e58] [cursor=pointer]:
+            - /url: /agent
+            - text: Agent
+            - generic [ref=f6e59]: New
+        - listitem [ref=f6e60]:
+          - link "Trust Coverage" [ref=f6e61] [cursor=pointer]:
+            - /url: /dashboard
+        - listitem [ref=f6e62]:
+          - link "Trust Root" [ref=f6e63] [cursor=pointer]:
+            - /url: /trust-root
+        - listitem [ref=f6e64]:
+          - link "Artifacts" [ref=f6e65] [cursor=pointer]:
+            - /url: /artifacts
+        - listitem [ref=f6e66]:
+          - link "Rekor Search" [ref=f6e67] [cursor=pointer]:
+            - /url: /rekor-search
+        - listitem [ref=f6e68]:
+          - link "Alerts" [ref=f6e69] [cursor=pointer]:
+            - /url: /alerts
+        - listitem [ref=f6e70]:
+          - link "Artifact policy evaluation" [ref=f6e71] [cursor=pointer]:
+            - /url: /policy-generator
+    - main [ref=f6e73]:
+      - progressbar "Contents" [ref=f6e80]
+  - button "Open Tanstack query devtools" [ref=f6e132] [cursor=pointer]

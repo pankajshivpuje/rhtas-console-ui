@@ -1,0 +1,203 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e5] [cursor=pointer]:
+      - /url: "#main-content-page-layout-horizontal-nav"
+      - generic [ref=e6]: Skip to content
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - button "Global navigation" [expanded] [ref=e10] [cursor=pointer]:
+          - img [ref=e12]
+        - img "brand" [ref=e18]
+      - generic [ref=e24]:
+        - button "Notifications" [ref=e26] [cursor=pointer]:
+          - img [ref=e28]
+          - generic [ref=e257]: "3"
+        - 'button "Theme selection, current: System" [ref=e31] [cursor=pointer]':
+          - img [ref=e35]
+          - img [ref=e39]
+        - button "About" [ref=e42] [cursor=pointer]:
+          - img [ref=e44]
+    - navigation "Nav" [ref=e48]:
+      - list [ref=e49]:
+        - listitem [ref=e50]:
+          - link "System Health" [ref=e51] [cursor=pointer]:
+            - /url: /operational-health
+        - listitem [ref=e52]:
+          - link "Trust Coverage" [ref=e53] [cursor=pointer]:
+            - /url: /dashboard
+        - listitem [ref=e54]:
+          - link "Trust Root" [ref=e55] [cursor=pointer]:
+            - /url: /trust-root
+        - listitem [ref=e56]:
+          - link "Artifacts" [ref=e57] [cursor=pointer]:
+            - /url: /artifacts
+        - listitem [ref=e58]:
+          - link "Rekor Search" [ref=e59] [cursor=pointer]:
+            - /url: /rekor-search
+        - listitem [ref=e60]:
+          - link "Policy Generator" [ref=e61] [cursor=pointer]:
+            - /url: /policy-generator
+        - listitem [ref=e62]:
+          - link "Alerts" [ref=e63] [cursor=pointer]:
+            - /url: /alerts
+    - main [ref=e65]:
+      - list [ref=e173]:
+        - listitem [ref=e174]:
+          - generic [ref=e175]:
+            - img [ref=e177]
+            - 'heading "Danger alert: TAS component rekor is down" [level=4] [ref=e179]':
+              - generic [ref=e180]: "Danger alert:"
+              - text: TAS component rekor is down
+            - 'button "Close Danger alert: alert: TAS component rekor is down" [ref=e182] [cursor=pointer]':
+              - img [ref=e184]
+            - generic [ref=e186]: rekor has been unreachable for more than 2 minutes.
+      - generic [ref=e70]:
+        - generic [ref=e189]:
+          - generic [ref=e191]:
+            - heading "Policy Generator" [level=1] [ref=e192]
+            - paragraph [ref=e193]: AI-assisted Conforma policy generation for SBOM and SLSA provenance
+          - generic [ref=e195]:
+            - button "New Session" [ref=e197] [cursor=pointer]:
+              - img [ref=e199]
+              - generic [ref=e201]: New Session
+            - button "History" [ref=e203] [cursor=pointer]:
+              - img [ref=e205]
+              - generic [ref=e207]: History
+              - img [ref=e210]
+        - generic [ref=e214]:
+          - generic [ref=e216]:
+            - generic [ref=e217]:
+              - generic [ref=e268]: Generate a SLSA provenance policy for my Go application built with GitHub Actions
+              - generic [ref=e274]:
+                - text: "I've generated a SLSA provenance policy with three enforcement rules: 1. **Builder Identity Validation**: Only allows attestations from `https://tekton.dev/chains/v2` 2. **Source Repository Pattern**: Enforces that source URIs match `^git\\+https://github\\.com/trusted-org/.*` 3. **Hermetic Build Requirement**: Denies builds that don't have the hermetic annotation set to true The policy uses Rego v1 syntax with externalized data for the allowed builders and source patterns. I've also included comprehensive tests that validate both passing and failing scenarios."
+                - generic [ref=e277]: v1 — View artifacts in panel
+            - generic [ref=e220]:
+              - generic [ref=e222]:
+                - generic [ref=e223]: Policy type
+                - list "Policy type" [ref=e224]:
+                  - listitem [ref=e225]:
+                    - button "SBOM + SLSA" [ref=e227] [cursor=pointer]:
+                      - generic [ref=e228]: SBOM + SLSA
+                  - listitem [ref=e229]:
+                    - button "SLSA only" [ref=e231] [cursor=pointer]:
+                      - generic [ref=e232]: SLSA only
+                  - listitem [ref=e233]:
+                    - button "SBOM only" [ref=e235] [cursor=pointer]:
+                      - generic [ref=e236]: SBOM only
+              - button "Image & credentials" [ref=e239] [cursor=pointer]:
+                - img [ref=e242]
+                - generic [ref=e244]: Image & credentials
+              - generic [ref=e245]:
+                - textbox "Policy message input" [ref=e247]:
+                  - /placeholder: Describe your policy requirements...
+                - button "Send message" [disabled]:
+                  - generic:
+                    - img
+                  - generic: Send
+          - generic [ref=e278]:
+            - generic [ref=e280]:
+              - heading "Artifacts" [level=3] [ref=e282]
+              - button "v1" [ref=e367] [cursor=pointer]:
+                - generic [ref=e368]: v1
+                - img [ref=e371]
+            - generic [ref=e283]:
+              - generic [ref=e284]:
+                - button [disabled]:
+                  - generic:
+                    - img
+              - tablist [ref=e285]:
+                - tab "slsa_provenance.rego" [selected] [ref=e286] [cursor=pointer]:
+                  - generic [ref=e287]: slsa_provenance.rego
+                - tab "slsa_provenance_test.rego" [ref=e288] [cursor=pointer]:
+                  - generic [ref=e289]: slsa_provenance_test.rego
+                - tab "policy.yaml" [ref=e290] [cursor=pointer]:
+                  - generic [ref=e291]: policy.yaml
+                - tab "data.json" [ref=e292] [cursor=pointer]:
+                  - generic [ref=e293]: data.json
+                - tab "Command" [ref=e294] [cursor=pointer]:
+                  - generic [ref=e295]: Command
+              - button "Scroll forward" [ref=e297] [cursor=pointer]:
+                - img [ref=e299]
+            - code [ref=e303]:
+              - generic [ref=e304]: "1"
+              - text: package policy.slsa_provenance
+              - generic [ref=e305]: "2"
+              - generic [ref=e306]: "3"
+              - text: import rego.v1
+              - generic [ref=e307]: "4"
+              - generic [ref=e308]: "5"
+              - text: "# title: SLSA Provenance Builder and Source Verification"
+              - generic [ref=e309]: "6"
+              - text: "# description: Validates SLSA provenance attestations against trusted builder identities,"
+              - generic [ref=e310]: "7"
+              - text: "# source repository patterns, and hermetic build requirements."
+              - generic [ref=e311]: "8"
+              - generic [ref=e312]: "9"
+              - text: "# Deny if builder identity is not in the allowed list"
+              - generic [ref=e313]: "10"
+              - text: "deny contains msg if {"
+              - generic [ref=e314]: "11"
+              - text: some att in input.attestations
+              - generic [ref=e315]: "12"
+              - text: att.type == "https://slsa.dev/provenance/v1"
+              - generic [ref=e316]: "13"
+              - text: builder_id := att.predicate.buildDefinition.builderId
+              - generic [ref=e317]: "14"
+              - text: not builder_id in data.allowed_builders
+              - generic [ref=e318]: "15"
+              - text: "msg := sprintf(\"Untrusted builder: %s\", [builder_id])"
+              - generic [ref=e319]: "16"
+              - text: "}"
+              - generic [ref=e320]: "17"
+              - generic [ref=e321]: "18"
+              - text: "# Deny if source repository does not match allowed pattern"
+              - generic [ref=e322]: "19"
+              - text: "deny contains msg if {"
+              - generic [ref=e323]: "20"
+              - text: some att in input.attestations
+              - generic [ref=e324]: "21"
+              - text: att.type == "https://slsa.dev/provenance/v1"
+              - generic [ref=e325]: "22"
+              - text: source_uri := att.predicate.buildDefinition.externalParameters.source.uri
+              - generic [ref=e326]: "23"
+              - text: not regex.match(data.allowed_source_pattern, source_uri)
+              - generic [ref=e327]: "24"
+              - text: "msg := sprintf(\"Source repository not allowed: %s\", [source_uri])"
+              - generic [ref=e328]: "25"
+              - text: "}"
+              - generic [ref=e329]: "26"
+              - generic [ref=e330]: "27"
+              - text: "# Deny if hermetic build flag is not enabled"
+              - generic [ref=e331]: "28"
+              - text: "deny contains msg if {"
+              - generic [ref=e332]: "29"
+              - text: some att in input.attestations
+              - generic [ref=e333]: "30"
+              - text: att.type == "https://slsa.dev/provenance/v1"
+              - generic [ref=e334]: "31"
+              - text: hermetic := att.predicate.buildDefinition.resolvedDependencies[_].annotations["hermetic"]
+              - generic [ref=e335]: "32"
+              - text: hermetic != "true"
+              - generic [ref=e336]: "33"
+              - text: "msg := \"Build is not hermetic: hermetic flag must be set to true\""
+              - generic [ref=e337]: "34"
+              - text: "}"
+              - generic [ref=e338]: "35"
+            - generic [ref=e340]:
+              - generic [ref=e343]:
+                - img [ref=e376]
+                - generic [ref=e344]: 3/3 tests passing
+              - button "Run tests" [ref=e346] [cursor=pointer]:
+                - img [ref=e348]
+                - generic [ref=e350]: Run tests
+            - generic [ref=e352]:
+              - button "Download All Files" [ref=e354] [cursor=pointer]:
+                - img [ref=e356]
+                - generic [ref=e358]: Download All Files
+              - button "Copy" [ref=e361] [cursor=pointer]:
+                - img [ref=e363]
+                - generic [ref=e365]: Copy
+  - generic [ref=e74]:
+    - img [ref=e76]
+    - button "Open Tanstack query devtools" [ref=e124] [cursor=pointer]:
+      - img [ref=e125]

@@ -1,0 +1,176 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e5] [cursor=pointer]:
+      - /url: "#main-content-page-layout-horizontal-nav"
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - button "Global navigation" [expanded] [ref=e10] [cursor=pointer]
+        - img "brand" [ref=e18]
+      - generic [ref=e24]:
+        - button "Notifications" [ref=e26] [cursor=pointer]:
+          - generic [ref=e30]: "3"
+        - 'button "Theme selection, current: System" [ref=e32] [cursor=pointer]'
+        - button "About" [ref=e43] [cursor=pointer]
+    - navigation "Nav" [ref=e49]:
+      - list [ref=e50]:
+        - listitem [ref=e51]:
+          - link "System Health" [ref=e52] [cursor=pointer]:
+            - /url: /operational-health
+        - listitem [ref=e53]:
+          - link "Trust Coverage" [ref=e54] [cursor=pointer]:
+            - /url: /dashboard
+        - listitem [ref=e55]:
+          - link "Trust Root" [ref=e56] [cursor=pointer]:
+            - /url: /trust-root
+        - listitem [ref=e57]:
+          - link "Artifacts" [ref=e58] [cursor=pointer]:
+            - /url: /artifacts
+        - listitem [ref=e59]:
+          - link "Rekor Search" [ref=e60] [cursor=pointer]:
+            - /url: /rekor-search
+        - listitem [ref=e61]:
+          - link "Alerts" [ref=e62] [cursor=pointer]:
+            - /url: /alerts
+        - listitem [ref=e63]:
+          - link "Artifact policy evaluation" [ref=e64] [cursor=pointer]:
+            - /url: /policy-generator
+    - main [ref=e66]:
+      - generic [ref=e74]:
+        - generic [ref=e76]:
+          - heading "Trust Coverage" [level=2] [ref=e77]
+          - paragraph [ref=e78]:
+            - text: Fleet-level visibility into artifact signing coverage and attestation status.
+            - link "securesign/sigstore-ocp" [ref=e79] [cursor=pointer]:
+              - /url: https://github.com/securesign/sigstore-ocp
+        - generic [ref=e83]:
+          - generic [ref=e85]:
+            - generic [ref=e87]:
+              - generic [ref=e88]: Signed Artifacts
+              - heading "124" [level=3] [ref=e91]
+            - generic [ref=e93]:
+              - generic [ref=e94]: With Attestations
+              - generic [ref=e96]:
+                - heading "115" [level=3] [ref=e97]
+                - generic [ref=e98]: 92.7% of signed
+            - generic [ref=e102]:
+              - generic [ref=e103]: Attestation Coverage
+              - generic [ref=e105]:
+                - heading "92.7%" [level=3] [ref=e106]
+                - generic [ref=e107]: Good
+          - generic [ref=e111]:
+            - generic [ref=e113]:
+              - generic [ref=e114]: Attestation Status
+              - img "Attestation status donut chart" [ref=e118]:
+                - generic [ref=e120]:
+                  - generic [ref=e121]: "With Attestation: 115"
+                  - generic [ref=e122]: "Without Attestation: 9"
+                - generic [ref=e123]: 124Signed Artifacts
+            - generic [ref=e125]:
+              - generic [ref=e126]: Artifact Trend (Last 30 Days)
+              - img [ref=e130]:
+                - generic [ref=e131]: Jun 14
+                - generic [ref=e132]: Jun 19
+                - generic [ref=e133]: Jun 24
+                - generic [ref=e134]: Jun 29
+                - generic [ref=e135]: Jul 4
+                - generic [ref=e136]: Jul 9
+                - generic [ref=e137]: Jul 13
+                - generic [ref=e138]: "20"
+                - generic [ref=e139]: "40"
+                - generic [ref=e140]: "60"
+                - generic [ref=e141]: "80"
+                - generic [ref=e142]: "100"
+                - generic [ref=e143]: "120"
+                - generic [ref=e147]:
+                  - generic [ref=e148]: Signed Artifacts
+                  - generic [ref=e149]: With Attestations
+          - generic [ref=e151]:
+            - generic [ref=e152]: Attestation Presence by Type
+            - img [ref=e156]:
+              - generic [ref=e157]: SLSA Provenance
+              - generic [ref=e158]: SBOM (SPDX)
+              - generic [ref=e159]: Vulnerability Scan
+              - generic [ref=e160]: SLSA VSA
+              - generic [ref=e161]: Test Results
+              - generic [ref=e162]: 20%
+              - generic [ref=e163]: 40%
+              - generic [ref=e164]: 60%
+              - generic [ref=e165]: 80%
+              - generic [ref=e166]: 100%
+          - generic [ref=e169]:
+            - generic [ref=e170]: Signed Artifacts
+            - generic [ref=e172]:
+              - group "Attestation filter" [ref=e177]:
+                - button "All" [pressed] [ref=e179] [cursor=pointer]
+                - button "Signed only" [ref=e182] [cursor=pointer]
+                - button "Signed + Attestation" [ref=e185] [cursor=pointer]
+              - grid "Signed artifacts table" [ref=e187]:
+                - rowgroup [ref=e188]:
+                  - row [ref=e189]:
+                    - columnheader "Artifact URI" [ref=e190]
+                    - columnheader "Environment" [ref=e191]
+                    - columnheader "Registry" [ref=e192]
+                    - columnheader "Attestation Status" [ref=e193]
+                    - columnheader "Last Seen" [ref=e194]
+                - rowgroup [ref=e195]:
+                  - row [ref=e196]:
+                    - gridcell "quay.io/myorg/api-server:2.3.1" [ref=e197]
+                    - gridcell "rhtas-production" [ref=e198]
+                    - gridcell "quay.io" [ref=e202]
+                    - gridcell "Attested" [ref=e203]
+                    - gridcell "Mar 09, 2026" [ref=e207]
+                  - row [ref=e208]:
+                    - gridcell "quay.io/myorg/billing-service:1.4.2" [ref=e209]
+                    - gridcell "rhtas-production" [ref=e210]
+                    - gridcell "quay.io" [ref=e214]
+                    - gridcell "Attested" [ref=e215]
+                    - gridcell "Mar 09, 2026" [ref=e219]
+                  - row [ref=e220]:
+                    - gridcell "quay.io/myorg/auth-proxy:2.0.1" [ref=e221]
+                    - gridcell "rhtas-production" [ref=e222]
+                    - gridcell "quay.io" [ref=e226]
+                    - gridcell "No attestation" [ref=e227]
+                    - gridcell "Mar 08, 2026" [ref=e231]
+                  - row [ref=e232]:
+                    - gridcell "quay.io/myorg/gateway:4.1.0" [ref=e233]
+                    - gridcell "rhtas-production" [ref=e234]
+                    - gridcell "quay.io" [ref=e238]
+                    - gridcell "Attested" [ref=e239]
+                    - gridcell "Mar 09, 2026" [ref=e243]
+                  - row [ref=e244]:
+                    - gridcell "registry.example.com/frontend:3.1.0" [ref=e245]
+                    - gridcell "rhtas-staging" [ref=e246]
+                    - gridcell "registry.example.com" [ref=e250]
+                    - gridcell "Attested" [ref=e251]
+                    - gridcell "Mar 09, 2026" [ref=e255]
+                  - row [ref=e256]:
+                    - gridcell "registry.example.com/worker:1.2.0-rc1" [ref=e257]
+                    - gridcell "rhtas-staging" [ref=e258]
+                    - gridcell "registry.example.com" [ref=e262]
+                    - gridcell "No attestation" [ref=e263]
+                    - gridcell "Mar 08, 2026" [ref=e267]
+                  - row [ref=e268]:
+                    - gridcell "registry.example.com/data-pipeline:0.9.0" [ref=e269]
+                    - gridcell "rhtas-dev" [ref=e270]
+                    - gridcell "registry.example.com" [ref=e274]
+                    - gridcell "Attested" [ref=e275]
+                    - gridcell "Mar 07, 2026" [ref=e279]
+                  - row [ref=e280]:
+                    - gridcell "ghcr.io/myorg/monitoring-agent:1.1.0" [ref=e281]
+                    - gridcell "rhtas-dev" [ref=e282]
+                    - gridcell "ghcr.io" [ref=e286]
+                    - gridcell "No attestation" [ref=e287]
+                    - gridcell "Mar 06, 2026" [ref=e291]
+                  - row [ref=e292]:
+                    - gridcell "quay.io/myorg/notification-svc:3.0.2" [ref=e293]
+                    - gridcell "rhtas-production" [ref=e294]
+                    - gridcell "quay.io" [ref=e298]
+                    - gridcell "Attested" [ref=e299]
+                    - gridcell "Mar 09, 2026" [ref=e303]
+                  - row [ref=e304]:
+                    - gridcell "quay.io/myorg/cache-proxy:1.0.5" [ref=e305]
+                    - gridcell "rhtas-staging" [ref=e306]
+                    - gridcell "quay.io" [ref=e310]
+                    - gridcell "Attested" [ref=e311]
+                    - gridcell "Mar 09, 2026" [ref=e315]
+  - button "Open Tanstack query devtools" [ref=e366] [cursor=pointer]

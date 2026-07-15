@@ -1,0 +1,185 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - link "Skip to content" [ref=e5] [cursor=pointer]:
+        - /url: "#main-content-page-layout-horizontal-nav"
+        - generic [ref=e6]: Skip to content
+      - banner [ref=e7]:
+        - generic [ref=e8]:
+          - button "Global navigation" [expanded] [ref=e10] [cursor=pointer]:
+            - img [ref=e12]
+          - img "brand" [ref=e18]
+        - generic [ref=e24]:
+          - button "Notifications" [ref=e26] [cursor=pointer]:
+            - img [ref=e28]
+            - generic [ref=e74]: "3"
+          - 'button "Theme selection, current: System" [ref=e31] [cursor=pointer]':
+            - img [ref=e35]
+            - img [ref=e39]
+          - button "About" [ref=e42] [cursor=pointer]:
+            - img [ref=e44]
+      - navigation "Nav" [ref=e48]:
+        - list [ref=e49]:
+          - listitem [ref=e50]:
+            - link "System Health" [ref=e51] [cursor=pointer]:
+              - /url: /operational-health
+          - listitem [ref=e52]:
+            - link "Trust Coverage" [ref=e53] [cursor=pointer]:
+              - /url: /dashboard
+          - listitem [ref=e54]:
+            - link "Trust Root" [ref=e55] [cursor=pointer]:
+              - /url: /trust-root
+          - listitem [ref=e56]:
+            - link "Artifacts" [ref=e57] [cursor=pointer]:
+              - /url: /artifacts
+          - listitem [ref=e58]:
+            - link "Rekor Search" [ref=e59] [cursor=pointer]:
+              - /url: /rekor-search
+          - listitem [ref=e60]:
+            - link "Alerts" [ref=e61] [cursor=pointer]:
+              - /url: /alerts
+          - listitem [ref=e62]:
+            - link "Conforma Evaluation" [ref=e63] [cursor=pointer]:
+              - /url: /policy-generator
+      - main [ref=e65]:
+        - generic [ref=e70]:
+          - generic [ref=e77]:
+            - heading "Conforma" [level=1] [ref=e78]
+            - paragraph [ref=e79]: Evaluate container images against Conforma policies to verify supply chain compliance.
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - generic [ref=e85]:
+                - text: Container image
+                - generic [ref=e86]: "*"
+              - textbox "Container image" [ref=e89]:
+                - /placeholder: quay.io/my-org/my-app:v1.2.3
+                - text: quay.io/my-org/my-app:v1.2.3
+            - generic [ref=e90]:
+              - generic [ref=e92]:
+                - text: Policy source
+                - generic [ref=e93]: "*"
+              - textbox "Policy source" [ref=e96]:
+                - /placeholder: oci::quay.io/enterprise-contract/config//default
+                - text: oci::quay.io/enterprise-contract/config//default
+            - button "Advanced options" [ref=e99] [cursor=pointer]:
+              - img [ref=e102]
+              - generic [ref=e104]: Advanced options
+            - button "Evaluate" [ref=e108] [cursor=pointer]:
+              - generic [ref=e109]: Evaluate
+          - generic [ref=e210]:
+            - heading "Results" [level=2] [ref=e211]
+            - generic [ref=e212]:
+              - paragraph [ref=e214]:
+                - img [ref=e215]
+                - strong [ref=e217]: "2"
+                - text: Failed
+              - paragraph [ref=e219]:
+                - img [ref=e220]
+                - strong [ref=e222]: "1"
+                - text: Warning
+              - paragraph [ref=e224]:
+                - img [ref=e225]
+                - strong [ref=e227]: "4"
+                - text: Success
+          - generic [ref=e229]:
+            - generic [ref=e230]:
+              - generic [ref=e232]:
+                - generic [ref=e236]:
+                  - img [ref=e238]
+                  - textbox "Filter by rule name" [ref=e240]:
+                    - /placeholder: Filter by rule...
+                - button "Status 1" [expanded] [ref=e496] [cursor=pointer]:
+                  - img [ref=e245]
+                  - generic [ref=e247]:
+                    - text: Status
+                    - generic [ref=e497]: "1"
+                  - img [ref=e250]
+              - generic [ref=e498]:
+                - generic [ref=e501]:
+                  - generic [ref=e502]:
+                    - generic [ref=e503]: Status
+                    - list "Status" [ref=e504]:
+                      - listitem [ref=e505]:
+                        - generic [ref=e506]:
+                          - generic [ref=e508]: Failed
+                          - button "Close Failed" [ref=e510] [cursor=pointer]:
+                            - img [ref=e512]
+                  - button "Close label group Status" [ref=e515] [cursor=pointer]:
+                    - img [ref=e517]
+                - button "Clear all filters" [ref=e521] [cursor=pointer]:
+                  - generic [ref=e522]: Clear all filters
+            - grid "Conforma evaluation results" [ref=e252]:
+              - rowgroup [ref=e253]:
+                - row "Row expansion Rule Status Message Component" [ref=e254]:
+                  - columnheader "Row expansion" [ref=e255]:
+                    - generic [ref=e256]: Row expansion
+                  - columnheader "Rule" [ref=e257]:
+                    - button "Rule" [ref=e258] [cursor=pointer]:
+                      - generic [ref=e259]:
+                        - generic [ref=e260]: Rule
+                        - generic:
+                          - img
+                  - columnheader "Status" [ref=e261]:
+                    - button "Status" [ref=e262] [cursor=pointer]:
+                      - generic [ref=e263]:
+                        - generic [ref=e264]: Status
+                        - generic:
+                          - img
+                  - columnheader "Message" [ref=e265]:
+                    - button "Message" [ref=e266] [cursor=pointer]:
+                      - generic [ref=e267]:
+                        - generic [ref=e268]: Message
+                        - generic:
+                          - img
+                  - columnheader "Component" [ref=e269]:
+                    - button "Component" [ref=e270] [cursor=pointer]:
+                      - generic [ref=e271]:
+                        - generic [ref=e272]: Component
+                        - generic:
+                          - img
+              - rowgroup [ref=e273]:
+                - row "Details Builder ID must be pinned Failed Builder ID 'https://untrusted.example.com/builder' is not in the list of trusted builders my-app" [ref=e388]:
+                  - gridcell "Details" [ref=e275]:
+                    - button "Details" [ref=e276] [cursor=pointer]:
+                      - generic [ref=e278]:
+                        - img
+                  - gridcell "Builder ID must be pinned" [ref=e389]
+                  - gridcell "Failed" [ref=e390]:
+                    - img [ref=e391]
+                    - text: Failed
+                  - gridcell "Builder ID 'https://untrusted.example.com/builder' is not in the list of trusted builders" [ref=e393]:
+                    - generic [ref=e285]: Builder ID 'https://untrusted.example.com/builder' is not in the list of trusted builders
+                  - gridcell "my-app" [ref=e286]
+              - rowgroup [ref=e287]:
+                - row "Details Source repository must match allowed pattern Failed Source repository 'git+https://github.com/unknown-org/app.git' does not match allowed pattern my-app" [ref=e394]:
+                  - gridcell "Details" [ref=e289]:
+                    - button "Details" [ref=e290] [cursor=pointer]:
+                      - generic [ref=e292]:
+                        - img
+                  - gridcell "Source repository must match allowed pattern" [ref=e395]
+                  - gridcell "Failed" [ref=e396]:
+                    - img [ref=e397]
+                    - text: Failed
+                  - gridcell "Source repository 'git+https://github.com/unknown-org/app.git' does not match allowed pattern" [ref=e399]:
+                    - generic [ref=e299]: Source repository 'git+https://github.com/unknown-org/app.git' does not match allowed pattern
+                  - gridcell "my-app" [ref=e300]
+    - generic [ref=e110]:
+      - img [ref=e112]
+      - button "Open Tanstack query devtools" [ref=e160] [cursor=pointer]:
+        - img [ref=e161]
+  - generic [ref=e472]:
+    - heading "Status" [level=1] [ref=e473]
+    - menu [ref=e474]:
+      - menuitem "Failed" [ref=e475]:
+        - generic [ref=e477] [cursor=pointer]:
+          - checkbox "Failed" [checked] [active] [ref=e480]
+          - generic [ref=e481]: Failed
+          - img [ref=e524]
+      - menuitem "Warning" [ref=e482]:
+        - generic [ref=e484] [cursor=pointer]:
+          - checkbox "Warning" [ref=e487]
+          - generic [ref=e488]: Warning
+      - menuitem "Success" [ref=e489]:
+        - generic [ref=e491] [cursor=pointer]:
+          - checkbox "Success" [ref=e494]
+          - generic [ref=e495]: Success

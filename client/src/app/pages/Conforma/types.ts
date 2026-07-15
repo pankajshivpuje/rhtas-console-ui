@@ -4,8 +4,7 @@ export const ConformaResultStatus = {
   Success: "Success",
 } as const;
 
-export type ConformaResultStatus =
-  (typeof ConformaResultStatus)[keyof typeof ConformaResultStatus];
+export type ConformaResultStatus = (typeof ConformaResultStatus)[keyof typeof ConformaResultStatus];
 
 export interface ConformaRuleMetadata {
   title: string;

@@ -1,0 +1,40 @@
+- generic [ref=f2e2]:
+  - generic [ref=f2e3]:
+    - link "Skip to content" [ref=f2e5] [cursor=pointer]:
+      - /url: "#main-content-page-layout-horizontal-nav"
+    - banner [ref=f2e7]:
+      - generic [ref=f2e8]:
+        - button "Global navigation" [expanded] [ref=f2e10] [cursor=pointer]
+        - img "brand" [ref=f2e18]
+      - generic [ref=f2e24]:
+        - button "Notifications" [ref=f2e26] [cursor=pointer]
+        - 'button "Theme selection, current: System" [ref=f2e31] [cursor=pointer]'
+        - button "About" [ref=f2e42] [cursor=pointer]
+    - navigation "Nav" [ref=f2e48]:
+      - list [ref=f2e49]:
+        - listitem [ref=f2e50]:
+          - link "System Health" [ref=f2e51] [cursor=pointer]:
+            - /url: /operational-health
+        - listitem [ref=f2e52]:
+          - link "Trust Coverage" [ref=f2e53] [cursor=pointer]:
+            - /url: /dashboard
+        - listitem [ref=f2e54]:
+          - link "Trust Root" [ref=f2e55] [cursor=pointer]:
+            - /url: /trust-root
+        - listitem [ref=f2e56]:
+          - link "Artifacts" [ref=f2e57] [cursor=pointer]:
+            - /url: /artifacts
+        - listitem [ref=f2e58]:
+          - link "Rekor Search" [ref=f2e59] [cursor=pointer]:
+            - /url: /rekor-search
+        - listitem [ref=f2e60]:
+          - link "Alerts" [ref=f2e61] [cursor=pointer]:
+            - /url: /alerts
+        - listitem [ref=f2e62]:
+          - link "Artifact policy evaluation" [ref=f2e63] [cursor=pointer]:
+            - /url: /policy-generator
+    - main [ref=f2e65]:
+      - generic [ref=f2e73]:
+        - 'heading "404: That page does not exist" [level=4] [ref=f2e79]'
+        - generic [ref=f2e80]: Another page might have the information you need.
+  - button "Open Tanstack query devtools" [ref=f2e131] [cursor=pointer]

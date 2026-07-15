@@ -35,9 +35,7 @@ export function HashedRekordViewer({ hashedRekord }: { hashedRekord: RekorSchema
             <DescriptionListTerm>Hash</DescriptionListTerm>
             <DescriptionListDescription>
               <CodeBlock>
-                <CodeBlockCode>
-                  {`${hashedRekord.data.hash?.algorithm}:${hashedRekord.data.hash?.value}`}
-                </CodeBlockCode>
+                <CodeBlockCode>{`${hashedRekord.data.hash?.algorithm}:${hashedRekord.data.hash?.value}`}</CodeBlockCode>
               </CodeBlock>
             </DescriptionListDescription>
           </DescriptionListGroup>

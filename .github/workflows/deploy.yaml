@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat/dashboard-and-rekor-updates
   workflow_dispatch:
   workflow_call:
 

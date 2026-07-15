@@ -1,0 +1,159 @@
+<h2>Policy Generator — Component Architecture</h2>
+<p class="subtitle">Page structure and component hierarchy</p>
+
+<div class="mockup">
+  <div class="mockup-header">Component Tree & Layout</div>
+  <div class="mockup-body" style="padding:0;">
+    <div style="display:flex;height:520px;font-family:monospace;font-size:11px;">
+      <!-- Left: Nav sidebar -->
+      <div style="width:160px;background:#1a1a1a;color:#999;padding:12px 8px;display:flex;flex-direction:column;gap:4px;flex-shrink:0;">
+        <div style="color:#fff;font-weight:bold;font-size:10px;margin-bottom:8px;">🔒 RHTAS Console</div>
+        <div style="padding:4px 6px;font-size:10px;">System Health</div>
+        <div style="padding:4px 6px;font-size:10px;">Trust Coverage</div>
+        <div style="padding:4px 6px;font-size:10px;">Trust Root</div>
+        <div style="padding:4px 6px;font-size:10px;">Artifacts</div>
+        <div style="padding:4px 6px;font-size:10px;">Rekor Search</div>
+        <div style="padding:4px 6px;font-size:10px;background:#333;color:#fff;border-radius:3px;">Policy Generator</div>
+        <div style="padding:4px 6px;font-size:10px;">Alerts</div>
+      </div>
+
+      <!-- Main content area -->
+      <div style="flex:1;display:flex;flex-direction:column;background:#f0f0f0;">
+        <!-- Page header -->
+        <div style="background:#fff;padding:10px 16px;border-bottom:1px solid #ddd;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-weight:bold;font-size:13px;">Policy Generator</div>
+            <div style="font-size:9px;color:#666;">AI-assisted Conforma policy generation for SBOM and SLSA provenance</div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <div style="background:#f0f0f0;padding:4px 8px;border-radius:3px;font-size:9px;cursor:pointer;">New Session</div>
+            <div style="background:#f0f0f0;padding:4px 8px;border-radius:3px;font-size:9px;cursor:pointer;">History ▾</div>
+          </div>
+        </div>
+
+        <!-- Split panel -->
+        <div style="flex:1;display:flex;overflow:hidden;">
+          <!-- Chat panel -->
+          <div style="flex:1;display:flex;flex-direction:column;border-right:1px solid #ddd;min-width:0;">
+            <!-- Component label -->
+            <div style="background:#e3f2fd;padding:3px 8px;font-size:8px;color:#1565c0;font-weight:bold;border-bottom:1px solid #bbdefb;">ChatPanel</div>
+
+            <!-- Chat messages -->
+            <div style="flex:1;padding:10px;overflow:auto;display:flex;flex-direction:column;gap:8px;background:#fafafa;">
+              <!-- Component label -->
+              <div style="background:#fff3e0;padding:2px 6px;font-size:7px;color:#e65100;border-radius:2px;align-self:flex-start;">ChatMessage (role=assistant)</div>
+              <div style="background:#e8f4fd;padding:8px 10px;border-radius:8px;font-size:9px;max-width:80%;align-self:flex-start;">
+                Welcome! I can generate Conforma policies from natural language. Tell me:<br><br>
+                • What security requirements do you need to enforce?<br>
+                • Optionally: image reference and signing identity
+              </div>
+
+              <div style="background:#fff3e0;padding:2px 6px;font-size:7px;color:#e65100;border-radius:2px;align-self:flex-end;">ChatMessage (role=user)</div>
+              <div style="background:#fff;padding:8px 10px;border-radius:8px;font-size:9px;max-width:80%;align-self:flex-end;border:1px solid #ddd;">
+                I need to ensure all container images in production are built by our Tekton pipeline (builder ID: https://tekton.myorg.com/chains/v2) from the main branch of github.com/myorg/* repos, with hermetic builds enforced. Image: quay.io/myorg/api-server:v2.1
+              </div>
+
+              <div style="background:#fff3e0;padding:2px 6px;font-size:7px;color:#e65100;border-radius:2px;align-self:flex-start;">ChatMessage (role=assistant, hasArtifacts=true)</div>
+              <div style="background:#e8f4fd;padding:8px 10px;border-radius:8px;font-size:9px;max-width:80%;align-self:flex-start;">
+                I've generated a SLSA Build L3 provenance policy with 3 rules:<br><br>
+                <strong>1. Builder Identity</strong> — Pins to your Tekton Chains v2 builder<br>
+                <strong>2. Source Verification</strong> — Validates main branch from github.com/myorg/*<br>
+                <strong>3. Hermetic Build</strong> — Enforces buildConfig.hermetic = true<br><br>
+                <div style="background:#fff;border:1px solid #c8e6c9;border-radius:4px;padding:6px;margin-top:4px;">
+                  <div style="color:#2e7d32;font-size:8px;font-weight:bold;">✓ All 6 OPA tests passing</div>
+                  <div style="font-size:8px;color:#666;margin-top:2px;">View artifacts in the panel →</div>
+                </div>
+                <div style="font-size:8px;color:#666;margin-top:6px;">Want me to also add an SBOM composition policy for package source validation?</div>
+              </div>
+            </div>
+
+            <!-- Input area -->
+            <div style="background:#fff3e0;padding:2px 6px;font-size:7px;color:#e65100;border-bottom:1px solid #bbdefb;">ChatInput</div>
+            <div style="padding:8px;background:#fff;border-top:1px solid #ddd;">
+              <div style="display:flex;gap:6px;margin-bottom:6px;">
+                <div style="background:#f5f5f5;padding:3px 6px;border-radius:10px;font-size:8px;border:1px solid #ddd;cursor:pointer;">SBOM + SLSA</div>
+                <div style="background:#e3f2fd;padding:3px 6px;border-radius:10px;font-size:8px;border:1px solid #90caf9;cursor:pointer;">SLSA only</div>
+                <div style="background:#f5f5f5;padding:3px 6px;border-radius:10px;font-size:8px;border:1px solid #ddd;cursor:pointer;">SBOM only</div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <div style="flex:1;background:#f5f5f5;border:1px solid #ddd;border-radius:4px;padding:6px 8px;font-size:9px;color:#999;">Describe your policy requirements...</div>
+                <div style="background:#06c;color:#fff;padding:6px 12px;border-radius:4px;font-size:9px;cursor:pointer;">Send</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Artifact panel -->
+          <div style="width:320px;display:flex;flex-direction:column;background:#fff;flex-shrink:0;">
+            <div style="background:#e8f5e9;padding:3px 8px;font-size:8px;color:#2e7d32;font-weight:bold;border-bottom:1px solid #c8e6c9;">ArtifactPanel</div>
+
+            <!-- Tabs -->
+            <div style="display:flex;border-bottom:1px solid #ddd;">
+              <div style="flex:1;padding:7px 4px;font-size:9px;text-align:center;border-bottom:2px solid #06c;font-weight:bold;background:#f8f9fa;">policy.rego</div>
+              <div style="flex:1;padding:7px 4px;font-size:9px;text-align:center;color:#666;">Tests</div>
+              <div style="flex:1;padding:7px 4px;font-size:9px;text-align:center;color:#666;">policy.yaml</div>
+              <div style="flex:1;padding:7px 4px;font-size:9px;text-align:center;color:#666;">Command</div>
+            </div>
+
+            <!-- Code content -->
+            <div style="background:#f0e8d0;padding:2px 6px;font-size:7px;color:#795548;border-bottom:1px solid #d7ccc8;">ArtifactCodeView</div>
+            <div style="flex:1;background:#1e1e1e;color:#d4d4d4;padding:10px;font-size:9px;line-height:1.6;overflow:auto;">
+              <span style="color:#569cd6;">package</span> policy.slsa_provenance<br><br>
+              <span style="color:#569cd6;">import</span> rego.v1<br><br>
+              <span style="color:#6a9955;"># Allowed builder identity</span><br>
+              <span style="color:#dcdcaa;">allowed_builder</span> := <span style="color:#ce9178;">"https://tekton.myorg.com/chains/v2"</span><br><br>
+              <span style="color:#6a9955;"># Allowed source repos</span><br>
+              <span style="color:#dcdcaa;">allowed_source_pattern</span> := <span style="color:#ce9178;">"^github\\.com/myorg/.*$"</span><br><br>
+              <span style="color:#6a9955;"># Deny if builder doesn't match</span><br>
+              <span style="color:#dcdcaa;">deny</span> <span style="color:#569cd6;">contains</span> msg <span style="color:#569cd6;">if</span> {<br>
+              &nbsp;&nbsp;prov := input.attestations[_]<br>
+              &nbsp;&nbsp;prov.predicate.builder.id != allowed_builder<br>
+              &nbsp;&nbsp;msg := <span style="color:#569cd6;">sprintf</span>(<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ce9178;">"builder %s is not allowed"</span>,<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;[prov.predicate.builder.id]<br>
+              &nbsp;&nbsp;)<br>
+              }<br><br>
+              <span style="color:#6a9955;"># Deny if not hermetic</span><br>
+              <span style="color:#dcdcaa;">deny</span> <span style="color:#569cd6;">contains</span> msg <span style="color:#569cd6;">if</span> {<br>
+              &nbsp;&nbsp;prov := input.attestations[_]<br>
+              &nbsp;&nbsp;<span style="color:#569cd6;">not</span> prov.predicate.buildDefinition<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;.buildType == <span style="color:#ce9178;">"hermetic"</span><br>
+              &nbsp;&nbsp;msg := <span style="color:#ce9178;">"build is not hermetic"</span><br>
+              }
+            </div>
+
+            <!-- Test results bar -->
+            <div style="background:#e8f5e9;padding:2px 6px;font-size:7px;color:#2e7d32;border-top:1px solid #c8e6c9;border-bottom:1px solid #c8e6c9;">TestResultsBadge</div>
+            <div style="padding:6px 10px;background:#f1f8e9;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ddd;">
+              <div style="font-size:9px;"><span style="color:#2e7d32;font-weight:bold;">✓ 6/6 tests passing</span></div>
+              <div style="font-size:8px;color:#06c;cursor:pointer;">Run tests</div>
+            </div>
+
+            <!-- Action bar -->
+            <div style="background:#fff9c4;padding:2px 6px;font-size:7px;color:#f57f17;border-bottom:1px solid #fff176;">ArtifactActions</div>
+            <div style="padding:8px;display:flex;gap:6px;">
+              <div style="flex:1;background:#06c;color:#fff;padding:6px;text-align:center;border-radius:4px;font-size:9px;cursor:pointer;">Download Bundle (.zip)</div>
+              <div style="background:#f0f0f0;padding:6px 10px;border-radius:4px;font-size:9px;cursor:pointer;">Copy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px;">
+  <h3>Component Hierarchy</h3>
+  <div style="font-family:monospace;font-size:12px;line-height:1.8;background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;">
+    <span style="color:#dcdcaa;">PolicyGenerator</span> <span style="color:#666;">(page)</span><br>
+    ├── <span style="color:#4ec9b0;">PolicyPageHeader</span> <span style="color:#666;">— title, description, New Session / History</span><br>
+    ├── <span style="color:#4ec9b0;">ChatPanel</span> <span style="color:#666;">— left side of split</span><br>
+    │&nbsp;&nbsp; ├── <span style="color:#4ec9b0;">ChatMessageList</span><br>
+    │&nbsp;&nbsp; │&nbsp;&nbsp; └── <span style="color:#4ec9b0;">ChatMessage</span> <span style="color:#666;">— role (user/assistant), content, artifacts ref</span><br>
+    │&nbsp;&nbsp; └── <span style="color:#4ec9b0;">ChatInput</span> <span style="color:#666;">— text input, policy type chips, send button</span><br>
+    └── <span style="color:#4ec9b0;">ArtifactPanel</span> <span style="color:#666;">— right side of split</span><br>
+    &nbsp;&nbsp;&nbsp; ├── <span style="color:#4ec9b0;">ArtifactTabs</span> <span style="color:#666;">— Rule / Tests / Config / Command</span><br>
+    &nbsp;&nbsp;&nbsp; ├── <span style="color:#4ec9b0;">ArtifactCodeView</span> <span style="color:#666;">— syntax-highlighted code display</span><br>
+    &nbsp;&nbsp;&nbsp; ├── <span style="color:#4ec9b0;">TestResultsBadge</span> <span style="color:#666;">— pass/fail count, run tests button</span><br>
+    &nbsp;&nbsp;&nbsp; └── <span style="color:#4ec9b0;">ArtifactActions</span> <span style="color:#666;">— download zip, copy to clipboard</span>
+  </div>
+</div>

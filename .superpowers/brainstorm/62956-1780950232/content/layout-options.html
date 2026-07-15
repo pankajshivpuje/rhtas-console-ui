@@ -1,0 +1,107 @@
+<h2>Policy Generator — Split Panel Layout</h2>
+<p class="subtitle">How should the chat and artifact panel be arranged?</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:320px;gap:2px;font-family:monospace;font-size:11px;">
+        <!-- Left: Nav sidebar -->
+        <div style="width:140px;background:#1a1a1a;color:#999;padding:12px 8px;display:flex;flex-direction:column;gap:6px;">
+          <div style="color:#fff;font-weight:bold;font-size:10px;margin-bottom:8px;">RHTAS Console</div>
+          <div style="padding:4px 6px;font-size:10px;">System Health</div>
+          <div style="padding:4px 6px;font-size:10px;">Trust Coverage</div>
+          <div style="padding:4px 6px;font-size:10px;">Trust Root</div>
+          <div style="padding:4px 6px;font-size:10px;">Artifacts</div>
+          <div style="padding:4px 6px;font-size:10px;">Rekor Search</div>
+          <div style="padding:4px 6px;font-size:10px;background:#333;color:#fff;border-radius:3px;">Policy Generator</div>
+          <div style="padding:4px 6px;font-size:10px;">Alerts</div>
+        </div>
+        <!-- Middle: Chat -->
+        <div style="flex:1;background:#f5f5f5;display:flex;flex-direction:column;">
+          <div style="background:#fff;padding:6px 10px;border-bottom:1px solid #ddd;font-weight:bold;font-size:10px;">Policy Generator</div>
+          <div style="flex:1;padding:8px;overflow:auto;display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#e8f4fd;padding:6px 8px;border-radius:6px;font-size:9px;max-width:85%;align-self:flex-start;">Welcome! Describe your policy requirements and I'll generate Conforma-ready artifacts.</div>
+            <div style="background:#fff;padding:6px 8px;border-radius:6px;font-size:9px;max-width:85%;align-self:flex-end;border:1px solid #ddd;">Ensure all images are built by our Tekton pipeline from main branch with hermetic builds</div>
+            <div style="background:#e8f4fd;padding:6px 8px;border-radius:6px;font-size:9px;max-width:85%;align-self:flex-start;">I'll generate a SLSA Build L3 provenance policy. This will validate:<br>• Builder ID matches your Tekton instance<br>• Source from main branch<br>• Hermetic build enforcement<br><br><span style="color:#06c;">✓ 3 artifacts generated →</span></div>
+          </div>
+          <div style="padding:6px;background:#fff;border-top:1px solid #ddd;">
+            <div style="background:#f0f0f0;border-radius:4px;padding:6px 8px;font-size:9px;color:#999;">Describe your policy requirements...</div>
+          </div>
+        </div>
+        <!-- Right: Artifacts panel -->
+        <div style="width:200px;background:#fff;border-left:1px solid #ddd;display:flex;flex-direction:column;">
+          <div style="display:flex;gap:0;border-bottom:1px solid #ddd;">
+            <div style="flex:1;padding:5px 4px;font-size:8px;text-align:center;background:#f0f0f0;border-bottom:2px solid #06c;font-weight:bold;">Rule</div>
+            <div style="flex:1;padding:5px 4px;font-size:8px;text-align:center;color:#999;">Tests</div>
+            <div style="flex:1;padding:5px 4px;font-size:8px;text-align:center;color:#999;">Config</div>
+            <div style="flex:1;padding:5px 4px;font-size:8px;text-align:center;color:#999;">CMD</div>
+          </div>
+          <div style="flex:1;padding:8px;font-size:8px;font-family:monospace;background:#1e1e1e;color:#d4d4d4;overflow:auto;line-height:1.5;">
+            <span style="color:#569cd6;">package</span> policy.slsa<br><br>
+            <span style="color:#569cd6;">import</span> rego.v1<br><br>
+            <span style="color:#6a9955;"># Verify builder ID</span><br>
+            <span style="color:#dcdcaa;">deny</span> contains msg <span style="color:#569cd6;">if</span> {<br>
+            &nbsp;&nbsp;bd := input.predicate<br>
+            &nbsp;&nbsp;bd.builder.id != ...<br>
+            }
+          </div>
+          <div style="padding:6px;border-top:1px solid #ddd;display:flex;gap:4px;">
+            <div style="flex:1;background:#06c;color:#fff;padding:4px;text-align:center;border-radius:3px;font-size:8px;">Download All</div>
+            <div style="flex:1;background:#f0f0f0;padding:4px;text-align:center;border-radius:3px;font-size:8px;">Copy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Fixed Split Panel</h3>
+      <p>Chat on the left, artifact tabs permanently on the right. Both always visible. The artifact panel updates as the conversation generates new versions.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="display:flex;height:320px;gap:2px;font-family:monospace;font-size:11px;">
+        <!-- Left: Nav sidebar -->
+        <div style="width:140px;background:#1a1a1a;color:#999;padding:12px 8px;display:flex;flex-direction:column;gap:6px;">
+          <div style="color:#fff;font-weight:bold;font-size:10px;margin-bottom:8px;">RHTAS Console</div>
+          <div style="padding:4px 6px;font-size:10px;">System Health</div>
+          <div style="padding:4px 6px;font-size:10px;">Trust Coverage</div>
+          <div style="padding:4px 6px;font-size:10px;">Trust Root</div>
+          <div style="padding:4px 6px;font-size:10px;">Artifacts</div>
+          <div style="padding:4px 6px;font-size:10px;">Rekor Search</div>
+          <div style="padding:4px 6px;font-size:10px;background:#333;color:#fff;border-radius:3px;">Policy Generator</div>
+          <div style="padding:4px 6px;font-size:10px;">Alerts</div>
+        </div>
+        <!-- Full width chat -->
+        <div style="flex:1;background:#f5f5f5;display:flex;flex-direction:column;position:relative;">
+          <div style="background:#fff;padding:6px 10px;border-bottom:1px solid #ddd;font-weight:bold;font-size:10px;">Policy Generator</div>
+          <div style="flex:1;padding:8px;overflow:auto;display:flex;flex-direction:column;gap:6px;">
+            <div style="background:#e8f4fd;padding:6px 8px;border-radius:6px;font-size:9px;max-width:70%;align-self:flex-start;">Welcome! Describe your policy requirements.</div>
+            <div style="background:#fff;padding:6px 8px;border-radius:6px;font-size:9px;max-width:70%;align-self:flex-end;border:1px solid #ddd;">Ensure all images are built by our Tekton pipeline from main</div>
+            <div style="background:#e8f4fd;padding:6px 8px;border-radius:6px;font-size:9px;max-width:70%;align-self:flex-start;">
+              I'll generate a SLSA Build L3 provenance policy...<br><br>
+              <div style="background:#fff;border:1px solid #ccc;border-radius:4px;padding:6px;margin-top:4px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="font-weight:bold;">📦 3 artifacts generated</span>
+                  <span style="color:#06c;cursor:pointer;font-size:8px;">Open panel →</span>
+                </div>
+                <div style="font-size:8px;color:#666;margin-top:2px;">policy.rego • policy_test.rego • policy.yaml</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:6px;background:#fff;border-top:1px solid #ddd;">
+            <div style="background:#f0f0f0;border-radius:4px;padding:6px 8px;font-size:9px;color:#999;">Describe your policy requirements...</div>
+          </div>
+          <!-- Slide-out panel indicator -->
+          <div style="position:absolute;right:0;top:30px;bottom:0;width:12px;background:linear-gradient(to right,transparent,rgba(0,0,0,0.05));display:flex;align-items:center;justify-content:center;">
+            <div style="writing-mode:vertical-rl;font-size:7px;color:#999;">◀ Artifacts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Expandable Drawer</h3>
+      <p>Chat uses full width. Artifact panel slides in from the right when generated — can be collapsed back. Gives chat maximum space for the conversational flow.</p>
+    </div>
+  </div>
+</div>

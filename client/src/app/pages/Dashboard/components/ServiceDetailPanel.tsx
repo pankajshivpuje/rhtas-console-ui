@@ -204,8 +204,7 @@ export const ServiceDetailPanel: React.FC<IServiceDetailPanelProps> = ({ service
                 alignItems={{ default: "alignItemsCenter" }}
                 style={{
                   padding: "var(--pf-t--global--spacer--xs) 0",
-                  borderTop:
-                    idx > 0 ? "1px solid var(--pf-t--global--border--color--default)" : undefined,
+                  borderTop: idx > 0 ? "1px solid var(--pf-t--global--border--color--default)" : undefined,
                 }}
               >
                 <FlexItem>
@@ -233,8 +232,7 @@ export const ServiceDetailPanel: React.FC<IServiceDetailPanelProps> = ({ service
               <div
                 style={{
                   padding: "var(--pf-t--global--spacer--xs) 0",
-                  borderTop:
-                    idx > 0 ? "1px solid var(--pf-t--global--border--color--default)" : undefined,
+                  borderTop: idx > 0 ? "1px solid var(--pf-t--global--border--color--default)" : undefined,
                 }}
               >
                 <Flex alignItems={{ default: "alignItemsFlexStart" }} spaceItems={{ default: "spaceItemsSm" }}>
@@ -253,7 +251,9 @@ export const ServiceDetailPanel: React.FC<IServiceDetailPanelProps> = ({ service
                   <FlexItem>
                     <Content
                       component="small"
-                      style={check.severity === "subtle" ? { color: "var(--pf-t--global--text--color--subtle)" } : undefined}
+                      style={
+                        check.severity === "subtle" ? { color: "var(--pf-t--global--text--color--subtle)" } : undefined
+                      }
                     >
                       {check.name}
                     </Content>
@@ -270,7 +270,12 @@ export const ServiceDetailPanel: React.FC<IServiceDetailPanelProps> = ({ service
 
       {/* Action buttons */}
       <StackItem>
-        <div style={{ borderTop: "1px solid var(--pf-t--global--border--color--default)", paddingTop: "var(--pf-t--global--spacer--md)" }}>
+        <div
+          style={{
+            borderTop: "1px solid var(--pf-t--global--border--color--default)",
+            paddingTop: "var(--pf-t--global--spacer--md)",
+          }}
+        >
           <Flex spaceItems={{ default: "spaceItemsSm" }}>
             <FlexItem>
               <Button variant="secondary" size="sm" icon={<ExternalLinkAltIcon />} iconPosition="end">

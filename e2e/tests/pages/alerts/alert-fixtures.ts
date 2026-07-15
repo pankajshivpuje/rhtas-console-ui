@@ -93,15 +93,21 @@ export async function setupAlertRoutes(page: Page) {
   const acknowledgedIds = new Set<string>();
 
   await page.route("**/api/v1/alerts/summary", (route) =>
-    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(alertSummaryApiResponse) }),
+    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(alertSummaryApiResponse) })
   );
 
   await page.route("**/api/v1/alerts", (route) => {
     if (route.request().method() === "GET") {
       const data = baseAlerts.map((a) =>
-        acknowledgedIds.has(a.id) ? { ...a, acknowledged: true, acknowledgedBy: "e2e-user", acknowledgedAt: new Date().toISOString() } : a,
+        acknowledgedIds.has(a.id)
+          ? { ...a, acknowledged: true, acknowledgedBy: "e2e-user", acknowledgedAt: new Date().toISOString() }
+          : a
       );
-      return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ...alertsApiResponse, data }) });
+      return route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({ ...alertsApiResponse, data }),
+      });
     }
     return route.continue();
   });
@@ -114,7 +120,12 @@ export async function setupAlertRoutes(page: Page) {
       if (alertId) acknowledgedIds.add(alertId);
 
       const alert = baseAlerts.find((a) => a.id === alertId) ?? baseAlerts[0];
-      const result = { ...alert, acknowledged: true, acknowledgedBy: "e2e-user", acknowledgedAt: new Date().toISOString() };
+      const result = {
+        ...alert,
+        acknowledged: true,
+        acknowledgedBy: "e2e-user",
+        acknowledgedAt: new Date().toISOString(),
+      };
       return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(result) });
     }
     return route.continue();

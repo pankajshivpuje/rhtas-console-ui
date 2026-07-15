@@ -74,10 +74,7 @@ export const OperationalHealthTab: React.FC = () => {
 
       <Stack hasGutter>
         <StackItem>
-          <Flex
-            justifyContent={{ default: "justifyContentSpaceBetween" }}
-            alignItems={{ default: "alignItemsCenter" }}
-          >
+          <Flex justifyContent={{ default: "justifyContentSpaceBetween" }} alignItems={{ default: "alignItemsCenter" }}>
             <FlexItem>
               <Content>
                 <h2 style={{ margin: 0 }}>System Health</h2>
@@ -153,9 +150,7 @@ export const OperationalHealthTab: React.FC = () => {
                   <GridItem span={6}>
                     <ExpiringTrustAssets assets={activeExpiringAssets} />
                   </GridItem>
-                  <GridItem span={6}>
-                    {activeErrorRate && <ErrorRateCard errorRate={activeErrorRate} />}
-                  </GridItem>
+                  <GridItem span={6}>{activeErrorRate && <ErrorRateCard errorRate={activeErrorRate} />}</GridItem>
                 </Grid>
               </StackItem>
               {activeIncidents.length > 0 && (

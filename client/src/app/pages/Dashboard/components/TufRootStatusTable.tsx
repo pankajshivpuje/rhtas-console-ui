@@ -35,24 +35,24 @@ export const TufRootStatusTable: React.FC<ITufRootStatusTableProps> = ({ rootMet
           )}
           <StackItem>
             <Table aria-label="TUF root metadata status" variant="compact">
-          <Thead>
-            <Tr>
-              <Th>Version</Th>
-              <Th>Expires</Th>
-              <Th>Status</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {(rootMetadataList.data ?? []).map((meta, idx) => (
-              <Tr key={idx}>
-                <Td>{meta.version}</Td>
-                <Td>{meta.expires}</Td>
-                <Td>
-                  <Label color={statusColor(meta.status)}>{meta.status}</Label>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
+              <Thead>
+                <Tr>
+                  <Th>Version</Th>
+                  <Th>Expires</Th>
+                  <Th>Status</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {(rootMetadataList.data ?? []).map((meta, idx) => (
+                  <Tr key={idx}>
+                    <Td>{meta.version}</Td>
+                    <Td>{meta.expires}</Td>
+                    <Td>
+                      <Label color={statusColor(meta.status)}>{meta.status}</Label>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
             </Table>
           </StackItem>
         </Stack>

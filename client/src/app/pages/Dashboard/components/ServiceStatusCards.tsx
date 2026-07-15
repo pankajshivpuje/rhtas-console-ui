@@ -64,11 +64,16 @@ export const ServiceStatusCards: React.FC<IServiceStatusCardsProps> = ({ service
                   </FlexItem>
                   <FlexItem>
                     <Content>
-                      <Content component="p" style={{ fontWeight: 500 }}>{service.name}</Content>
+                      <Content component="p" style={{ fontWeight: 500 }}>
+                        {service.name}
+                      </Content>
                     </Content>
                   </FlexItem>
                 </Flex>
-                <Content component="p" style={{ marginTop: "var(--pf-t--global--spacer--sm)", color: statusTextColor(service.status) }}>
+                <Content
+                  component="p"
+                  style={{ marginTop: "var(--pf-t--global--spacer--sm)", color: statusTextColor(service.status) }}
+                >
                   {service.statusText}
                 </Content>
                 <Content component="small" style={{ color: "var(--pf-t--global--text--color--subtle)" }}>

@@ -27,7 +27,7 @@ export class AlertsPage {
         Started: { isSortable: false },
         Actions: { isSortable: false },
       },
-      [] as const,
+      [] as const
     );
   }
 

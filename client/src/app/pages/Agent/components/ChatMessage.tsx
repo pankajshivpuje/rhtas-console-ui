@@ -13,11 +13,7 @@ interface ChatMessageProps {
   isStreaming?: boolean;
 }
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({
-  message,
-  displayContent,
-  isStreaming = false,
-}) => {
+export const ChatMessage: React.FC<ChatMessageProps> = ({ message, displayContent, isStreaming = false }) => {
   const isAgent = message.role === "agent";
   const content = displayContent ?? message.content;
 
@@ -44,13 +40,15 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
           color: isAgent ? undefined : "var(--pf-t--global--text--color--on-brand--default)",
         }}
       >
-        {isAgent ? (
-          <AgentResponseContent content={content} />
-        ) : (
-          <p>{content}</p>
-        )}
+        {isAgent ? <AgentResponseContent content={content} /> : <p>{content}</p>}
         {isStreaming && <span className="pf-v6-c-spinner pf-m-sm" role="progressbar" />}
-        <div style={{ fontSize: "var(--pf-t--global--font--size--xs)", opacity: 0.7, marginTop: "var(--pf-t--global--spacer--xs)" }}>
+        <div
+          style={{
+            fontSize: "var(--pf-t--global--font--size--xs)",
+            opacity: 0.7,
+            marginTop: "var(--pf-t--global--spacer--xs)",
+          }}
+        >
           {new Date(message.timestamp).toLocaleTimeString()}
         </div>
       </FlexItem>

@@ -114,9 +114,7 @@ function EntryDetailView({ entry }: { entry: LogEntry }) {
   const toggle = (id: PanelId) => {
     const index = expanded.indexOf(id);
     const newExpanded: PanelId[] =
-      index >= 0
-        ? [...expanded.slice(0, index), ...expanded.slice(index + 1, expanded.length)]
-        : [...expanded, id];
+      index >= 0 ? [...expanded.slice(0, index), ...expanded.slice(index + 1, expanded.length)] : [...expanded, id];
     setExpanded(newExpanded);
   };
 

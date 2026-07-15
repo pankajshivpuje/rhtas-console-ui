@@ -1,0 +1,146 @@
+- generic [ref=f7e2]:
+  - generic [ref=f7e3]:
+    - link "Skip to content" [ref=f7e5] [cursor=pointer]:
+      - /url: "#main-content-page-layout-horizontal-nav"
+    - banner [ref=f7e7]:
+      - generic [ref=f7e8]:
+        - button "Global navigation" [expanded] [ref=f7e10] [cursor=pointer]
+        - img "brand" [ref=f7e18]
+      - generic [ref=f7e24]:
+        - button "Notifications" [ref=f7e26] [cursor=pointer]:
+          - generic [ref=f7e181]: "3"
+        - button "Agent insights" [ref=f7e31] [cursor=pointer]:
+          - generic [ref=f7e32]: "8"
+        - 'button "Theme selection, current: System" [ref=f7e36] [cursor=pointer]'
+        - button "About" [ref=f7e47] [cursor=pointer]
+    - navigation "Nav" [ref=f7e53]:
+      - list [ref=f7e54]:
+        - listitem [ref=f7e55]:
+          - link "System Health" [ref=f7e56] [cursor=pointer]:
+            - /url: /operational-health
+        - listitem [ref=f7e57]:
+          - link "Agent New" [ref=f7e58] [cursor=pointer]:
+            - /url: /agent
+            - text: Agent
+            - generic [ref=f7e59]: New
+        - listitem [ref=f7e60]:
+          - link "Trust Coverage" [ref=f7e61] [cursor=pointer]:
+            - /url: /dashboard
+        - listitem [ref=f7e62]:
+          - link "Trust Root" [ref=f7e63] [cursor=pointer]:
+            - /url: /trust-root
+        - listitem [ref=f7e64]:
+          - link "Artifacts" [ref=f7e65] [cursor=pointer]:
+            - /url: /artifacts
+        - listitem [ref=f7e66]:
+          - link "Rekor Search" [ref=f7e67] [cursor=pointer]:
+            - /url: /rekor-search
+        - listitem [ref=f7e68]:
+          - link "Alerts" [ref=f7e69] [cursor=pointer]:
+            - /url: /alerts
+        - listitem [ref=f7e70]:
+          - link "Artifact policy evaluation" [ref=f7e71] [cursor=pointer]:
+            - /url: /policy-generator
+    - main [ref=f7e73]:
+      - generic [ref=f7e185]:
+        - generic [ref=f7e187]:
+          - heading "Agent" [level=2] [ref=f7e188]
+          - paragraph [ref=f7e189]: AI-powered monitoring of your signing infrastructure. Review insights and ask questions.
+        - generic [ref=f7e191]:
+          - generic [ref=f7e192]:
+            - generic [ref=f7e193]: 2 Critical
+            - generic [ref=f7e197]: 4 Warnings
+            - generic [ref=f7e201]: 2 Info
+          - generic [ref=f7e205]:
+            - generic [ref=f7e207]:
+              - generic [ref=f7e210]:
+                - generic [ref=f7e211]: TUF root metadata expires in 12 days
+                - generic [ref=f7e212]: Critical
+              - generic [ref=f7e219]: The TUF root metadata is approaching expiration. If it expires, clients will be unable to verify trust anchors and signature verification will fail.
+              - generic [ref=f7e221]:
+                - generic [ref=f7e222]: Trust Root
+                - generic [ref=f7e226]: 7/14/2026, 9:33:38 PM
+            - generic [ref=f7e228]:
+              - generic [ref=f7e231]:
+                - generic [ref=f7e232]: Rekor transparency log returned errors
+                - generic [ref=f7e233]: Critical
+              - generic [ref=f7e240]: The Rekor transparency log service is experiencing elevated error rates. Log entries may be delayed.
+              - generic [ref=f7e242]:
+                - generic [ref=f7e243]: Health
+                - generic [ref=f7e247]: 7/14/2026, 11:03:38 PM
+            - generic [ref=f7e249]:
+              - generic [ref=f7e252]:
+                - generic [ref=f7e253]: 27% of production artifacts lack attestations
+                - generic [ref=f7e254]: Warning
+              - generic [ref=f7e261]: Several production artifacts have been signed but do not have associated attestations such as SLSA provenance or SBOM.
+              - generic [ref=f7e263]:
+                - generic [ref=f7e264]: Attestations
+                - generic [ref=f7e268]: 7/14/2026, 7:33:38 PM
+            - generic [ref=f7e270]:
+              - generic [ref=f7e273]:
+                - generic [ref=f7e274]: 3 artifacts failing enterprise signing policy
+                - generic [ref=f7e275]: Warning
+              - generic [ref=f7e282]: Three artifacts do not meet the enterprise signing policy requirements defined in Conforma.
+              - generic [ref=f7e284]:
+                - generic [ref=f7e285]: Policy
+                - generic [ref=f7e289]: 7/14/2026, 6:33:38 PM
+            - generic [ref=f7e291]:
+              - generic [ref=f7e294]:
+                - generic [ref=f7e295]: Signing rate dropped 40% in the last 7 days
+                - generic [ref=f7e296]: Warning
+              - generic [ref=f7e303]: The rate of new artifact signatures has decreased significantly compared to the previous week.
+              - generic [ref=f7e305]:
+                - generic [ref=f7e306]: Signing
+                - generic [ref=f7e310]: 7/14/2026, 5:33:38 PM
+            - generic [ref=f7e312]:
+              - generic [ref=f7e315]:
+                - generic [ref=f7e316]: 2 unacknowledged critical alerts
+                - generic [ref=f7e317]: Warning
+              - generic [ref=f7e324]: There are unacknowledged critical alerts that may require immediate attention.
+              - generic [ref=f7e326]:
+                - generic [ref=f7e327]: Alerts
+                - generic [ref=f7e331]: 7/14/2026, 10:33:38 PM
+            - generic [ref=f7e333]:
+              - generic [ref=f7e336]:
+                - generic [ref=f7e337]: SBOM coverage increased to 85% this week
+                - generic [ref=f7e338]: Info
+              - generic [ref=f7e345]: Attestation coverage for SBOM (SPDX) documents has increased from 79% to 85% over the past 7 days.
+              - generic [ref=f7e347]:
+                - generic [ref=f7e348]: Attestations
+                - generic [ref=f7e352]: 7/14/2026, 11:33:38 AM
+            - generic [ref=f7e354]:
+              - generic [ref=f7e357]:
+                - generic [ref=f7e358]: 15 new artifacts signed in the last 24 hours
+                - generic [ref=f7e359]: Info
+              - generic [ref=f7e366]: Signing activity is ongoing with 15 new artifact signatures recorded in the last day.
+              - generic [ref=f7e368]:
+                - generic [ref=f7e369]: Signing
+                - generic [ref=f7e373]: 7/13/2026, 11:33:38 PM
+        - generic [ref=f7e375]:
+          - generic [ref=f7e376]:
+            - button "New conversation" [active] [ref=f7e378] [cursor=pointer]
+            - generic [ref=f7e383]: Chat
+          - generic [ref=f7e481]:
+            - generic [ref=f7e488]:
+              - generic [ref=f7e489]: Suggested
+              - list "Suggested" [ref=f7e490]:
+                - listitem [ref=f7e491]:
+                  - generic [ref=f7e493] [cursor=pointer]:
+                    - generic [ref=f7e494]: What is the overall health of my signing infrastructure?
+                    - button "Close What is the overall health of my signing infrastructure?" [ref=f7e498]
+                - listitem [ref=f7e502]:
+                  - generic [ref=f7e504] [cursor=pointer]:
+                    - generic [ref=f7e505]: Which production artifacts are missing attestations?
+                    - button "Close Which production artifacts are missing attestations?" [ref=f7e509]
+                - listitem [ref=f7e513]:
+                  - generic [ref=f7e515] [cursor=pointer]:
+                    - generic [ref=f7e516]: When does the TUF root expire?
+                    - button "Close When does the TUF root expire?" [ref=f7e520]
+                - listitem [ref=f7e524]:
+                  - button "1 more" [ref=f7e525] [cursor=pointer]
+            - generic [ref=f7e482]:
+              - textbox "Chat message input" [ref=f7e485]:
+                - /placeholder: Ask the agent a question...
+              - generic [ref=f7e486]:
+                - button "Send message" [disabled]
+  - button "Open Tanstack query devtools" [ref=f7e132] [cursor=pointer]

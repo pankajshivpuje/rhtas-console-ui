@@ -48,9 +48,7 @@ function extractRowData(entry: LogEntry): RowData {
         data?: { hash?: { algorithm?: string; value?: string } };
         signature?: { content?: string; publicKey?: { content?: string } };
       };
-      hash = spec.data?.hash?.value
-        ? `${spec.data.hash.algorithm ?? "sha256"}:${spec.data.hash.value}`
-        : "";
+      hash = spec.data?.hash?.value ? `${spec.data.hash.algorithm ?? "sha256"}:${spec.data.hash.value}` : "";
       signature = spec.signature?.content ?? "";
       hasCertificate = !!spec.signature?.publicKey?.content;
       break;
@@ -71,9 +69,7 @@ function extractRowData(entry: LogEntry): RowData {
         payloadHash?: { algorithm?: string; value?: string };
         signatures?: Array<{ signature?: string; verifier?: string }>;
       };
-      hash = spec.payloadHash?.value
-        ? `${spec.payloadHash.algorithm ?? "sha256"}:${spec.payloadHash.value}`
-        : "";
+      hash = spec.payloadHash?.value ? `${spec.payloadHash.algorithm ?? "sha256"}:${spec.payloadHash.value}` : "";
       const sig = spec.signatures?.[0];
       signature = sig?.signature ?? "";
       hasCertificate = !!sig?.verifier;
@@ -103,10 +99,7 @@ export function ResultsTable({
 }: {
   rekorEntries: RekorEntries;
   page: number;
-  onSetPage: (
-    _event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
-    _newPage: number,
-  ) => void;
+  onSetPage: (_event: React.MouseEvent | React.KeyboardEvent | MouseEvent, _newPage: number) => void;
 }) {
   const rows = rekorEntries.entries.map(extractRowData);
 
@@ -158,8 +151,7 @@ export function ResultsTable({
               <Td dataLabel="Commit Hash">
                 {row.hash ? (
                   <Link to={{ pathname: Paths.rekorSearch, search: `?hash=${row.hash}` }}>
-                    <Truncate content={row.hash.split(":")[1] ?? row.hash} trailingNumChars={0} />
-                    {" "}
+                    <Truncate content={row.hash.split(":")[1] ?? row.hash} trailingNumChars={0} />{" "}
                     <Icon size="sm" isInline>
                       <ExternalLinkAltIcon />
                     </Icon>
@@ -174,11 +166,7 @@ export function ResultsTable({
               </Td>
               <Td dataLabel="Type">{row.kind}</Td>
               <Td dataLabel="Signature">
-                {row.signature ? (
-                  <Truncate content={row.signature} trailingNumChars={0} />
-                ) : (
-                  "—"
-                )}
+                {row.signature ? <Truncate content={row.signature} trailingNumChars={0} /> : "—"}
               </Td>
               <Td dataLabel="Public Certificate">
                 {row.hasCertificate ? (
@@ -194,9 +182,7 @@ export function ResultsTable({
               </Td>
               <Td dataLabel="Integrated time">{formatDate(row.integratedTime)}</Td>
               <Td dataLabel="Action" isActionCell>
-                <Link to={Paths.rekorEntry.replace(":uuid", row.uuid)}>
-                  View details
-                </Link>
+                <Link to={Paths.rekorEntry.replace(":uuid", row.uuid)}>View details</Link>
               </Td>
             </Tr>
           ))}

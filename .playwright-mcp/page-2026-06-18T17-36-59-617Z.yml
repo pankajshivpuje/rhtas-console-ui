@@ -1,0 +1,44 @@
+- generic [ref=e3]:
+  - link "Skip to content" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content-page-layout-horizontal-nav"
+    - generic [ref=e6]: Skip to content
+  - banner [ref=e7]:
+    - generic [ref=e8]:
+      - button "Global navigation" [expanded] [ref=e10] [cursor=pointer]:
+        - img [ref=e12]
+      - generic [ref=e16]:
+        - generic:
+          - img "brand"
+    - generic [ref=e22]:
+      - button "Notifications" [ref=e24] [cursor=pointer]:
+        - img [ref=e26]
+      - 'button "Theme selection, current: System" [ref=e29] [cursor=pointer]':
+        - img [ref=e33]
+        - img [ref=e37]
+      - button "About" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+  - navigation "Nav" [ref=e46]:
+    - list [ref=e47]:
+      - listitem [ref=e48]:
+        - link "System Health" [ref=e49] [cursor=pointer]:
+          - /url: /operational-health
+      - listitem [ref=e50]:
+        - link "Trust Coverage" [ref=e51] [cursor=pointer]:
+          - /url: /dashboard
+      - listitem [ref=e52]:
+        - link "Trust Root" [ref=e53] [cursor=pointer]:
+          - /url: /trust-root
+      - listitem [ref=e54]:
+        - link "Artifacts" [ref=e55] [cursor=pointer]:
+          - /url: /artifacts
+      - listitem [ref=e56]:
+        - link "Rekor Search" [ref=e57] [cursor=pointer]:
+          - /url: /rekor-search
+      - listitem [ref=e58]:
+        - link "Alerts" [ref=e59] [cursor=pointer]:
+          - /url: /alerts
+      - listitem [ref=e60]:
+        - link "Conforma" [ref=e61] [cursor=pointer]:
+          - /url: /policy-generator
+  - main [ref=e63]:
+    - progressbar "Contents" [ref=e70]

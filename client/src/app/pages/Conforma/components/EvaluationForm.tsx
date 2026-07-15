@@ -27,14 +27,8 @@ interface FormInputs {
   rekorUrl: string;
 }
 
-export const EvaluationForm: React.FC<EvaluationFormProps> = ({
-  onSubmit,
-  isEvaluating,
-}) => {
-  const {
-    control,
-    handleSubmit,
-  } = useForm<FormInputs>({
+export const EvaluationForm: React.FC<EvaluationFormProps> = ({ onSubmit, isEvaluating }) => {
+  const { control, handleSubmit } = useForm<FormInputs>({
     mode: "onBlur",
     defaultValues: {
       image: "",
@@ -71,10 +65,7 @@ export const EvaluationForm: React.FC<EvaluationFormProps> = ({
             {fieldState.invalid && (
               <FormHelperText>
                 <HelperText>
-                  <HelperTextItem
-                    icon={<ExclamationCircleIcon />}
-                    variant="error"
-                  >
+                  <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
                     {fieldState.error?.message}
                   </HelperTextItem>
                 </HelperText>
@@ -99,10 +90,7 @@ export const EvaluationForm: React.FC<EvaluationFormProps> = ({
             {fieldState.invalid && (
               <FormHelperText>
                 <HelperText>
-                  <HelperTextItem
-                    icon={<ExclamationCircleIcon />}
-                    variant="error"
-                  >
+                  <HelperTextItem icon={<ExclamationCircleIcon />} variant="error">
                     {fieldState.error?.message}
                   </HelperTextItem>
                 </HelperText>
@@ -143,12 +131,7 @@ export const EvaluationForm: React.FC<EvaluationFormProps> = ({
         />
       </ExpandableSection>
       <ActionGroup>
-        <Button
-          type="submit"
-          variant="primary"
-          isLoading={isEvaluating}
-          isDisabled={isEvaluating}
-        >
+        <Button type="submit" variant="primary" isLoading={isEvaluating} isDisabled={isEvaluating}>
           Run evaluation
         </Button>
       </ActionGroup>

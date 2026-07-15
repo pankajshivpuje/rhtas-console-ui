@@ -35,11 +35,23 @@ const statusOptions = [
 const SeverityLabel = ({ severity }: { severity: string }) => {
   switch (severity) {
     case "critical":
-      return <Label color="red" icon={<ExclamationCircleIcon />}>Critical</Label>;
+      return (
+        <Label color="red" icon={<ExclamationCircleIcon />}>
+          Critical
+        </Label>
+      );
     case "warning":
-      return <Label color="orange" icon={<ExclamationCircleIcon />}>Warning</Label>;
+      return (
+        <Label color="orange" icon={<ExclamationCircleIcon />}>
+          Warning
+        </Label>
+      );
     case "info":
-      return <Label color="blue" icon={<InfoCircleIcon />}>Info</Label>;
+      return (
+        <Label color="blue" icon={<InfoCircleIcon />}>
+          Info
+        </Label>
+      );
     default:
       return <Label>{severity}</Label>;
   }
@@ -50,7 +62,11 @@ const StatusLabel = ({ status }: { status: string }) => {
     case "firing":
       return <Label color="red">Firing</Label>;
     case "resolved":
-      return <Label color="green" icon={<CheckCircleIcon />}>Resolved</Label>;
+      return (
+        <Label color="green" icon={<CheckCircleIcon />}>
+          Resolved
+        </Label>
+      );
     default:
       return <Label>{status}</Label>;
   }
@@ -177,9 +193,7 @@ export const Alerts = () => {
 
         {currentPageItems.length === 0 ? (
           <EmptyState>
-            <EmptyStateBody>
-              {isFetching ? "Loading alerts..." : "No alerts match the current filters."}
-            </EmptyStateBody>
+            <EmptyStateBody>{isFetching ? "Loading alerts..." : "No alerts match the current filters."}</EmptyStateBody>
           </EmptyState>
         ) : (
           <Table aria-label="Alerts table">
