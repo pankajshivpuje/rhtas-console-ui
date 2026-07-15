@@ -58,13 +58,13 @@ describe("Agent page", () => {
     });
   });
 
-  test("renders Agent heading", () => {
+  test("renders Ask agent heading", () => {
     render(
       <MemoryRouter>
         <Agent />
       </MemoryRouter>
     );
-    expect(screen.getByRole("heading", { name: "Agent" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Ask agent" })).toBeInTheDocument();
   });
 
   test("shows empty state when no insights", () => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Content, PageSection, Stack, StackItem } from "@patternfly/react-core";
+import { Content, Flex, FlexItem, PageSection } from "@patternfly/react-core";
 
 import { DocumentMetadata } from "@app/components/DocumentMetadata";
 import { LoadingWrapper } from "@app/components/LoadingWrapper";
@@ -23,26 +23,28 @@ export const Agent: React.FC = () => {
 
   return (
     <>
-      <DocumentMetadata title="Agent" />
+      <DocumentMetadata title="Ask agent" />
       <PageSection>
-        <Stack hasGutter>
-          <StackItem>
-            <Content>
-              <h2>Agent</h2>
-              <p>AI-powered monitoring of your signing infrastructure. Review insights and ask questions.</p>
-            </Content>
-          </StackItem>
+        <Content style={{ marginBottom: "var(--pf-t--global--spacer--md)" }}>
+          <h2>Ask agent</h2>
+          <p>AI-powered monitoring of your signing infrastructure. Review insights and ask questions.</p>
+        </Content>
 
-          <StackItem>
+        <Flex
+          direction={{ default: "column", lg: "row" }}
+          alignItems={{ default: "alignItemsStretch" }}
+          gap={{ default: "gapMd" }}
+        >
+          <FlexItem flex={{ default: "flex_2" }}>
             <LoadingWrapper isFetching={isFetching} fetchError={fetchError}>
               <InsightsDashboard insights={insights} onInsightClick={handleInsightClick} />
             </LoadingWrapper>
-          </StackItem>
+          </FlexItem>
 
-          <StackItem>
+          <FlexItem flex={{ default: "flex_1" }} style={{ position: "sticky", top: 0, alignSelf: "flex-start", minHeight: "calc(100vh - 150px)" }}>
             <ChatPanel initialPrompt={promptToSend} />
-          </StackItem>
-        </Stack>
+          </FlexItem>
+        </Flex>
       </PageSection>
     </>
   );

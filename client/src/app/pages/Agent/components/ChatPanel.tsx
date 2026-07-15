@@ -87,7 +87,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ initialPrompt }) => {
   };
 
   return (
-    <Card>
+    <Card isFullHeight style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <CardHeader
         actions={{
           actions: (
@@ -100,11 +100,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ initialPrompt }) => {
       >
         <CardTitle>Chat</CardTitle>
       </CardHeader>
-      <CardBody>
+      <CardBody style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         <div
           style={{
-            minHeight: "300px",
-            maxHeight: "500px",
+            flex: 1,
             overflowY: "auto",
             marginBottom: "var(--pf-t--global--spacer--md)",
           }}

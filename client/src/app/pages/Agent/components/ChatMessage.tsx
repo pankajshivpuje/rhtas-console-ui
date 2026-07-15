@@ -31,7 +31,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, displayConten
       )}
       <FlexItem
         style={{
-          maxWidth: "75%",
+          maxWidth: isAgent ? "100%" : "75%",
+          minWidth: 0,
+          overflow: "hidden",
           padding: "var(--pf-t--global--spacer--sm) var(--pf-t--global--spacer--md)",
           borderRadius: "var(--pf-t--global--border--radius--medium)",
           backgroundColor: isAgent

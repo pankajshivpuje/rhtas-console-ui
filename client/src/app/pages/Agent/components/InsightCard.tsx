@@ -28,7 +28,7 @@ export const InsightCard: React.FC<InsightCardProps> = ({ insight, onClick }) =>
   const config = severityConfig[insight.severity];
 
   return (
-    <Card isSelectable isClickable onClick={() => onClick(insight)}>
+    <Card isFullHeight onClick={() => onClick(insight)} style={{ cursor: "pointer" }}>
       <CardTitle>
         <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
           <FlexItem>{insight.title}</FlexItem>
