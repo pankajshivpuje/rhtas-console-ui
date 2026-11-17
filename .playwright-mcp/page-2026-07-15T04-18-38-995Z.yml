@@ -1,0 +1,42 @@
+- generic [ref=e3]:
+  - link "Skip to content" [ref=e5] [cursor=pointer]:
+    - /url: "#main-content-page-layout-horizontal-nav"
+  - banner [ref=e7]:
+    - generic [ref=e8]:
+      - button "Global navigation" [expanded] [ref=e10] [cursor=pointer]
+      - img "brand" [ref=e18]
+    - generic [ref=e24]:
+      - button "Notifications" [ref=e26] [cursor=pointer]
+      - button "Agent insights" [ref=e31] [cursor=pointer]
+      - 'button "Theme selection, current: System" [ref=e36] [cursor=pointer]'
+      - button "About" [ref=e47] [cursor=pointer]
+  - navigation "Nav" [ref=e53]:
+    - list [ref=e54]:
+      - listitem [ref=e55]:
+        - link "Ask agent New" [ref=e56] [cursor=pointer]:
+          - /url: /agent
+          - text: Ask agent
+          - generic [ref=e57]: New
+      - listitem [ref=e58]:
+        - link "System Health" [ref=e59] [cursor=pointer]:
+          - /url: /operational-health
+      - listitem [ref=e60]:
+        - link "Trust Coverage" [ref=e61] [cursor=pointer]:
+          - /url: /dashboard
+      - listitem [ref=e62]:
+        - link "Trust Root" [ref=e63] [cursor=pointer]:
+          - /url: /trust-root
+      - listitem [ref=e64]:
+        - link "Artifacts" [ref=e65] [cursor=pointer]:
+          - /url: /artifacts
+      - listitem [ref=e66]:
+        - link "Rekor Search" [ref=e67] [cursor=pointer]:
+          - /url: /rekor-search
+      - listitem [ref=e68]:
+        - link "Alerts" [ref=e69] [cursor=pointer]:
+          - /url: /alerts
+      - listitem [ref=e70]:
+        - link "Artifact policy evaluation" [ref=e71] [cursor=pointer]:
+          - /url: /policy-generator
+  - main [ref=e73]:
+    - progressbar "Contents" [ref=e80]

@@ -8,3 +8,7 @@
   border-left: var(--pf-c-select__toggle--before--BorderLeftWidth) solid
     var(--pf-c-select__toggle--before--BorderLeftColor) !important;
 }
+
+.pf-v6-c-form-control.mock-health-select {
+  width: max-content;
+}

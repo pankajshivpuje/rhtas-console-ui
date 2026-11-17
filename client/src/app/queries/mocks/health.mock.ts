@@ -9,9 +9,6 @@ export interface ServiceDetail {
 }
 
 export interface ServiceHealthStatus {
-  overall: "operational" | "degraded" | "down";
-  overallMessage: string;
-  overallDescription: string;
   services: ServiceDetail[];
 }
 
@@ -67,30 +64,7 @@ export interface OperationalHealthData {
 }
 
 export const serviceHealthMock: ServiceHealthStatus = {
-  overall: "down",
-  overallMessage: "Down — signing pipeline unavailable",
-  overallDescription:
-    "Fulcio is unreachable and the TUF root has expired. New signatures will fail until both are restored.",
   services: [
-    {
-      name: "Cosign",
-      status: "healthy",
-      statusText: "Healthy",
-      detail: "p95 138ms · 0.0% errors",
-      drillDown: {
-        endpoint: "https://cosign.tas.internal",
-        impactMessage: "",
-        lastSuccessfulProbe: "Just now",
-        consecutiveFailures: 0,
-        probeHistory: Array(20).fill("success") as ProbeStatus[],
-        failingChecks: [
-          { name: "TCP connect to cosign.tas.internal:443", detail: "healthy · 0 failures", severity: "success" },
-          { name: "DNS resolution", detail: "resolves to 10.4.12.50", severity: "success" },
-          { name: "TLS handshake", detail: "valid certificate", severity: "success" },
-          { name: "/healthz returns 200", detail: "200 OK · avg 12ms", severity: "success" },
-        ],
-      },
-    },
     {
       name: "Fulcio",
       status: "down",
@@ -175,29 +149,7 @@ export const serviceHealthMock: ServiceHealthStatus = {
 // --- Healthy state mocks ---
 
 export const serviceHealthyMock: ServiceHealthStatus = {
-  overall: "operational",
-  overallMessage: "All systems operational",
-  overallDescription: "",
   services: [
-    {
-      name: "Cosign",
-      status: "healthy",
-      statusText: "Healthy",
-      detail: "p95 138ms · 0.0% errors",
-      drillDown: {
-        endpoint: "https://cosign.tas.internal",
-        impactMessage: "",
-        lastSuccessfulProbe: "Just now",
-        consecutiveFailures: 0,
-        probeHistory: Array(20).fill("success") as ProbeStatus[],
-        failingChecks: [
-          { name: "TCP connect to cosign.tas.internal:443", detail: "healthy · 0 failures", severity: "success" },
-          { name: "DNS resolution", detail: "resolves to 10.4.12.50", severity: "success" },
-          { name: "TLS handshake", detail: "valid certificate", severity: "success" },
-          { name: "/healthz returns 200", detail: "200 OK · avg 12ms", severity: "success" },
-        ],
-      },
-    },
     {
       name: "Fulcio",
       status: "healthy",
@@ -357,3 +309,30 @@ export const incidentsMock: IncidentEvent[] = [
     severity: "info",
   },
 ];
+
+// --- Degraded state mocks ---
+
+export const serviceDegradedMock: ServiceHealthStatus = {
+  services: serviceHealthyMock.services.map((service) =>
+    service.name === "Rekor"
+      ? (serviceHealthMock.services.find((candidate) => candidate.name === service.name) ?? service)
+      : service
+  ),
+};
+
+export const expiringAssetsDegradedMock: ExpiringTrustAsset[] = expiringAssetsHealthyMock;
+
+export const errorRateDegradedMock: ErrorRateData = {
+  totalErrors: 123,
+  errorRate: 2.4,
+  breakdown: [
+    { label: "5xx server errors", count: 42 },
+    { label: "Timeouts", count: 68 },
+    { label: "Signature verify failures", count: 8, severity: "danger" },
+    { label: "4xx client errors", count: 5 },
+  ],
+};
+
+export const incidentsDegradedMock: IncidentEvent[] = incidentsMock.filter((incident) =>
+  incident.description.startsWith("Rekor")
+);

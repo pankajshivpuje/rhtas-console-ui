@@ -1,41 +1,37 @@
 import React from "react";
 
-import { Alert, AlertActionLink, AlertVariant } from "@patternfly/react-core";
+import { Alert, AlertVariant } from "@patternfly/react-core";
 
 import type { ServiceHealthStatus } from "@app/queries/health";
+import { describeServiceHealth, getOverallHealth, type OverallHealth } from "@app/queries/healthSummary";
 
 interface ISystemHealthBannerProps {
-  serviceHealth: ServiceHealthStatus;
+  serviceHealth?: ServiceHealthStatus;
+  isLoading: boolean;
+  hasError: boolean;
 }
 
-function overallVariant(overall: ServiceHealthStatus["overall"]): AlertVariant {
-  switch (overall) {
-    case "down":
-      return AlertVariant.danger;
-    case "degraded":
-      return AlertVariant.warning;
-    case "operational":
-      return AlertVariant.success;
-  }
-}
+const variants: Record<OverallHealth, AlertVariant> = {
+  healthy: AlertVariant.success,
+  degraded: AlertVariant.warning,
+  down: AlertVariant.danger,
+  unavailable: AlertVariant.info,
+};
 
-export const SystemHealthBanner: React.FC<ISystemHealthBannerProps> = ({ serviceHealth }) => {
-  if (serviceHealth.overall === "operational") {
-    return null;
-  }
+export const SystemHealthBanner: React.FC<ISystemHealthBannerProps> = ({ serviceHealth, isLoading, hasError }) => {
+  const services = hasError ? undefined : serviceHealth?.services;
+  const status = getOverallHealth(services);
+  const label = isLoading ? "Checking" : status.charAt(0).toUpperCase() + status.slice(1);
 
   return (
-    <Alert
-      variant={overallVariant(serviceHealth.overall)}
-      title={serviceHealth.overallMessage}
-      actionLinks={
-        <>
-          <AlertActionLink>View incident</AlertActionLink>
-          <AlertActionLink>Open runbook</AlertActionLink>
-        </>
-      }
-    >
-      <p>{serviceHealth.overallDescription}</p>
+    <Alert isInline variant={isLoading ? AlertVariant.info : variants[status]} title={`Overall health: ${label}`}>
+      <p>
+        {isLoading
+          ? "Checking monitored services."
+          : status === "unavailable"
+            ? "Service health is unavailable. Try refreshing."
+            : describeServiceHealth(services ?? [])}
+      </p>
     </Alert>
   );
 };

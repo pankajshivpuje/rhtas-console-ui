@@ -2,6 +2,7 @@ import type { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import ENV from "@app/env";
+import { useMockHealth } from "@app/components/mockHealthContext";
 import { client } from "@app/axios-config/apiInit";
 import {
   getAlerts,
@@ -14,7 +15,13 @@ import {
 } from "@app/client";
 
 import { useMockableQuery } from "./helpers";
-import { alertListResponseMock, alertSummaryMock, alertsMock } from "./mocks/alerts.mock";
+import {
+  alertListResponseMock,
+  alertSummaryMock,
+  getMockAlertList,
+  getMockAlertSummary,
+  getScenarioAlerts,
+} from "./mocks/alerts.mock";
 
 export type { Alert, AlertListResponse, AlertSummary } from "@app/client";
 
@@ -33,33 +40,37 @@ export const AlertKeys = {
 };
 
 export const useFetchAlerts = (filters?: AlertFilters) => {
+  const { scenario, acknowledgedAlerts } = useMockHealth();
   const { data, isLoading, error } = useMockableQuery<AlertListResponse, AxiosError<ApiError>>(
     {
       queryKey: AlertKeys.list(filters),
       queryFn: async () => {
         const response = await getAlerts({ client, query: filters });
-        return response.data as AlertListResponse;
+        return response.data!;
       },
       refetchInterval: 30000,
     },
     alertListResponseMock
   );
+  const result =
+    ENV.MOCK !== "off" && data ? getMockAlertList(getScenarioAlerts(scenario, acknowledgedAlerts), filters) : data;
 
   return {
-    alerts: data?.data ?? [],
-    total: data?.total ?? 0,
+    alerts: result?.data ?? [],
+    total: result?.total ?? 0,
     isFetching: isLoading,
     fetchError: error,
   };
 };
 
 export const useFetchAlertSummary = () => {
+  const { scenario, acknowledgedAlerts } = useMockHealth();
   const { data, isLoading, error } = useMockableQuery<AlertSummary, AxiosError<ApiError>>(
     {
       queryKey: AlertKeys.summary,
       queryFn: async () => {
         const response = await getAlertSummary({ client });
-        return response.data as AlertSummary;
+        return response.data!;
       },
       refetchInterval: 30000,
     },
@@ -67,7 +78,8 @@ export const useFetchAlertSummary = () => {
   );
 
   return {
-    alertSummary: data,
+    alertSummary:
+      ENV.MOCK !== "off" && data ? getMockAlertSummary(getScenarioAlerts(scenario, acknowledgedAlerts)) : data,
     isFetching: isLoading,
     fetchError: error,
   };
@@ -75,11 +87,13 @@ export const useFetchAlertSummary = () => {
 
 export const useAcknowledgeAlert = () => {
   const queryClient = useQueryClient();
+  const { scenario, acknowledgedAlerts, acknowledgeAlert: acknowledgeMockAlert } = useMockHealth();
 
   const mutation = useMutation<Alert, AxiosError<ApiError>, string>({
     mutationFn: async (alertId: string) => {
       if (ENV.MOCK !== "off") {
-        const mockAlert = alertsMock.find((a) => a.id === alertId) ?? alertsMock[0];
+        const mockAlert = getScenarioAlerts(scenario, acknowledgedAlerts).find((alert) => alert.id === alertId);
+        if (!mockAlert) throw new Error("Alert not found");
         return {
           ...mockAlert,
           id: alertId,
@@ -93,14 +107,18 @@ export const useAcknowledgeAlert = () => {
         path: { alertId },
         body: { acknowledged: true },
       });
-      return response.data as Alert;
+      return response.data!;
     },
     onSuccess: (updatedAlert) => {
+      if (ENV.MOCK !== "off") {
+        acknowledgeMockAlert(updatedAlert.id, updatedAlert.acknowledgedAt ?? new Date().toISOString());
+        return;
+      }
       queryClient.setQueriesData<AlertListResponse>({ queryKey: ["Alerts", "list"] }, (old) => {
         if (!old?.data) return old;
         return { ...old, data: old.data.map((a) => (a.id === updatedAlert.id ? updatedAlert : a)) };
       });
-      queryClient.invalidateQueries({ queryKey: AlertKeys.summary });
+      void queryClient.invalidateQueries({ queryKey: AlertKeys.summary });
     },
   });
 

@@ -1,22 +1,15 @@
 import React, { useMemo, useState } from "react";
 
-import {
-  Button,
-  Content,
-  Flex,
-  FlexItem,
-  Grid,
-  GridItem,
-  Icon,
-  Stack,
-  StackItem,
-  Switch,
-} from "@patternfly/react-core";
+import { Button, Content, Flex, FlexItem, Grid, GridItem, Stack, StackItem } from "@patternfly/react-core";
 import { SyncAltIcon } from "@patternfly/react-icons";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { LoadingWrapper } from "@app/components/LoadingWrapper";
 import { PageDrawerContent } from "@app/components/PageDrawerContext";
+import { useMockHealth } from "@app/components/mockHealthContext";
+import ENV from "@app/env";
 import {
+  HealthKeys,
   useFetchServiceHealth,
   useFetchExpiringAssets,
   useFetchErrorRate,
@@ -28,6 +21,10 @@ import {
   expiringAssetsHealthyMock,
   errorRateHealthyMock,
   incidentsHealthyMock,
+  serviceDegradedMock,
+  expiringAssetsDegradedMock,
+  errorRateDegradedMock,
+  incidentsDegradedMock,
 } from "@app/queries/mocks/health.mock";
 
 import { SystemHealthBanner } from "./SystemHealthBanner";
@@ -38,21 +35,38 @@ import { IncidentTimeline } from "./IncidentTimeline";
 import { ServiceDetailPanel } from "./ServiceDetailPanel";
 
 export const OperationalHealthTab: React.FC = () => {
-  const { serviceHealth, isFetching: isFetchingHealth, fetchError: fetchErrorHealth } = useFetchServiceHealth();
+  const {
+    serviceHealth,
+    isFetching: isFetchingHealth,
+    isRefreshing,
+    dataUpdatedAt,
+    fetchError: fetchErrorHealth,
+  } = useFetchServiceHealth();
+  const queryClient = useQueryClient();
   const { expiringAssets, isFetching: isFetchingAssets, fetchError: fetchErrorAssets } = useFetchExpiringAssets();
   const { errorRate, isFetching: isFetchingErrors, fetchError: fetchErrorErrors } = useFetchErrorRate();
   const { incidents, isFetching: isFetchingIncidents, fetchError: fetchErrorIncidents } = useFetchIncidents();
 
   const [selectedService, setSelectedService] = useState<ServiceDetail | null>(null);
-  const [showHealthy, setShowHealthy] = useState(false);
+  const { scenario } = useMockHealth();
 
-  const isFetching = isFetchingHealth || isFetchingAssets || isFetchingErrors || isFetchingIncidents;
-  const fetchError = fetchErrorHealth ?? fetchErrorAssets ?? fetchErrorErrors ?? fetchErrorIncidents;
+  const isFetching = isFetchingAssets || isFetchingErrors || isFetchingIncidents;
+  const fetchError = fetchErrorAssets ?? fetchErrorErrors ?? fetchErrorIncidents;
 
-  const activeServiceHealth = showHealthy ? serviceHealthyMock : serviceHealth;
-  const activeExpiringAssets = showHealthy ? expiringAssetsHealthyMock : expiringAssets;
-  const activeErrorRate = showHealthy ? errorRateHealthyMock : errorRate;
-  const activeIncidents = showHealthy ? incidentsHealthyMock : incidents;
+  const useScenario = ENV.MOCK !== "off" && scenario !== "down";
+  const isHealthyScenario = scenario === "healthy";
+  const activeServiceHealth = useScenario
+    ? isHealthyScenario
+      ? serviceHealthyMock
+      : serviceDegradedMock
+    : serviceHealth;
+  const activeExpiringAssets = useScenario
+    ? isHealthyScenario
+      ? expiringAssetsHealthyMock
+      : expiringAssetsDegradedMock
+    : expiringAssets;
+  const activeErrorRate = useScenario ? (isHealthyScenario ? errorRateHealthyMock : errorRateDegradedMock) : errorRate;
+  const activeIncidents = useScenario ? (isHealthyScenario ? incidentsHealthyMock : incidentsDegradedMock) : incidents;
 
   // If the selected service was from the previous state, update it to the matching service in the new state
   const resolvedSelectedService = useMemo(() => {
@@ -85,43 +99,24 @@ export const OperationalHealthTab: React.FC = () => {
             </FlexItem>
             <FlexItem>
               <Flex alignItems={{ default: "alignItemsCenter" }} spaceItems={{ default: "spaceItemsMd" }}>
+                {dataUpdatedAt > 0 && !fetchErrorHealth && !useScenario && (
+                  <FlexItem>
+                    <Content component="small" style={{ color: "var(--pf-t--global--text--color--subtle)" }}>
+                      {ENV.MOCK !== "off" ? "Mock data · Updated " : "Updated "}
+                      <time dateTime={new Date(dataUpdatedAt).toISOString()}>
+                        {new Date(dataUpdatedAt).toLocaleTimeString()}
+                      </time>
+                    </Content>
+                  </FlexItem>
+                )}
                 <FlexItem>
-                  <Switch
-                    id="demo-state-toggle"
-                    label={showHealthy ? "All healthy" : "Degraded"}
-                    isChecked={showHealthy}
-                    onChange={(_event, checked) => setShowHealthy(checked)}
-                  />
-                </FlexItem>
-                <FlexItem>
-                  <Flex alignItems={{ default: "alignItemsCenter" }} spaceItems={{ default: "spaceItemsSm" }}>
-                    <FlexItem>
-                      <Icon>
-                        <span
-                          style={{
-                            display: "inline-block",
-                            width: 6,
-                            height: 6,
-                            borderRadius: "50%",
-                            backgroundColor: "var(--pf-t--global--color--status--success--default)",
-                          }}
-                        />
-                      </Icon>
-                    </FlexItem>
-                    <FlexItem>
-                      <Content component="small" style={{ color: "var(--pf-t--global--text--color--subtle)" }}>
-                        Dashboard online
-                      </Content>
-                    </FlexItem>
-                  </Flex>
-                </FlexItem>
-                <FlexItem>
-                  <Content component="small" style={{ color: "var(--pf-t--global--text--color--subtle)" }}>
-                    Last checked 4s ago
-                  </Content>
-                </FlexItem>
-                <FlexItem>
-                  <Button variant="secondary" size="sm" icon={<SyncAltIcon />}>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    icon={<SyncAltIcon />}
+                    isDisabled={isRefreshing}
+                    onClick={() => void queryClient.refetchQueries({ queryKey: HealthKeys.all })}
+                  >
                     Refresh
                   </Button>
                 </FlexItem>
@@ -130,21 +125,23 @@ export const OperationalHealthTab: React.FC = () => {
           </Flex>
         </StackItem>
         <StackItem>
+          <SystemHealthBanner
+            serviceHealth={activeServiceHealth}
+            isLoading={isFetchingHealth && !useScenario}
+            hasError={Boolean(fetchErrorHealth) && !useScenario}
+          />
+        </StackItem>
+        {activeServiceHealth && (!fetchErrorHealth || useScenario) && (
+          <StackItem>
+            <ServiceStatusCards
+              services={activeServiceHealth.services}
+              onServiceClick={(service) => setSelectedService(service)}
+            />
+          </StackItem>
+        )}
+        <StackItem>
           <LoadingWrapper isFetching={isFetching} fetchError={fetchError}>
             <Stack hasGutter>
-              {activeServiceHealth && (
-                <>
-                  <StackItem>
-                    <SystemHealthBanner serviceHealth={activeServiceHealth} />
-                  </StackItem>
-                  <StackItem>
-                    <ServiceStatusCards
-                      services={activeServiceHealth.services}
-                      onServiceClick={(service) => setSelectedService(service)}
-                    />
-                  </StackItem>
-                </>
-              )}
               <StackItem>
                 <Grid hasGutter>
                   <GridItem span={6}>

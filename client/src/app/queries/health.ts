@@ -2,7 +2,6 @@ import type { AxiosError } from "axios";
 
 import { client } from "@app/axios-config/apiInit";
 import {
-  getHealthz,
   getApiV1TrustConfig,
   getApiV1TrustRootMetadataInfo,
   getApiV1RekorPublicKey,
@@ -35,6 +34,7 @@ export type {
 } from "./mocks/health.mock";
 
 export const HealthKeys = {
+  all: ["Health"],
   serviceStatus: ["Health", "service-status"],
   expiringAssets: ["Health", "expiring-assets"],
   errorRate: ["Health", "error-rate"],
@@ -42,12 +42,14 @@ export const HealthKeys = {
 };
 
 export const useFetchServiceHealth = () => {
-  const { data, isLoading, error } = useMockableQuery<ServiceHealthStatus, AxiosError<ApiError>>(
+  const { data, isLoading, isFetching, dataUpdatedAt, error } = useMockableQuery<
+    ServiceHealthStatus,
+    AxiosError<ApiError>
+  >(
     {
       queryKey: HealthKeys.serviceStatus,
       queryFn: async () => {
-        const [backend, fulcio, tuf, rekor] = await Promise.allSettled([
-          getHealthz({ client }),
+        const [fulcio, tuf, rekor] = await Promise.allSettled([
           getApiV1TrustConfig({ client }),
           getApiV1TrustRootMetadataInfo({ client }),
           getApiV1RekorPublicKey({ client }),
@@ -55,29 +57,13 @@ export const useFetchServiceHealth = () => {
 
         const toStatus = (r: PromiseSettledResult<unknown>) => (r.status === "fulfilled" ? "healthy" : "down");
 
+        // If none of the proxy checks returns data, the console API may itself be unavailable.
+        if ([fulcio, tuf, rekor].every((result) => result.status === "rejected")) {
+          throw new Error("Unable to retrieve service health");
+        }
+
         return {
-          overall: [backend, fulcio, tuf, rekor].every((r) => r.status === "fulfilled")
-            ? "operational"
-            : [backend, fulcio, tuf, rekor].some((r) => r.status === "rejected")
-              ? "down"
-              : "degraded",
-          overallMessage: "Service status",
-          overallDescription: "",
           services: [
-            {
-              name: "Cosign",
-              status: toStatus(backend),
-              statusText: toStatus(backend) === "healthy" ? "Healthy" : "Down",
-              detail: "",
-              drillDown: {
-                endpoint: "",
-                impactMessage: "",
-                lastSuccessfulProbe: "",
-                consecutiveFailures: 0,
-                probeHistory: [],
-                failingChecks: [],
-              },
-            },
             {
               name: "Fulcio",
               status: toStatus(fulcio),
@@ -131,6 +117,8 @@ export const useFetchServiceHealth = () => {
   return {
     serviceHealth: data,
     isFetching: isLoading,
+    isRefreshing: isFetching,
+    dataUpdatedAt,
     fetchError: error,
   };
 };
@@ -139,7 +127,7 @@ export const useFetchExpiringAssets = () => {
   const { data, isLoading, error } = useMockableQuery<ExpiringTrustAsset[], AxiosError<ApiError>>(
     {
       queryKey: HealthKeys.expiringAssets,
-      queryFn: async () => [],
+      queryFn: () => Promise.resolve([]),
     },
     expiringAssetsMock
   );
@@ -155,7 +143,7 @@ export const useFetchErrorRate = () => {
   const { data, isLoading, error } = useMockableQuery<ErrorRateData, AxiosError<ApiError>>(
     {
       queryKey: HealthKeys.errorRate,
-      queryFn: async () => ({ totalErrors: 0, errorRate: 0, breakdown: [] }),
+      queryFn: () => Promise.resolve({ totalErrors: 0, errorRate: 0, breakdown: [] }),
     },
     errorRateMock
   );
@@ -171,7 +159,7 @@ export const useFetchIncidents = () => {
   const { data, isLoading, error } = useMockableQuery<IncidentEvent[], AxiosError<ApiError>>(
     {
       queryKey: HealthKeys.incidents,
-      queryFn: async () => [],
+      queryFn: () => Promise.resolve([]),
     },
     incidentsMock
   );

@@ -4,6 +4,7 @@ import { postureSummaryMock, allSignedArtifacts } from "./dashboard.mock";
 import { alertsMock, alertSummaryMock } from "./alerts.mock";
 import { trustRootMetadataInfoMock } from "./trust.mock";
 import { serviceHealthMock } from "./health.mock";
+import { describeServiceHealth, getOverallHealth } from "../healthSummary";
 
 export const agentInsightsMock: AgentInsight[] = [
   {
@@ -94,10 +95,10 @@ export const agentSummaryMock: AgentSummary = {
   totalCount: agentInsightsMock.length,
 };
 
-type KeywordRoute = {
+interface KeywordRoute {
   keywords: string[];
   generate: () => string;
-};
+}
 
 const keywordRoutes: KeywordRoute[] = [
   {
@@ -152,10 +153,10 @@ const keywordRoutes: KeywordRoute[] = [
       const services = serviceHealthMock.services;
       return (
         `## Service Health\n\n` +
-        `**Overall:** ${serviceHealthMock.overallMessage}\n\n` +
+        `**Overall:** ${getOverallHealth(services)}\n\n` +
         `| Service | Status | Detail |\n|---------|--------|--------|\n` +
         services.map((s) => `| ${s.name} | ${s.statusText} | ${s.detail} |`).join("\n") +
-        (serviceHealthMock.overallDescription ? `\n\n${serviceHealthMock.overallDescription}` : "")
+        `\n\n${describeServiceHealth(services)}`
       );
     },
   },
@@ -200,7 +201,7 @@ function generateFallbackResponse(): string {
     `I don't have specific information about that topic. Here's a summary of your current signing infrastructure health:\n\n` +
     `- **Signed artifacts:** ${summary.signedCount} total, ${summary.signedWithAttestationCount} with attestations (${summary.attestationCoverage}% coverage)\n` +
     `- **Active alerts:** ${alerts.critical} critical, ${alerts.warning} warning\n` +
-    `- **Service health:** ${serviceHealthMock.overallMessage}\n\n` +
+    `- **Service health:** ${getOverallHealth(serviceHealthMock.services)}\n\n` +
     `Try asking about specific topics like attestations, certificates, alerts, or signing activity.`
   );
 }

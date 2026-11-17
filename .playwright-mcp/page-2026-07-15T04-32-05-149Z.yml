@@ -1,0 +1,203 @@
+- generic [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - link "Skip to content" [ref=f6e5] [cursor=pointer]:
+      - /url: "#main-content-page-layout-horizontal-nav"
+    - banner [ref=f6e7]:
+      - generic [ref=f6e8]:
+        - button "Global navigation" [expanded] [ref=f6e10] [cursor=pointer]
+        - img "brand" [ref=f6e18]
+      - generic [ref=f6e24]:
+        - button "Notifications" [ref=f6e26] [cursor=pointer]:
+          - generic [ref=f6e82]: "3"
+        - button "Agent insights" [ref=f6e31] [cursor=pointer]:
+          - generic [ref=f6e32]: "8"
+        - 'button "Theme selection, current: System" [ref=f6e36] [cursor=pointer]'
+        - button "About" [ref=f6e47] [cursor=pointer]
+    - navigation "Nav" [ref=f6e53]:
+      - list [ref=f6e54]:
+        - listitem [ref=f6e55]:
+          - link "Ask agent New" [ref=f6e56] [cursor=pointer]:
+            - /url: /agent
+            - text: Ask agent
+            - generic [ref=f6e57]: New
+        - listitem [ref=f6e58]:
+          - link "System Health" [ref=f6e59] [cursor=pointer]:
+            - /url: /operational-health
+        - listitem [ref=f6e60]:
+          - link "Trust Coverage" [ref=f6e61] [cursor=pointer]:
+            - /url: /dashboard
+        - listitem [ref=f6e62]:
+          - link "Trust Root" [ref=f6e63] [cursor=pointer]:
+            - /url: /trust-root
+        - listitem [ref=f6e64]:
+          - link "Artifacts" [ref=f6e65] [cursor=pointer]:
+            - /url: /artifacts
+        - listitem [ref=f6e66]:
+          - link "Rekor Search" [ref=f6e67] [cursor=pointer]:
+            - /url: /rekor-search
+        - listitem [ref=f6e68]:
+          - link "Alerts" [ref=f6e69] [cursor=pointer]:
+            - /url: /alerts
+        - listitem [ref=f6e70]:
+          - link "Artifact policy evaluation" [ref=f6e71] [cursor=pointer]:
+            - /url: /policy-generator
+    - main [active] [ref=f6e73]:
+      - generic [ref=f6e85]:
+        - generic [ref=f6e86]:
+          - heading "Ask agent" [level=2] [ref=f6e87]
+          - paragraph [ref=f6e88]: AI-powered monitoring of your signing infrastructure. Review insights and ask questions.
+        - generic [ref=f6e89]:
+          - generic [ref=f6e91]:
+            - generic [ref=f6e92]:
+              - generic [ref=f6e93]: 2 Critical
+              - generic [ref=f6e97]: 4 Warnings
+              - generic [ref=f6e101]: 2 Info
+            - generic [ref=f6e105]:
+              - generic [ref=f6e107] [cursor=pointer]:
+                - generic [ref=f6e110]:
+                  - generic [ref=f6e111]: TUF root metadata expires in 12 days
+                  - generic [ref=f6e112]: Critical
+                - generic [ref=f6e119]: The TUF root metadata is approaching expiration. If it expires, clients will be unable to verify trust anchors and signature verification will fail.
+                - generic [ref=f6e121]:
+                  - generic [ref=f6e122]: Trust Root
+                  - generic [ref=f6e126]: 7/14/2026, 10:31:17 PM
+              - generic [ref=f6e128] [cursor=pointer]:
+                - generic [ref=f6e131]:
+                  - generic [ref=f6e132]: Rekor transparency log returned errors
+                  - generic [ref=f6e133]: Critical
+                - generic [ref=f6e140]: The Rekor transparency log service is experiencing elevated error rates. Log entries may be delayed.
+                - generic [ref=f6e142]:
+                  - generic [ref=f6e143]: Health
+                  - generic [ref=f6e147]: 7/15/2026, 12:01:17 AM
+              - generic [ref=f6e149] [cursor=pointer]:
+                - generic [ref=f6e152]:
+                  - generic [ref=f6e153]: 27% of production artifacts lack attestations
+                  - generic [ref=f6e154]: Warning
+                - generic [ref=f6e161]: Several production artifacts have been signed but do not have associated attestations such as SLSA provenance or SBOM.
+                - generic [ref=f6e163]:
+                  - generic [ref=f6e164]: Attestations
+                  - generic [ref=f6e168]: 7/14/2026, 8:31:17 PM
+              - generic [ref=f6e170] [cursor=pointer]:
+                - generic [ref=f6e173]:
+                  - generic [ref=f6e174]: 3 artifacts failing enterprise signing policy
+                  - generic [ref=f6e175]: Warning
+                - generic [ref=f6e182]: Three artifacts do not meet the enterprise signing policy requirements defined in Conforma.
+                - generic [ref=f6e184]:
+                  - generic [ref=f6e185]: Policy
+                  - generic [ref=f6e189]: 7/14/2026, 7:31:17 PM
+              - generic [ref=f6e191] [cursor=pointer]:
+                - generic [ref=f6e194]:
+                  - generic [ref=f6e195]: Signing rate dropped 40% in the last 7 days
+                  - generic [ref=f6e196]: Warning
+                - generic [ref=f6e203]: The rate of new artifact signatures has decreased significantly compared to the previous week.
+                - generic [ref=f6e205]:
+                  - generic [ref=f6e206]: Signing
+                  - generic [ref=f6e210]: 7/14/2026, 6:31:17 PM
+              - generic [ref=f6e212] [cursor=pointer]:
+                - generic [ref=f6e215]:
+                  - generic [ref=f6e216]: 2 unacknowledged critical alerts
+                  - generic [ref=f6e217]: Warning
+                - generic [ref=f6e224]: There are unacknowledged critical alerts that may require immediate attention.
+                - generic [ref=f6e226]:
+                  - generic [ref=f6e227]: Alerts
+                  - generic [ref=f6e231]: 7/14/2026, 11:31:17 PM
+              - generic [ref=f6e233] [cursor=pointer]:
+                - generic [ref=f6e236]:
+                  - generic [ref=f6e237]: SBOM coverage increased to 85% this week
+                  - generic [ref=f6e238]: Info
+                - generic [ref=f6e245]: Attestation coverage for SBOM (SPDX) documents has increased from 79% to 85% over the past 7 days.
+                - generic [ref=f6e247]:
+                  - generic [ref=f6e248]: Attestations
+                  - generic [ref=f6e252]: 7/14/2026, 12:31:17 PM
+              - generic [ref=f6e254] [cursor=pointer]:
+                - generic [ref=f6e257]:
+                  - generic [ref=f6e258]: 15 new artifacts signed in the last 24 hours
+                  - generic [ref=f6e259]: Info
+                - generic [ref=f6e266]: Signing activity is ongoing with 15 new artifact signatures recorded in the last day.
+                - generic [ref=f6e268]:
+                  - generic [ref=f6e269]: Signing
+                  - generic [ref=f6e273]: 7/14/2026, 12:31:17 AM
+          - generic [ref=f6e275]:
+            - generic [ref=f6e276]:
+              - button "New conversation" [ref=f6e278] [cursor=pointer]
+              - generic [ref=f6e283]: Chat
+            - generic [ref=f6e286]:
+              - generic [ref=f6e287]:
+                - generic [ref=f6e289]:
+                  - paragraph [ref=f6e290]: Which production artifacts are missing attestations?
+                  - generic [ref=f6e291]: 12:29:11 AM
+                - generic [ref=f6e303]:
+                  - generic [ref=f6e304]:
+                    - heading "Attestation Status" [level=2] [ref=f6e305]
+                    - paragraph [ref=f6e306]:
+                      - strong [ref=f6e307]: "7"
+                      - text: of
+                      - strong [ref=f6e308]: "10"
+                      - text: signed artifacts have attestations (70.0% coverage).
+                    - heading "Artifacts without attestations" [level=3] [ref=f6e309]
+                    - table [ref=f6e504]:
+                      - rowgroup [ref=f6e505]:
+                        - row [ref=f6e506]:
+                          - columnheader "Artifact" [ref=f6e507]
+                          - columnheader "Environment" [ref=f6e508]
+                          - columnheader "Last Seen" [ref=f6e509]
+                      - rowgroup [ref=f6e510]:
+                        - row [ref=f6e511]:
+                          - cell "quay.io/myorg/auth-proxy:2.0.1" [ref=f6e512]
+                          - cell "rhtas-production" [ref=f6e513]
+                          - cell "2026-03-08T09:15:00Z" [ref=f6e514]
+                        - row [ref=f6e515]:
+                          - cell "registry.example.com/worker:1.2.0-rc1" [ref=f6e516]
+                          - cell "rhtas-staging" [ref=f6e517]
+                          - cell "2026-03-08T22:00:00Z" [ref=f6e518]
+                        - row [ref=f6e519]:
+                          - cell "ghcr.io/myorg/monitoring-agent:1.1.0" [ref=f6e520]
+                          - cell "rhtas-dev" [ref=f6e521]
+                          - cell "2026-03-06T16:00:00Z" [ref=f6e522]
+                    - paragraph [ref=f6e330]:
+                      - text: To add attestations, use
+                      - code [ref=f6e331]: cosign attest
+                      - text: with the appropriate predicate type (e.g., SLSA Provenance, SPDX SBOM).
+                  - generic [ref=f6e332]: 12:29:12 AM
+                - generic [ref=f6e459]:
+                  - paragraph [ref=f6e460]: Which production artifacts are missing attestations?
+                  - generic [ref=f6e461]: 12:31:55 AM
+                - generic [ref=f6e473]:
+                  - generic [ref=f6e474]:
+                    - heading "Attestation Status" [level=2] [ref=f6e475]
+                    - paragraph [ref=f6e476]:
+                      - strong [ref=f6e477]: "7"
+                      - text: of
+                      - strong [ref=f6e478]: "10"
+                      - text: signed artifacts have attestations (70.0% coverage).
+                    - heading "Artifacts without attestations" [level=3] [ref=f6e479]
+                    - table [ref=f6e524]:
+                      - rowgroup [ref=f6e525]:
+                        - row [ref=f6e526]:
+                          - columnheader "Artifact" [ref=f6e527]
+                          - columnheader "Environment" [ref=f6e528]
+                          - columnheader "Last Seen" [ref=f6e529]
+                      - rowgroup [ref=f6e530]:
+                        - row [ref=f6e531]:
+                          - cell "quay.io/myorg/auth-proxy:2.0.1" [ref=f6e532]
+                          - cell "rhtas-production" [ref=f6e533]
+                          - cell "2026-03-08T09:15:00Z" [ref=f6e534]
+                        - row [ref=f6e535]:
+                          - cell "registry.example.com/worker:1.2.0-rc1" [ref=f6e536]
+                          - cell "rhtas-staging" [ref=f6e537]
+                          - cell "2026-03-08T22:00:00Z" [ref=f6e538]
+                        - row [ref=f6e539]:
+                          - cell "ghcr.io/myorg/monitoring-agent:1.1.0" [ref=f6e540]
+                          - cell "rhtas-dev" [ref=f6e541]
+                          - cell "2026-03-06T16:00:00Z" [ref=f6e542]
+                    - paragraph [ref=f6e500]:
+                      - text: To add attestations, use
+                      - code [ref=f6e501]: cosign attest
+                      - text: with the appropriate predicate type (e.g., SLSA Provenance, SPDX SBOM).
+                  - generic [ref=f6e502]: 12:31:56 AM
+              - generic [ref=f6e334]:
+                - textbox "Chat message input" [ref=f6e337]:
+                  - /placeholder: Ask the agent a question...
+                - generic [ref=f6e338]:
+                  - button "Send message" [disabled]
+  - button "Open Tanstack query devtools" [ref=f6e389] [cursor=pointer]
